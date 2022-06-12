@@ -8,8 +8,10 @@
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NetPhonebook.Modules.Lists\NetPhonebook.Modules.Lists.csproj" />
+    <ProjectReference Include="..\..\NetPhonebook.Modules.Menu\NetPhonebook.Modules.Menu.csproj" />
+    <ProjectReference Include="..\..\NetPhonebook.Modules.Search\NetPhonebook.Modules.Search.csproj" />
     <ProjectReference Include="..\NetPhonebook.Core\NetPhonebook.Core.csproj" />
-    <ProjectReference Include="..\Modules\NetPhonebook.Modules.ModuleName\NetPhonebook.Modules.ModuleName.csproj" />
     <ProjectReference Include="..\Services\NetPhonebook.Services.Interfaces\NetPhonebook.Services.Interfaces.csproj" />
     <ProjectReference Include="..\Services\NetPhonebook.Services\NetPhonebook.Services.csproj" />
   </ItemGroup>

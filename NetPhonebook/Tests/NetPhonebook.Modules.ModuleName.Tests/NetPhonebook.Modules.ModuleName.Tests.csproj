@@ -20,8 +20,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Modules\NetPhonebook.Modules.ModuleName\NetPhonebook.Modules.ModuleName.csproj" />
-  </ItemGroup>
-
 </Project>

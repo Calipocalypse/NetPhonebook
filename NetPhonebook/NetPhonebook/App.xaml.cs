@@ -1,4 +1,6 @@
-﻿using NetPhonebook.Modules.ModuleName;
+﻿using NetPhonebook.Modules.Lists;
+using NetPhonebook.Modules.Menu;
+using NetPhonebook.Modules.Search;
 using NetPhonebook.Services;
 using NetPhonebook.Services.Interfaces;
 using NetPhonebook.Views;
@@ -25,7 +27,9 @@ namespace NetPhonebook
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
-            moduleCatalog.AddModule<ModuleNameModule>();
+            moduleCatalog.AddModule<SearchModule>();
+            moduleCatalog.AddModule<MenuModule>();
+            moduleCatalog.AddModule<ListsModule>();
         }
     }
 }

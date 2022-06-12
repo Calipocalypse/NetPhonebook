@@ -6,6 +6,18 @@
         xmlns:core="clr-namespace:NetPhonebook.Core;assembly=NetPhonebook.Core"
         Title="{Binding Title}" Height="350" Width="525" >
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ContentControl Grid.Column="0" Grid.Row="0" prism:RegionManager.RegionName="HeaderRegion" Grid.ColumnSpan="2"/>
+        <ContentControl Grid.Column="1" Grid.Row="1" prism:RegionManager.RegionName="ContentRegion"/>
+        <ContentControl Grid.Column="0" Grid.Row="1" prism:RegionManager.RegionName="MenuRegion"/>
+        <ContentControl Grid.Column="0" Grid.Row="2" prism:RegionManager.RegionName="FooterRegion" Grid.ColumnSpan="2"/>
     </Grid>
-</Window>
+    </Window>
