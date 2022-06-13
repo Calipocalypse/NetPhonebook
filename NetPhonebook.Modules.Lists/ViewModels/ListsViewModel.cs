@@ -15,11 +15,13 @@ namespace NetPhonebook.Modules.Lists.ViewModels
 {
     public class ListsViewModel : BindableBase
     {
+        private readonly IDataProvider _dataProvider;
         private readonly IRegionManager _regionManager;
         public DelegateCommand ClickSeed { get; set; }
 
-        public ListsViewModel(IRegionManager regionManager)
+        public ListsViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
+            _dataProvider = dataProvider;
             _regionManager = regionManager;
             ClickSeed = new DelegateCommand(ClickedSeed);
             //MessageBox.Show("Hello from" + this.ToString());
@@ -27,9 +29,8 @@ namespace NetPhonebook.Modules.Lists.ViewModels
 
         private void ClickedSeed()
         {
-            IDataProvider provider = new MsSqlDataProviderModule();
-            List<ExtraInfo> extraInfos = provider.GetExtraInfoList();
-            MessageBox.Show("Clicked Seed");
+            var extraInfos = _dataProvider.GetExtraInfo();
+            MessageBox.Show(extraInfos.Name);
         }
     }
 }

@@ -7,6 +7,7 @@
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetPhonebook\NetPhonebook.Core\NetPhonebook.Core.csproj" />
+    <ProjectReference Include="..\..\FullApp1.Core\FullApp1.Core.csproj" />
+    <ProjectReference Include="..\..\Services\FullApp1.Services.Interfaces\FullApp1.Services.Interfaces.csproj" />
   </ItemGroup>
 </Project>

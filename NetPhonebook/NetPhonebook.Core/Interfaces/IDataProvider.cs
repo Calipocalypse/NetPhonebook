@@ -10,5 +10,6 @@ namespace NetPhonebook.Core.Interfaces
     public interface IDataProvider
     {
         List<ExtraInfo> GetExtraInfoList();
+        ExtraInfo GetExtraInfo();
     }
 }

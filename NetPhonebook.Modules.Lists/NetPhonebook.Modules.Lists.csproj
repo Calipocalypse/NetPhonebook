@@ -6,4 +6,8 @@
   <ItemGroup>
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CsvDataProvider\CsvDataProvider.csproj" />
+    <ProjectReference Include="..\MsSqlDataProvider\MsSqlDataProvider.csproj" />
+  </ItemGroup>
 </Project>

@@ -19,17 +19,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetPhonebook", "NetPhoneboo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetPhonebook.Core", "NetPhonebook.Core\NetPhonebook.Core.csproj", "{4D467AC1-4C96-4EF0-A501-BD6C20100657}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetPhonebook.Modules.Search", "..\NetPhonebook.Modules.Search\NetPhonebook.Modules.Search.csproj", "{AA3B07A4-A674-42B5-B874-123A6373BE0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetPhonebook.Modules.Search", "..\NetPhonebook.Modules.Search\NetPhonebook.Modules.Search.csproj", "{AA3B07A4-A674-42B5-B874-123A6373BE0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetPhonebook.Modules.Menu", "..\NetPhonebook.Modules.Menu\NetPhonebook.Modules.Menu.csproj", "{6F3DA6C3-D074-4F64-B6F8-4EB5F59E4F38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetPhonebook.Modules.Menu", "..\NetPhonebook.Modules.Menu\NetPhonebook.Modules.Menu.csproj", "{6F3DA6C3-D074-4F64-B6F8-4EB5F59E4F38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetPhonebook.Modules.Lists", "..\NetPhonebook.Modules.Lists\NetPhonebook.Modules.Lists.csproj", "{8726B42D-B818-476A-A4D5-284B701AEF2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetPhonebook.Modules.Lists", "..\NetPhonebook.Modules.Lists\NetPhonebook.Modules.Lists.csproj", "{8726B42D-B818-476A-A4D5-284B701AEF2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataProviders", "DataProviders", "{0D80D4D2-E679-4762-8A03-C326A3448CDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvDataProvider", "..\CsvDataProvider\CsvDataProvider.csproj", "{E0F7F972-0B2B-47D2-952C-FBB5121A1D19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvDataProvider", "..\CsvDataProvider\CsvDataProvider.csproj", "{E0F7F972-0B2B-47D2-952C-FBB5121A1D19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsSqlDataProvider", "..\MsSqlDataProvider\MsSqlDataProvider.csproj", "{B47D71E3-5EFA-4E6C-80EC-3E5DF42EE844}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsSqlDataProvider", "..\MsSqlDataProvider\MsSqlDataProvider.csproj", "{B47D71E3-5EFA-4E6C-80EC-3E5DF42EE844}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqLiteDataProvider", "SqLiteDataProvider\SqLiteDataProvider.csproj", "{D69A6F15-18CF-4B12-91BA-D21ADA5D7B11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{B47D71E3-5EFA-4E6C-80EC-3E5DF42EE844}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B47D71E3-5EFA-4E6C-80EC-3E5DF42EE844}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B47D71E3-5EFA-4E6C-80EC-3E5DF42EE844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D69A6F15-18CF-4B12-91BA-D21ADA5D7B11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D69A6F15-18CF-4B12-91BA-D21ADA5D7B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D69A6F15-18CF-4B12-91BA-D21ADA5D7B11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D69A6F15-18CF-4B12-91BA-D21ADA5D7B11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{8726B42D-B818-476A-A4D5-284B701AEF2D} = {A300A3C3-3537-4C99-AC4B-B9362CE5577A}
 		{E0F7F972-0B2B-47D2-952C-FBB5121A1D19} = {0D80D4D2-E679-4762-8A03-C326A3448CDF}
 		{B47D71E3-5EFA-4E6C-80EC-3E5DF42EE844} = {0D80D4D2-E679-4762-8A03-C326A3448CDF}
+		{D69A6F15-18CF-4B12-91BA-D21ADA5D7B11} = {0D80D4D2-E679-4762-8A03-C326A3448CDF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FDD8703-6E5F-4CB3-949E-23259452DC5F}

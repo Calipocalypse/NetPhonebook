@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace NetPhonebook.Core.Models
 {
-    public class ExtraInfo
-    {   
+    public class VirtualModel
+    {
         public Guid Id { get; init; }
-        public ExtraCategory Category { get; set; }
-        public string Name { get; set; }
+        public string Name { get; init; }
+        public Image BaseImage { get; set; }
+        public VirtualModelsCellData Cell { get; set; }
     }
 }

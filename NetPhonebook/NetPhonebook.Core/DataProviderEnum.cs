@@ -10,5 +10,6 @@ namespace NetPhonebook.Core
     {
         CsvDataProvider = 0,
         MsSqlDataProvider = 1,
+        FakeDataProvider = 2,
     }
 }

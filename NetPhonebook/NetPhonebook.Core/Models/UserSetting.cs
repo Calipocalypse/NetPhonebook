@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace NetPhonebook.Core.Models
 {
-    public class ExtraInfo
-    {   
+    public class UserSetting
+    {
         public Guid Id { get; init; }
-        public ExtraCategory Category { get; set; }
-        public string Name { get; set; }
+        public string UserMacId { get; init; }
+        public Setting Setting { get; set; }
+        public string Value { get; set; }
     }
 }

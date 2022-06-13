@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace NetPhonebook.Core.Models
 {
-    public class ExtraInfo
-    {   
-        public Guid Id { get; init; }
-        public ExtraCategory Category { get; set; }
+    public class ExtraCategory
+    {
+        public Guid Id { get; set; }
         public string Name { get; set; }
     }
 }

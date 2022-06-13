@@ -1,4 +1,6 @@
-﻿using NetPhonebook.Modules.Lists;
+﻿using CsvDataProvider;
+using NetPhonebook.Core.Interfaces;
+using NetPhonebook.Modules.Lists;
 using NetPhonebook.Modules.Menu;
 using NetPhonebook.Modules.Search;
 using NetPhonebook.Services;
@@ -6,6 +8,7 @@ using NetPhonebook.Services.Interfaces;
 using NetPhonebook.Views;
 using Prism.Ioc;
 using Prism.Modularity;
+using SqLiteDataProvider;
 using System.Windows;
 
 namespace NetPhonebook
@@ -22,7 +25,7 @@ namespace NetPhonebook
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IMessageService, MessageService>();
+            containerRegistry.Register<IDataProvider, SqLiteDataProviderModule>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
