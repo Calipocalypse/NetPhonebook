@@ -14,19 +14,24 @@ namespace SqLiteDataProvider
         private string sqliteFilePath;
 
         /* Models */
-        public DbSet<Setting> settings { get; set; }
+        /* public DbSet<Setting> settings { get; set; }
         public DbSet<UserSetting> userSettings { get; set; }
-
-        public DbSet<Image> images { get; set; }
+        public DbSet<Image> images { get; set; } */ 
         public DbSet<ExtraCategory> extraCategories { get; set; }
-        public DbSet<ExtraInfo> extraInfos { get; set; }
-        public DbSet<VirtualModel> virtualModels { get; set; }
+        //public DbSet<ExtraInfo> extraInfos { get; set; }
+        /* public DbSet<VirtualModel> virtualModels { get; set; }
         public DbSet<VirtualModelsCustomization> virtualModelsCustomizations { get; set; }
         public DbSet<VirtualModelsData> virtualModelsDatas { get; set; }
-        public DbSet<VirtualModelsCellData> virtualModelsCellDatas { get; set; }
+        public DbSet<VirtualModelsCellData> virtualModelsCellDatas { get; set; } */
 
         /* Code */
-        public NetbookContext(string path)
+
+        public NetbookContext()
+        {
+            sqliteFilePath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\database.sqlite3";
+        }
+
+        public NetbookContext(DbContextOptions options) : base(options)
         {
             sqliteFilePath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\database.sqlite3";
             //sqliteFilePath = path;
@@ -42,7 +47,11 @@ namespace SqLiteDataProvider
             base.OnConfiguring(optionsBuilder);
         }
 
-        //Override model builder !!!
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ExtraCategory>()
+                .Property(x => x.Name)
+                .IsRequired();
+        }
     }
 }

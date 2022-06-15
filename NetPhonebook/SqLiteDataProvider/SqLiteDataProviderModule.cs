@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace SqLiteDataProvider
 {
@@ -13,7 +14,16 @@ namespace SqLiteDataProvider
     {
         public SqLiteDataProviderModule()
         {
-            new NetbookContext("Changethis");
+            new NetbookContext();
+        }
+
+        public void AddCategory(string categoryName)
+        {
+            using (var context = new NetbookContext())
+            {
+                context.Add(new ExtraCategory(categoryName));
+                context.SaveChanges();
+            }
         }
 
         public ExtraInfo GetExtraInfo()
@@ -22,21 +32,9 @@ namespace SqLiteDataProvider
         }
         public List<ExtraInfo> GetExtraInfoList()
         {
-            var newCategory = new ExtraCategory { Id = Guid.NewGuid(), Name = "Typ" };
             return new List<ExtraInfo>
             {
-                new ExtraInfo()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Podłużnia",
-                    Category = newCategory
-                },
-                new ExtraInfo()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Pochylnia",
-                    Category = newCategory
-                }
+                
             };
         }
     }

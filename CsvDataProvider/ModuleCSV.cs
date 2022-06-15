@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CsvDataProvider
 {
-    public class ModuleCSV : IDataProvider
+    public class ModuleCSV //: IDataProvider
     {
         public ExtraInfo GetExtraInfo()
         {
@@ -14,21 +14,8 @@ namespace CsvDataProvider
 
         public List<ExtraInfo> GetExtraInfoList()
         {
-            var newCategory = new ExtraCategory { Id = Guid.NewGuid(), Name = "Typ" };
             return new List<ExtraInfo>
             {
-                new ExtraInfo()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Podłużnia",
-                    Category = newCategory
-                },
-                new ExtraInfo()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Pochylnia",
-                    Category = newCategory
-                }
             };
         }
     }

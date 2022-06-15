@@ -17,21 +17,9 @@ namespace MsSqlDataProvider
 
         public List<ExtraInfo> GetExtraInfoList()
         {
-            var newCategory = new ExtraCategory { Id = Guid.NewGuid(), Name = "Typ" };
             return new List<ExtraInfo>
             {
-                new ExtraInfo()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Podłużnia",
-                    Category = newCategory
-                },
-                new ExtraInfo()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Pochylnia",
-                    Category = newCategory
-                }
+             
             };
         }
     }
