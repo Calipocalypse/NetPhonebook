@@ -10,7 +10,7 @@ using SqLiteDataProvider;
 
 namespace SqLiteDataProvider.Migrations
 {
-    [DbContext(typeof(NetbookContext))]
+    [DbContext(typeof(NetphonebookContext))]
     [Migration("20220615193811_Init")]
     partial class Init
     {

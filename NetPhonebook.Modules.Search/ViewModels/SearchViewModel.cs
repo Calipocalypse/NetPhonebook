@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using NetPhonebook.Core.Interfaces;
+using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,12 @@ namespace NetPhonebook.Modules.Search.ViewModels
 {
     public class SearchViewModel : BindableBase
     {
-        public SearchViewModel()
+        public SearchViewModel(IDataProvider dataProvider)
         {
+            DataProvider = dataProvider;
+            var x = dataProvider.GetCategoryList;
         }
+
+        public IDataProvider DataProvider { get; }
     }
 }

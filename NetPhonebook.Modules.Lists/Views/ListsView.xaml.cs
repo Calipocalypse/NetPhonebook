@@ -24,5 +24,7 @@ namespace NetPhonebook.Modules.Lists.Views
         {
             InitializeComponent();
         }
+
+
     }
 }

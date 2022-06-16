@@ -10,11 +10,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using NetPhonebook.Modules.Lists;
+using NetPhonebook.Modules.Lists.Views;
 
 namespace NetPhonebook.Modules.Lists.ViewModels
 {
     public class ListsViewModel : BindableBase
     {
+        private readonly IDataProvider _dataProvider;
+        private readonly IRegionManager _regionManager;
+        public DelegateCommand ClickSeed { get; set; }
+        public DelegateCommand ClickAddCategory { get; set; }
+
         private string categoryName;
         public string CategoryName
         {
@@ -22,10 +29,12 @@ namespace NetPhonebook.Modules.Lists.ViewModels
             set { SetProperty(ref categoryName, value); }
         }
 
-        private readonly IDataProvider _dataProvider;
-        private readonly IRegionManager _regionManager;
-        public DelegateCommand ClickSeed { get; set; }
-        public DelegateCommand ClickAddCategory { get; set; }
+        private List<ExtraCategory> categoryList;
+        public List<ExtraCategory> CategoryList
+        {
+            get { return _dataProvider.GetCategoryList(); }
+            set { SetProperty(ref categoryList, value); }
+        }
 
         public ListsViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
@@ -33,7 +42,7 @@ namespace NetPhonebook.Modules.Lists.ViewModels
             _regionManager = regionManager;
             ClickSeed = new DelegateCommand(ClickedSeed);
             ClickAddCategory = new DelegateCommand(ClickedAddCategory);
-            //MessageBox.Show("Hello from" + this.ToString());
+            MessageBox.Show("Hello from" + this.ToString());
         }
 
         private void ClickedSeed()

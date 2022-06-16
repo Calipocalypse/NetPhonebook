@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SqLiteDataProvider
 {
-    public class NetbookContext : DbContext
+    public class NetphonebookContext : DbContext
     {
         private string sqliteFilePath;
 
@@ -26,12 +26,12 @@ namespace SqLiteDataProvider
 
         /* Code */
 
-        public NetbookContext()
+        public NetphonebookContext()
         {
             sqliteFilePath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\database.sqlite3";
         }
 
-        public NetbookContext(DbContextOptions options) : base(options)
+        public NetphonebookContext(DbContextOptions options) : base(options)
         {
             sqliteFilePath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\database.sqlite3";
             //sqliteFilePath = path;

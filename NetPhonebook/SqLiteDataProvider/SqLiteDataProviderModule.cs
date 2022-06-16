@@ -12,18 +12,24 @@ namespace SqLiteDataProvider
 {
     public class SqLiteDataProviderModule : IDataProvider
     {
+        private NetphonebookContext context = new NetphonebookContext();
         public SqLiteDataProviderModule()
         {
-            new NetbookContext();
+            var context = new NetphonebookContext();
         }
 
         public void AddCategory(string categoryName)
         {
-            using (var context = new NetbookContext())
+            using (var context = new NetphonebookContext())
             {
                 context.Add(new ExtraCategory(categoryName));
                 context.SaveChanges();
             }
+        }
+
+        public List<ExtraCategory> GetCategoryList()
+        {
+                return context.extraCategories.ToList();
         }
 
         public ExtraInfo GetExtraInfo()

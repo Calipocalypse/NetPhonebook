@@ -1,4 +1,6 @@
-﻿using Prism.Commands;
+﻿using NetPhonebook.Modules.Lists.Views;
+using NetPhonebook.Modules.Search.Views;
+using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
@@ -24,7 +26,23 @@ namespace NetPhonebook.Modules.Menu.ViewModels
 
         private void Navigate(string uri)
         {
-            _regionManager.RequestNavigate("ContentRegion", uri);
+            //_regionManager.RequestNavigate("ContentRegion", uri);
+            switch (uri)
+            {
+                case "ListsView": SwitchView(new ListsView(), uri);
+                    break;
+                case "SearchView": SwitchView(new SearchView(), uri);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void SwitchView(object obj, string uri)
+        {
+            _regionManager.Regions["ContentRegion"].RemoveAll();
+            _regionManager.Regions["ContentRegion"].Add(obj, uri);
+            var view = _regionManager.Regions["ContentRegion"].GetView("uri");
         }
     }
 }

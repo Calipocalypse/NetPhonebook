@@ -11,5 +11,6 @@ namespace NetPhonebook.Core.Interfaces
     {
         List<ExtraInfo> GetExtraInfoList();
         ExtraInfo GetExtraInfo();
+        List<ExtraCategory> GetCategoryList();
     }
 }

@@ -9,7 +9,7 @@ using SqLiteDataProvider;
 
 namespace SqLiteDataProvider.Migrations
 {
-    [DbContext(typeof(NetbookContext))]
+    [DbContext(typeof(NetphonebookContext))]
     partial class NetbookContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
