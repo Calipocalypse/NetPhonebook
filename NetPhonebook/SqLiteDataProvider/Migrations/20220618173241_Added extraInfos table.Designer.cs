@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SqLiteDataProvider;
 
@@ -10,9 +11,10 @@ using SqLiteDataProvider;
 namespace SqLiteDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    partial class NetbookContextModelSnapshot : ModelSnapshot
+    [Migration("20220618173241_Added extraInfos table")]
+    partial class AddedextraInfostable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
@@ -38,11 +40,10 @@ namespace SqLiteDataProvider.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -56,9 +57,7 @@ namespace SqLiteDataProvider.Migrations
                 {
                     b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
