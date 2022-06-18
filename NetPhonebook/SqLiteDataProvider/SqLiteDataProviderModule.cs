@@ -51,6 +51,7 @@ namespace SqLiteDataProvider
             {
                 var toReplaceExtraCategoryDB = context.extraCategories.FirstOrDefault(x => x.Id == toReplaceExtraCategory.Id);
                 toReplaceExtraCategoryDB.Name = editedExtraCategory.Name;
+                context.Update(toReplaceExtraCategoryDB);
                 context.SaveChanges();
             }
         }

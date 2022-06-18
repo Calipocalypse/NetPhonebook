@@ -16,7 +16,7 @@
         <StackPanel Orientation="Horizontal">
             <Button Width="100px" Height="50px" Content="Add Category" Command="{Binding ClickAddCategory}"/>
             <TextBox Width="200px" Height="20px" Name="Category" Text="{Binding CategoryName}"/>
-            <ListBox x:Name="CategoryListBox" SelectedIndex="{Binding ChosenCategoryIndex}" ItemsSource="{Binding Path=CategoryList}">
+            <ListBox x:Name="CategoryListBox" SelectedItem="{Binding ChosenCategory}" ItemsSource="{Binding Path=CategoryList}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>

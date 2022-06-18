@@ -36,7 +36,7 @@ namespace NetPhonebook.Modules.Lists.ViewModels
             set { SetProperty(ref categoryName, value); }
         }
 
-        public int ChosenCategoryIndex { get; set; }
+        public ExtraCategory ChosenCategory { get; set; }
 
         public ObservableCollection<ExtraCategory> CategoryList { get; }
 
@@ -61,21 +61,22 @@ namespace NetPhonebook.Modules.Lists.ViewModels
         private void ClickedDeleteCategory()
         {
             try {
-                _dataProvider.DestroyCategory(CategoryList[ChosenCategoryIndex]);
-                CategoryList.RemoveAt(ChosenCategoryIndex);
+                _dataProvider.DestroyCategory(ChosenCategory);
+                CategoryList.Remove(ChosenCategory);
             }
             catch { MessageBox.Show("Error: Try to perform another action"); }
         }
 
         private void ClickedEditCategory()
         {
-            var editedCategory = CategoryList[ChosenCategoryIndex];
-            var toReplaceCategory = CategoryList.FirstOrDefault(editedCategory);
-            editedCategory.Name = CategoryName;
-            CategoryList.RemoveAt(ChosenCategoryIndex);
-            CategoryList.Add(editedCategory);
+            var justEditedCategory = ChosenCategory;
+            var toReplaceCategory = CategoryList.FirstOrDefault(justEditedCategory);
+            justEditedCategory.Name = CategoryName;
 
-            _dataProvider.UpdateCategory(editedCategory, toReplaceCategory);
+            _dataProvider.UpdateCategory(justEditedCategory, ChosenCategory);
+
+            CategoryList.Remove(ChosenCategory);
+            CategoryList.Add(justEditedCategory);
         }
     }
 }
