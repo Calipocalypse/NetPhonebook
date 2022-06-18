@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetPhonebook.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace NetPhonebook.Core.Interfaces
 {
-    public interface IDataWriter
+    public interface IDataDestroyer
     {
-        void AddCategory(string categoryName);
+        void DestroyCategory(ExtraCategory toDestroy);
     }
 }

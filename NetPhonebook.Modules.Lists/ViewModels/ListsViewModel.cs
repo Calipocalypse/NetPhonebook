@@ -12,6 +12,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using NetPhonebook.Modules.Lists;
 using NetPhonebook.Modules.Lists.Views;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using Prism.Events;
+using System.Runtime.CompilerServices;
+using NetPhonebook.Core.Collections;
 
 namespace NetPhonebook.Modules.Lists.ViewModels
 {
@@ -19,8 +25,9 @@ namespace NetPhonebook.Modules.Lists.ViewModels
     {
         private readonly IDataProvider _dataProvider;
         private readonly IRegionManager _regionManager;
-        public DelegateCommand ClickSeed { get; set; }
         public DelegateCommand ClickAddCategory { get; set; }
+        public DelegateCommand ClickEditCategory { get; set; }
+        public DelegateCommand ClickDeleteCategory { get; set; }
 
         private string categoryName;
         public string CategoryName
@@ -29,31 +36,46 @@ namespace NetPhonebook.Modules.Lists.ViewModels
             set { SetProperty(ref categoryName, value); }
         }
 
-        private List<ExtraCategory> categoryList;
-        public List<ExtraCategory> CategoryList
-        {
-            get { return _dataProvider.GetCategoryList(); }
-            set { SetProperty(ref categoryList, value); }
-        }
+        public int ChosenCategoryIndex { get; set; }
+
+        public ObservableCollection<ExtraCategory> CategoryList { get; }
 
         public ListsViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
             _dataProvider = dataProvider;
             _regionManager = regionManager;
-            ClickSeed = new DelegateCommand(ClickedSeed);
+            CategoryList = _dataProvider.GetCategoryList();
             ClickAddCategory = new DelegateCommand(ClickedAddCategory);
-            MessageBox.Show("Hello from" + this.ToString());
-        }
-
-        private void ClickedSeed()
-        {
-            var extraInfos = _dataProvider.GetExtraInfo();
-            MessageBox.Show(extraInfos.Name);
+            ClickEditCategory = new DelegateCommand(ClickedEditCategory);
+            ClickDeleteCategory = new DelegateCommand(ClickedDeleteCategory);
+            //MessageBox.Show("Hello from " + this.ToString());
         }
 
         private void ClickedAddCategory()
         {
-            _dataProvider.AddCategory(categoryName);
+            ExtraCategory newCategoryFromForm = new ExtraCategory(CategoryName);
+            CategoryList.Add(newCategoryFromForm);
+            _dataProvider.AddCategory(newCategoryFromForm);
+        }
+
+        private void ClickedDeleteCategory()
+        {
+            try {
+                _dataProvider.DestroyCategory(CategoryList[ChosenCategoryIndex]);
+                CategoryList.RemoveAt(ChosenCategoryIndex);
+            }
+            catch { MessageBox.Show("Error: Try to perform another action"); }
+        }
+
+        private void ClickedEditCategory()
+        {
+            var editedCategory = CategoryList[ChosenCategoryIndex];
+            var toReplaceCategory = CategoryList.FirstOrDefault(editedCategory);
+            editedCategory.Name = CategoryName;
+            CategoryList.RemoveAt(ChosenCategoryIndex);
+            CategoryList.Add(editedCategory);
+
+            _dataProvider.UpdateCategory(editedCategory, toReplaceCategory);
         }
     }
 }

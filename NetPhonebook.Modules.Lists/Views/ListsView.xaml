@@ -16,16 +16,17 @@
         <StackPanel Orientation="Horizontal">
             <Button Width="100px" Height="50px" Content="Add Category" Command="{Binding ClickAddCategory}"/>
             <TextBox Width="200px" Height="20px" Name="Category" Text="{Binding CategoryName}"/>
-            <TextBlock Text="{Binding CategoryName}" d:Text="Test"/>
-            <ListView x:Name="CategoryListView" ItemsSource="{Binding CategoryList}">
-                <ListView.ItemTemplate>
+            <ListBox x:Name="CategoryListBox" SelectedIndex="{Binding ChosenCategoryIndex}" ItemsSource="{Binding Path=CategoryList}">
+                <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
                             <TextBlock Text="{Binding Name}"/>
                         </StackPanel>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Width="100px" Height="50px" Content="Delete Category" Command="{Binding ClickDeleteCategory}"/>
+            <Button Width="100px" Height="50px" Content="Edit Category" Command="{Binding ClickEditCategory}"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

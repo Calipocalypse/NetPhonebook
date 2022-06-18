@@ -7,41 +7,52 @@ using System.Linq;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using NetPhonebook.Core.Collections;
 
 namespace SqLiteDataProvider
 {
     public class SqLiteDataProviderModule : IDataProvider
     {
-        private NetphonebookContext context = new NetphonebookContext();
-        public SqLiteDataProviderModule()
-        {
-            var context = new NetphonebookContext();
-        }
+        public SqLiteDataProviderModule() { }
 
-        public void AddCategory(string categoryName)
+        public void AddCategory(ExtraCategory category)
         {
             using (var context = new NetphonebookContext())
             {
-                context.Add(new ExtraCategory(categoryName));
+                context.Add(category);
                 context.SaveChanges();
             }
         }
 
-        public List<ExtraCategory> GetCategoryList()
+        public void DestroyCategory(ExtraCategory toDestroy)
         {
-                return context.extraCategories.ToList();
+            using (var context = new NetphonebookContext())
+            {
+                context.Remove(toDestroy);
+                context.SaveChanges();
+            }
         }
 
-        public ExtraInfo GetExtraInfo()
+        public ObservableCollection<ExtraCategory> GetCategoryList()
         {
-            return GetExtraInfoList().First();
-        }
-        public List<ExtraInfo> GetExtraInfoList()
-        {
-            return new List<ExtraInfo>
+            using (var context = new NetphonebookContext())
             {
-                
-            };
+                var oc = new ObservableCollection<ExtraCategory>();
+                context.extraCategories.ToList().ForEach(category => oc.Add(category));
+                return oc;
+            }
+        }
+
+        public void UpdateCategory(ExtraCategory editedExtraCategory, ExtraCategory toReplaceExtraCategory)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                var toReplaceExtraCategoryDB = context.extraCategories.FirstOrDefault(x => x.Id == toReplaceExtraCategory.Id);
+                toReplaceExtraCategoryDB.Name = editedExtraCategory.Name;
+                context.SaveChanges();
+            }
         }
     }
 }
