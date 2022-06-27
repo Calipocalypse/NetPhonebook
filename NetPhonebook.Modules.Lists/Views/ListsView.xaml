@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:NetPhonebook.Modules.Lists.Views"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" d:Background="White"
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal">
@@ -15,8 +15,9 @@
         <TextBlock>Categories</TextBlock>
         <StackPanel Orientation="Horizontal">
             <Button Width="100px" Height="50px" Content="Add Category" Command="{Binding ClickAddCategory}"/>
-            <TextBox Width="200px" Height="20px" Name="Category" Text="{Binding CategoryName}"/>
-            <ListBox x:Name="CategoryListBox" SelectedItem="{Binding ChosenCategory}" ItemsSource="{Binding Path=CategoryList}">
+            <TextBox Width="200px" Height="20px" Name="Category" Text="{Binding CategoryName, UpdateSourceTrigger=PropertyChanged}"/>
+            <ListBox x:Name="CategoryListBox" SelectedItem="{Binding ChosenCategory}" ItemsSource="{Binding Path=CategoryList}"
+                     Width="200px" Height="50px">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -27,6 +28,22 @@
             </ListBox>
             <Button Width="100px" Height="50px" Content="Delete Category" Command="{Binding ClickDeleteCategory}"/>
             <Button Width="100px" Height="50px" Content="Edit Category" Command="{Binding ClickEditCategory}"/>
+        </StackPanel>
+        <TextBlock>Selected list content: Poziom</TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <ListBox ItemsSource="{Binding ExtraInfoList}" SelectedItem="{Binding ChosenRecord}" 
+                Width="200" Height="300">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel>
+                <TextBox d:Text="Category element" Text="{Binding InfoName, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True" Height="25" Width="150"></TextBox>
+                <Button Command="{Binding ClickAddExtraInfo}">+</Button>
+                <Button Command="{Binding ClickRemoveExtraInfo}">-</Button>
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </UserControl>
