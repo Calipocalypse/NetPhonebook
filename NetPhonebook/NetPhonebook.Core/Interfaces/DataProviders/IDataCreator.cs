@@ -9,6 +9,7 @@ namespace NetPhonebook.Core.Interfaces
 {
     public interface IDataCreator
     {
-        void AddCategory(ExtraCategory category);
+        void AddCategory(ExtraCategory toCreate);
+        void AddInfo(ExtraInfo toCreate);
     }
 }

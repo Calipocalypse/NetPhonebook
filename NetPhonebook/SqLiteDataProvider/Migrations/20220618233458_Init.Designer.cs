@@ -11,8 +11,8 @@ using SqLiteDataProvider;
 namespace SqLiteDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    [Migration("20220618174220_Updated extraInfos table")]
-    partial class UpdatedextraInfostable
+    [Migration("20220618233458_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,7 +26,6 @@ namespace SqLiteDataProvider.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -44,7 +43,6 @@ namespace SqLiteDataProvider.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -57,12 +55,17 @@ namespace SqLiteDataProvider.Migrations
             modelBuilder.Entity("NetPhonebook.Core.Models.ExtraInfo", b =>
                 {
                     b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "Category")
-                        .WithMany()
+                        .WithMany("ExtraInfos")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("NetPhonebook.Core.Models.ExtraCategory", b =>
+                {
+                    b.Navigation("ExtraInfos");
                 });
 #pragma warning restore 612, 618
         }

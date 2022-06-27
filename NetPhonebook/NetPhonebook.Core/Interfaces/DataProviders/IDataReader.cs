@@ -13,5 +13,6 @@ namespace NetPhonebook.Core.Interfaces
     public interface IDataReader
     {
         ObservableCollection<ExtraCategory> GetCategoryList();
+        ObservableCollection<ExtraInfo> GetExtraInfo();
     }
 }

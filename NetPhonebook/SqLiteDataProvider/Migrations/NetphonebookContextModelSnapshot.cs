@@ -10,7 +10,7 @@ using SqLiteDataProvider;
 namespace SqLiteDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    partial class NetbookContextModelSnapshot : ModelSnapshot
+    partial class NetphonebookContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -24,12 +24,11 @@ namespace SqLiteDataProvider.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExtraCategories");
+                    b.ToTable("ExtraCategories", (string)null);
                 });
 
             modelBuilder.Entity("NetPhonebook.Core.Models.ExtraInfo", b =>
@@ -38,29 +37,33 @@ namespace SqLiteDataProvider.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid>("ExtraCategoryId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ExtraCategoryId");
 
-                    b.ToTable("ExtraInfos");
+                    b.ToTable("ExtraInfos", (string)null);
                 });
 
             modelBuilder.Entity("NetPhonebook.Core.Models.ExtraInfo", b =>
                 {
-                    b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
+                    b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "ExtraCategory")
+                        .WithMany("ExtraInfos")
+                        .HasForeignKey("ExtraCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("ExtraCategory");
+                });
+
+            modelBuilder.Entity("NetPhonebook.Core.Models.ExtraCategory", b =>
+                {
+                    b.Navigation("ExtraInfos");
                 });
 #pragma warning restore 612, 618
         }

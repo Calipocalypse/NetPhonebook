@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using NetPhonebook.Core.Collections;
+using System.Windows;
 
 namespace SqLiteDataProvider
 {
@@ -17,12 +18,15 @@ namespace SqLiteDataProvider
     {
         public SqLiteDataProviderModule() { }
 
+        /* Extra Category */
+
         public void AddCategory(ExtraCategory category)
         {
             using (var context = new NetphonebookContext())
             {
                 context.Add(category);
                 context.SaveChanges();
+                //SeedInfos();
             }
         }
 
@@ -52,6 +56,46 @@ namespace SqLiteDataProvider
                 var toReplaceExtraCategoryDB = context.extraCategories.FirstOrDefault(x => x.Id == toReplaceExtraCategory.Id);
                 toReplaceExtraCategoryDB.Name = editedExtraCategory.Name;
                 context.Update(toReplaceExtraCategoryDB);
+                context.SaveChanges();
+            }
+        }
+
+        /* Extra Infos */
+        public ObservableCollection<ExtraInfo> GetExtraInfo()
+        {
+            using (var context = new NetphonebookContext())
+            {
+                var oc = new ObservableCollection<ExtraInfo>();
+                context.extraInfos.Include(x => x.ExtraCategory).ToList().ForEach(info => oc.Add(info));
+                return oc;
+            }
+        }
+
+        public void SeedInfos()
+        {
+            using (var context = new NetphonebookContext())
+            {
+                context.extraInfos.Add(new ExtraInfo { Id = Guid.NewGuid(), Name = "I", ExtraCategory =context.extraCategories.First()});
+                context.extraInfos.Add(new ExtraInfo { Id = Guid.NewGuid(), Name = "II", ExtraCategory = context.extraCategories.First()});
+                context.extraInfos.Add(new ExtraInfo { Id = Guid.NewGuid(), Name = "III", ExtraCategory = context.extraCategories.First()});
+                context.SaveChanges();
+            }
+        }
+
+        public void AddInfo(ExtraInfo toCreate)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                context.Add(toCreate);
+                context.SaveChanges();
+            }
+        }
+
+        public void DestroyInfo(ExtraInfo toDestroy)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                context.Remove(toDestroy);
                 context.SaveChanges();
             }
         }

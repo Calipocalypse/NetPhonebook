@@ -10,12 +10,11 @@ namespace NetPhonebook.Core.Models
 {   
     [Table("ExtraInfos")]
     public class ExtraInfo
-    {   
+    {
         [Key]
         public Guid Id { get; init; }
-        [Required]
-        public ExtraCategory Category { get; set; }
-        [Required]
+        public ExtraCategory ExtraCategory { get; set; }
+        public Guid ExtraCategoryId { get; set; }
         public string Name { get; set; }
     }
 }

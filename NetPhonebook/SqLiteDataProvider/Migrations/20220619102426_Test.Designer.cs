@@ -11,8 +11,8 @@ using SqLiteDataProvider;
 namespace SqLiteDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    [Migration("20220618173241_Added extraInfos table")]
-    partial class AddedextraInfostable
+    [Migration("20220619102426_Test")]
+    partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,7 +26,6 @@ namespace SqLiteDataProvider.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -40,7 +39,7 @@ namespace SqLiteDataProvider.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("ExtraCategoryId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -48,18 +47,25 @@ namespace SqLiteDataProvider.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ExtraCategoryId");
 
                     b.ToTable("ExtraInfos");
                 });
 
             modelBuilder.Entity("NetPhonebook.Core.Models.ExtraInfo", b =>
                 {
-                    b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
+                    b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "ExtraCategory")
+                        .WithMany("ExtraInfos")
+                        .HasForeignKey("ExtraCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("ExtraCategory");
+                });
+
+            modelBuilder.Entity("NetPhonebook.Core.Models.ExtraCategory", b =>
+                {
+                    b.Navigation("ExtraInfos");
                 });
 #pragma warning restore 612, 618
         }

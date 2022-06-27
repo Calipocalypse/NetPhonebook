@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetPhonebook.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,9 @@ namespace SqLiteDataProvider
         /* Models */
         /* public DbSet<Setting> settings { get; set; }
         public DbSet<UserSetting> userSettings { get; set; }
-        public DbSet<Image> images { get; set; } */ 
-        public DbSet<ExtraCategory> extraCategories { get; set; }
+        public DbSet<Image> images { get; set; } */
         public DbSet<ExtraInfo> extraInfos { get; set; }
+        public DbSet<ExtraCategory> extraCategories { get; set; }
         /* public DbSet<VirtualModel> virtualModels { get; set; }
         public DbSet<VirtualModelsCustomization> virtualModelsCustomizations { get; set; }
         public DbSet<VirtualModelsData> virtualModelsDatas { get; set; }
@@ -46,12 +47,13 @@ namespace SqLiteDataProvider
              });
             base.OnConfiguring(optionsBuilder);
         }
-
+        /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ExtraCategory>()
-                .Property(x => x.Name)
-                .IsRequired();
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ExtraInfo>();
+            modelBuilder.Entity<ExtraCategory>();
         }
+        */
     }
 }

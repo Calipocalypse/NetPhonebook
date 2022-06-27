@@ -10,5 +10,6 @@ namespace NetPhonebook.Core.Interfaces
     public interface IDataDestroyer
     {
         void DestroyCategory(ExtraCategory toDestroy);
+        void DestroyInfo(ExtraInfo toDestroy);
     }
 }

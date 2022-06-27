@@ -5,16 +5,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SqLiteDataProvider.Migrations
 {
-    public partial class AddedextraInfostable : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ExtraCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExtraCategories", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ExtraInfos",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -24,7 +36,8 @@ namespace SqLiteDataProvider.Migrations
                         name: "FK_ExtraInfos_ExtraCategories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "ExtraCategories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -37,6 +50,9 @@ namespace SqLiteDataProvider.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ExtraInfos");
+
+            migrationBuilder.DropTable(
+                name: "ExtraCategories");
         }
     }
 }
