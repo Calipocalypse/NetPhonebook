@@ -11,5 +11,6 @@ namespace NetPhonebook.Core.Interfaces
     {
         void DestroyCategory(ExtraCategory toDestroy);
         void DestroyInfo(ExtraInfo toDestroy);
+        void DestroyModel(VirtualModel toDestroy);
     }
 }

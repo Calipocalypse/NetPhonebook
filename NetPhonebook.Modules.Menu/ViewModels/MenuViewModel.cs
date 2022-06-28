@@ -1,4 +1,5 @@
-﻿using NetPhonebook.Modules.Lists.Views;
+﻿using Netphonebook.Modules.Models.Views;
+using NetPhonebook.Modules.Lists.Views;
 using NetPhonebook.Modules.Search.Views;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -32,6 +33,8 @@ namespace NetPhonebook.Modules.Menu.ViewModels
                 case "ListsView": SwitchView(new ListsView(), uri);
                     break;
                 case "SearchView": SwitchView(new SearchView(), uri);
+                    break;
+                case "ModulesView": SwitchView(new ModulesView(), uri);
                     break;
                 default:
                     break;

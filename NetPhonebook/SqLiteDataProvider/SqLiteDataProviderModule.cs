@@ -71,17 +71,6 @@ namespace SqLiteDataProvider
             }
         }
 
-        public void SeedInfos()
-        {
-            using (var context = new NetphonebookContext())
-            {
-                context.extraInfos.Add(new ExtraInfo { Id = Guid.NewGuid(), Name = "I", ExtraCategory =context.extraCategories.First()});
-                context.extraInfos.Add(new ExtraInfo { Id = Guid.NewGuid(), Name = "II", ExtraCategory = context.extraCategories.First()});
-                context.extraInfos.Add(new ExtraInfo { Id = Guid.NewGuid(), Name = "III", ExtraCategory = context.extraCategories.First()});
-                context.SaveChanges();
-            }
-        }
-
         public void AddInfo(ExtraInfo toCreate)
         {
             using (var context = new NetphonebookContext())
@@ -92,6 +81,34 @@ namespace SqLiteDataProvider
         }
 
         public void DestroyInfo(ExtraInfo toDestroy)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                context.Remove(toDestroy);
+                context.SaveChanges();
+            }
+        }
+
+        /* Virtual Models */
+        public ObservableCollection<VirtualModel> GetVirtualModels()
+        {
+            using (var context = new NetphonebookContext())
+            {
+                var oc = new ObservableCollection<VirtualModel>();
+                context.virtualModels.ForEachAsync(x => oc.Add(x));
+                return oc;
+            }
+        }
+        public void AddVirtualModel(VirtualModel toCreate)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                context.Add(toCreate);
+                context.SaveChanges();
+            }
+        }
+
+        public void DestroyModel(VirtualModel toDestroy)
         {
             using (var context = new NetphonebookContext())
             {

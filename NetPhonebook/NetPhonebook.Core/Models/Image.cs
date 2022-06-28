@@ -10,6 +10,6 @@ namespace NetPhonebook.Core.Models
     {
         public Guid Id { get; set; }
         public string Path { get; set; }
-        public string Sha256 { get; set; }
+        //public string Sha256 { get; set; }
     }
 }

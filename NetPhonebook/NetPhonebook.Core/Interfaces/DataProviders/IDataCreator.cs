@@ -11,5 +11,6 @@ namespace NetPhonebook.Core.Interfaces
     {
         void AddCategory(ExtraCategory toCreate);
         void AddInfo(ExtraInfo toCreate);
+        void AddVirtualModel(VirtualModel toCreate);
     }
 }

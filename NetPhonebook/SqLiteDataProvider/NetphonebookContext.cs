@@ -20,9 +20,9 @@ namespace SqLiteDataProvider
         public DbSet<Image> images { get; set; } */
         public DbSet<ExtraInfo> extraInfos { get; set; }
         public DbSet<ExtraCategory> extraCategories { get; set; }
-        /* public DbSet<VirtualModel> virtualModels { get; set; }
+        public DbSet<VirtualModel> virtualModels { get; set; }
         public DbSet<VirtualModelsCustomization> virtualModelsCustomizations { get; set; }
-        public DbSet<VirtualModelsData> virtualModelsDatas { get; set; }
+        /*public DbSet<VirtualModelsData> virtualModelsDatas { get; set; }
         public DbSet<VirtualModelsCellData> virtualModelsCellDatas { get; set; } */
 
         /* Code */

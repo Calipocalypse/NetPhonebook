@@ -10,7 +10,9 @@ namespace NetPhonebook.Core.Models
     {
         public Guid Id { get; init; }
         public string Name { get; init; }
-        public Image BaseImage { get; set; }
-        public VirtualModelsCellData Cell { get; set; }
+        //public Image BaseImage { get; set; }
+        //public Guid BaseImageId { get; set; }
+        //Image color???
+        public ICollection<VirtualModelsCustomization> CustomizationCells { get; set; }
     }
 }

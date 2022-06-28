@@ -9,7 +9,8 @@ namespace NetPhonebook.Core.Models
     public class VirtualModelsCustomization
     {
         public Guid Id { get; init; }
-        public VirtualModel ModelId { get; init; }
+        public VirtualModel Model{ get; set; }
+        public Guid ModelId { get; set; }
         public sbyte CellId { get; set; }
         public string BackgroundColor { get; set; }
         public string ForegroundColor { get; set; }

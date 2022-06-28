@@ -1,4 +1,5 @@
-﻿using NetPhonebook.Core;
+﻿using Netphonebook.Modules.Models.ViewModels;
+using NetPhonebook.Core;
 using NetPhonebook.Modules.Lists.Views;
 using NetPhonebook.Modules.Menu.Views;
 using NetPhonebook.Modules.Search.Views;
@@ -20,7 +21,6 @@ namespace NetPhonebook.Modules.Menu
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.RequestNavigate(RegionNames.MenuRegion, "MenuView");
-            //_regionManager.RequestNavigate(RegionNames.ContentRegion, "ListsView");
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -28,7 +28,7 @@ namespace NetPhonebook.Modules.Menu
             containerRegistry.RegisterForNavigation<MenuView>();
             containerRegistry.RegisterForNavigation<SearchView>();
             //containerRegistry.RegisterForNavigation<RecordsView>();
-            //containerRegistry.RegisterForNavigation<ModelsView>();
+            containerRegistry.RegisterForNavigation<ModulesViewModel>();
             containerRegistry.RegisterForNavigation<ListsView>();
             //containerRegistry.RegisterForNavigation<PrintView>();
             //containerRegistry.RegisterForNavigation<ManageView>();
