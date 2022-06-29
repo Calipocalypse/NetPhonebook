@@ -25,6 +25,34 @@ namespace Netphonebook.Modules.Models.ViewModels
             set { SetProperty(ref modelName, value); }
         }
 
+        private sbyte numberOfCells;
+        public sbyte NumberOfCells
+        {
+            get { return numberOfCells; }
+            set { SetProperty(ref numberOfCells, value); }
+        }
+
+        private sbyte fontSize;
+        public sbyte FontSize
+        {
+            get { return fontSize; }
+            set { SetProperty(ref fontSize, value); }
+        }
+
+        private sbyte borderSize;
+        public sbyte BorderSize
+        {
+            get { return borderSize; }
+            set { SetProperty(ref borderSize, value); }
+        }
+
+        private sbyte cornerRadius;
+        public sbyte CornerRadius
+        {
+            get { return cornerRadius; }
+            set { SetProperty(ref cornerRadius, value); }
+        }
+
         public ModelCreatorViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
             _regionManager = regionManager;

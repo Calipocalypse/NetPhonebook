@@ -5,10 +5,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SqLiteDataProvider.Migrations
 {
-    public partial class EnabledModels : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ExtraCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExtraCategories", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "virtualModels",
                 columns: table => new
@@ -19,6 +31,25 @@ namespace SqLiteDataProvider.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_virtualModels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExtraInfos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ExtraCategoryId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExtraInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExtraInfos_ExtraCategories_ExtraCategoryId",
+                        column: x => x.ExtraCategoryId,
+                        principalTable: "ExtraCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,6 +78,11 @@ namespace SqLiteDataProvider.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExtraInfos_ExtraCategoryId",
+                table: "ExtraInfos",
+                column: "ExtraCategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_virtualModelsCustomizations_ModelId",
                 table: "virtualModelsCustomizations",
                 column: "ModelId");
@@ -55,7 +91,13 @@ namespace SqLiteDataProvider.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ExtraInfos");
+
+            migrationBuilder.DropTable(
                 name: "virtualModelsCustomizations");
+
+            migrationBuilder.DropTable(
+                name: "ExtraCategories");
 
             migrationBuilder.DropTable(
                 name: "virtualModels");

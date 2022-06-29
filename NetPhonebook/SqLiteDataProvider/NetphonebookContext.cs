@@ -30,6 +30,7 @@ namespace SqLiteDataProvider
         public NetphonebookContext()
         {
             sqliteFilePath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\database.sqlite3";
+            if (!System.IO.File.Exists(sqliteFilePath)) System.IO.File.Create(sqliteFilePath);
         }
 
         public NetphonebookContext(DbContextOptions options) : base(options)
@@ -40,11 +41,11 @@ namespace SqLiteDataProvider
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            
             optionsBuilder.UseSqlite("Filename=" + sqliteFilePath, options =>
-             {
+            {
                  options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
-             });
+            });
             base.OnConfiguring(optionsBuilder);
         }
         /*
