@@ -25,18 +25,38 @@ namespace Netphonebook.Modules.Models.ViewModels
             set { SetProperty(ref modelName, value); }
         }
 
-        private sbyte numberOfCells;
+        private sbyte numberOfCells = 1;
         public sbyte NumberOfCells
         {
             get { return numberOfCells; }
-            set { SetProperty(ref numberOfCells, value); }
+            set
+            {
+                if (selectedCellNumber > value) SelectedCellNumber = value; 
+                SetProperty(ref numberOfCells, value); 
+            }
         }
 
-        private sbyte fontSize;
+        private sbyte selectedCellNumber = 1;
+        public sbyte SelectedCellNumber
+        {
+            get { return selectedCellNumber; }
+            set
+            {
+                SetProperty(ref selectedCellNumber, value);
+                OnCellChange();
+            }
+        }
+
+        private void OnCellChange()
+        {
+            RaisePropertyChanged(nameof(FontSize));
+        }
+
+        private sbyte[] fontSize = new sbyte[6];
         public sbyte FontSize
         {
-            get { return fontSize; }
-            set { SetProperty(ref fontSize, value); }
+            get { return fontSize[SelectedCellNumber-1]; }
+            set { SetProperty(ref fontSize[SelectedCellNumber-1], value); }
         }
 
         private sbyte borderSize;

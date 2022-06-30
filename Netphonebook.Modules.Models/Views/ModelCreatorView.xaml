@@ -20,6 +20,8 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Cell picker"/>
+                <Slider Minimum="1" Width="200" Maximum="{Binding NumberOfCells, UpdateSourceTrigger=PropertyChanged}" Value="{Binding SelectedCellNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock d:Text="2" Text="{Binding SelectedCellNumber}" />
             </StackPanel>
             <StackPanel Background="Yellow">
             <StackPanel Orientation="Horizontal">
