@@ -7,6 +7,7 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace Netphonebook.Modules.Models.ViewModels
 {
@@ -50,6 +51,8 @@ namespace Netphonebook.Modules.Models.ViewModels
         private void OnCellChange()
         {
             RaisePropertyChanged(nameof(FontSize));
+            RaisePropertyChanged(nameof(BorderSize));
+            RaisePropertyChanged(nameof(CornerRadius));
         }
 
         private sbyte[] fontSize = new sbyte[6];
@@ -59,18 +62,42 @@ namespace Netphonebook.Modules.Models.ViewModels
             set { SetProperty(ref fontSize[SelectedCellNumber-1], value); }
         }
 
-        private sbyte borderSize;
+        private sbyte[] borderSize = new sbyte[6];
         public sbyte BorderSize
         {
-            get { return borderSize; }
-            set { SetProperty(ref borderSize, value); }
+            get { return borderSize[SelectedCellNumber-1]; }
+            set { SetProperty(ref borderSize[SelectedCellNumber-1], value); }
         }
 
-        private sbyte cornerRadius;
+        private sbyte[] cornerRadius = new sbyte[6];
         public sbyte CornerRadius
         {
-            get { return cornerRadius; }
-            set { SetProperty(ref cornerRadius, value); }
+            get { return cornerRadius[SelectedCellNumber-1]; }
+            set { SetProperty(ref cornerRadius[SelectedCellNumber-1], value); }
+        }
+
+        private byte colorX;
+        public byte ColorX 
+        {
+            get { return colorX; }
+            set { SetProperty(ref colorX, value); }
+        }
+        
+        private byte colorY;
+        public byte ColorY 
+        {
+            get { return colorY; }
+            set { SetProperty(ref colorY, value); }
+        }
+
+        public void OnLeftMouseClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("test");
+        }
+
+        private void Rectangle_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
         }
 
         public ModelCreatorViewModel(IRegionManager regionManager, IDataProvider dataProvider)
