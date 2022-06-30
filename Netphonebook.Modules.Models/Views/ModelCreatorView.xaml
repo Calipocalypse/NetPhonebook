@@ -8,6 +8,7 @@
              d:Background="White"
              prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
+        <StackPanel Orientation="Horizontal">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Model Name: "/>
@@ -58,6 +59,27 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Command="{Binding ClickAdd}">Add</Button>
                 <Button Command="{Binding ClickBack}">Back</Button>
+            </StackPanel>
+        </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Background="#88000000" Width="200" Height="200">
+                    <Viewbox>
+                    <ListView ItemsSource="{Binding ColorList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="15" Margin="0"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Rectangle Fill="{Binding}" Width="25" Height="25"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        </ListView>
+                    </Viewbox>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>
