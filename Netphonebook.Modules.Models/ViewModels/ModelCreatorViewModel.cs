@@ -8,7 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+<<<<<<< HEAD
 using System.Windows.Media;
+=======
+using System.Windows;
+>>>>>>> 3e878456859b4f025eced232d0eeb5888154f932
 
 namespace Netphonebook.Modules.Models.ViewModels
 {
@@ -75,6 +79,33 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             get { return cornerRadius[SelectedCellNumber-1]; }
             set { SetProperty(ref cornerRadius[SelectedCellNumber-1], value); }
+<<<<<<< HEAD
+=======
+        }
+
+        private byte colorX;
+        public byte ColorX 
+        {
+            get { return colorX; }
+            set { SetProperty(ref colorX, value); }
+        }
+        
+        private byte colorY;
+        public byte ColorY 
+        {
+            get { return colorY; }
+            set { SetProperty(ref colorY, value); }
+        }
+
+        public void OnLeftMouseClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("test");
+        }
+
+        private void Rectangle_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+>>>>>>> 3e878456859b4f025eced232d0eeb5888154f932
         }
 
         public ObservableCollection<SolidColorBrush> ColorList { get; set; }

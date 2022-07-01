@@ -7,9 +7,57 @@
              mc:Ignorable="d"
              d:Background="White"
              prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+
+        <!-- Change this to any pure hue i.e. no more than 2 rgb components set and at least 1 set to FF -->
+        <Color x:Key="CurrentColor">#00FF00</Color>
+
+        <LinearGradientBrush x:Key="HueBrush" StartPoint="0,0" EndPoint="0,1">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="#FF0000" Offset="0" />
+                <GradientStop Color="#FFFF00" Offset="0.167" />
+                <GradientStop Color="#00FF00" Offset="0.333" />
+                <GradientStop Color="#00FFFF" Offset="0.5" />
+                <GradientStop Color="#0000FF" Offset="0.667" />
+                <GradientStop Color="#FF00FF" Offset="0.833" />
+                <GradientStop Color="#FF0000" Offset="1" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+        <VisualBrush x:Key="LevelSaturationBrush" TileMode="None">
+            <VisualBrush.Visual>
+                <Canvas Background="Black" Width="1" Height="1" SnapsToDevicePixels="True">
+                    <Rectangle Width="1" Height="1" SnapsToDevicePixels="True">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="White" Offset="0" />
+                                    <GradientStop Color="{DynamicResource CurrentColor}" Offset="1" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                        <Rectangle.OpacityMask>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                                    <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Canvas>
+            </VisualBrush.Visual>
+        </VisualBrush>
+
+    </UserControl.Resources>
+
     <Grid>
         <StackPanel Orientation="Horizontal">
+<<<<<<< HEAD
         <StackPanel Orientation="Vertical">
+=======
+            <StackPanel Orientation="Vertical">
+>>>>>>> 3e878456859b4f025eced232d0eeb5888154f932
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Model Name: "/>
                 <TextBox Text="{Binding ModelName}" MinWidth="50"/>
@@ -59,6 +107,15 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Command="{Binding ClickAdd}">Add</Button>
                 <Button Command="{Binding ClickBack}">Back</Button>
+            </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Slider Orientation="Vertical" Background="{StaticResource HueBrush}">
+                    </Slider>
+                    <Rectangle Fill="{StaticResource LevelSaturationBrush}" Width="200" Height="200" Margin="10" Stroke="Black" StrokeThickness="1" SnapsToDevicePixels="True" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"/>
+                    <Rectangle Fill="{StaticResource HueBrush}" Width="20" Height="200" Margin="10" Stroke="Black" StrokeThickness="1" SnapsToDevicePixels="True" />
+                </StackPanel>
             </StackPanel>
         </StackPanel>
             <StackPanel Orientation="Vertical">
