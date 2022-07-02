@@ -50,6 +50,20 @@ namespace SqLiteDataProvider.Migrations
                     b.ToTable("ExtraInfos");
                 });
 
+            modelBuilder.Entity("NetPhonebook.Core.Models.FavouriteColor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HexColor")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("favouriteColors");
+                });
+
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -79,6 +93,9 @@ namespace SqLiteDataProvider.Migrations
                     b.Property<string>("BorderSize")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("TEXT");
+
                     b.Property<sbyte>("CellId")
                         .HasColumnType("INTEGER");
 
@@ -95,6 +112,8 @@ namespace SqLiteDataProvider.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ModelId");
 
@@ -114,11 +133,17 @@ namespace SqLiteDataProvider.Migrations
 
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCustomization", b =>
                 {
+                    b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("NetPhonebook.Core.Models.VirtualModel", "Model")
                         .WithMany("CustomizationCells")
                         .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("Model");
                 });

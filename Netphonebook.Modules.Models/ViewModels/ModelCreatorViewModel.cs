@@ -8,11 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-<<<<<<< HEAD
 using System.Windows.Media;
-=======
 using System.Windows;
->>>>>>> 3e878456859b4f025eced232d0eeb5888154f932
+using NetPhonebook.Core;
 
 namespace Netphonebook.Modules.Models.ViewModels
 {
@@ -23,7 +21,8 @@ namespace Netphonebook.Modules.Models.ViewModels
 
         public DelegateCommand ClickBack { get; set; }
         public DelegateCommand ClickAdd { get; set; }
-
+        public DelegateCommand<string> SetColor { get; set; }
+        public DelegateCommand<string> FavouriteColorCommand { get; set; }
         private string modelName;
         public string ModelName
         {
@@ -58,6 +57,9 @@ namespace Netphonebook.Modules.Models.ViewModels
             RaisePropertyChanged(nameof(FontSize));
             RaisePropertyChanged(nameof(BorderSize));
             RaisePropertyChanged(nameof(CornerRadius));
+            RaisePropertyChanged(nameof(FontColor));
+            RaisePropertyChanged(nameof(BackgroundColor));
+            RaisePropertyChanged(nameof(BorderColor));
         }
 
         private sbyte[] fontSize = new sbyte[6];
@@ -79,44 +81,115 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             get { return cornerRadius[SelectedCellNumber-1]; }
             set { SetProperty(ref cornerRadius[SelectedCellNumber-1], value); }
-<<<<<<< HEAD
-=======
         }
 
-        private byte colorX;
-        public byte ColorX 
+        private string outcomingColor;
+        public SolidColorBrush OutcomingColor
         {
-            get { return colorX; }
-            set { SetProperty(ref colorX, value); }
+            get { return HexColorConverter.ToSolidColor(outcomingColor); }
+            set 
+            { 
+                SetProperty(ref outcomingColor, HexColorConverter.ToHex(value));
+            }
         }
-        
-        private byte colorY;
-        public byte ColorY 
+
+        private byte[] colorPicker = new byte[3];
+        public byte[] ColorPicker
         {
-            get { return colorY; }
-            set { SetProperty(ref colorY, value); }
+            get
+            {
+                OutcomingColor = new SolidColorBrush(Color.FromRgb(colorPicker[0], colorPicker[1], colorPicker[2]));
+                return colorPicker;
+            }
+            set
+            {
+                SetProperty(ref colorPicker, value);
+                OutcomingColor = new SolidColorBrush(Color.FromRgb(colorPicker[0], colorPicker[1], colorPicker[2]));
+            }
         }
 
-        public void OnLeftMouseClick(object sender, RoutedEventArgs e)
+        public ObservableCollection<SolidColorBrush> FavouriteColors { get; set; }
+
+        private SolidColorBrush selectedFavouriteColor;
+        public SolidColorBrush SelectedFavouriteColor
         {
-            MessageBox.Show("test");
+            get { return selectedFavouriteColor; }
+            set 
+            { 
+                SetProperty(ref selectedFavouriteColor, value);
+                if (selectedFavouriteColor != null) ColorPicker = new byte[3] { selectedFavouriteColor.Color.R, selectedFavouriteColor.Color.G, selectedFavouriteColor.Color.B};
+            }
         }
 
-        private void Rectangle_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private string[] fontColor = new string[6];
+        public SolidColorBrush FontColor
         {
-
->>>>>>> 3e878456859b4f025eced232d0eeb5888154f932
+            get { return HexColorConverter.ToSolidColor(fontColor[SelectedCellNumber - 1]); }
+            set { SetProperty(ref fontColor[SelectedCellNumber-1], HexColorConverter.ToHex(value)); }
         }
 
-        public ObservableCollection<SolidColorBrush> ColorList { get; set; }
+        private string[] backgroundColor = new string[6];
+        public SolidColorBrush BackgroundColor
+        {
+            get { return HexColorConverter.ToSolidColor(backgroundColor[SelectedCellNumber - 1]); }
+            set { SetProperty(ref backgroundColor[SelectedCellNumber-1], HexColorConverter.ToHex(value)); }
+        }
+
+        private string[] borderColor = new string[6];
+        public SolidColorBrush BorderColor
+        {
+            get { return HexColorConverter.ToSolidColor(borderColor[SelectedCellNumber - 1]); }
+            set { SetProperty(ref borderColor[SelectedCellNumber-1], HexColorConverter.ToHex(value)); }
+        }
 
         public ModelCreatorViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
             _regionManager = regionManager;
             _dataProvider = dataProvider;
-            ColorList = GetSolidColorBrushes();
             ClickBack = new DelegateCommand(NavigateBack);
             ClickAdd = new DelegateCommand(ClickedAdd);
+            FavouriteColorCommand = new DelegateCommand<string>(ClickedFavColorButton);
+            SetColor = new DelegateCommand<string>(ClickedSetColor);
+            FavouriteColors = _dataProvider.GetFavouriteColors();
+        }
+
+        private void ClickedFavColorButton(string parameter)
+        {
+            switch (parameter)
+            {
+                case "Add": AddFavouriteColor(); 
+                    break;
+                case "Delete": RemoveFavouriteColor();
+                    break;
+            }
+        }
+
+        private void AddFavouriteColor()
+        {
+            FavouriteColors.Add(OutcomingColor);
+            _dataProvider.AddFavouriteColor(new FavouriteColor { Id = Guid.NewGuid(), HexColor = HexColorConverter.ToHex(OutcomingColor) });
+        }
+
+        private void RemoveFavouriteColor()
+        {
+            _dataProvider.DestroyFavouriteColor(SelectedFavouriteColor);
+            FavouriteColors.Remove(SelectedFavouriteColor);
+        }
+
+        private void ClickedSetColor(string parameter)
+        {
+            switch (parameter)
+            {
+                case "fontColor":
+                    FontColor = OutcomingColor;
+                    break;
+                case "backgroundColor":
+                    BackgroundColor = OutcomingColor;
+                    break;
+                case "borderColor":
+                    BorderColor = OutcomingColor;
+                    break;
+            }
         }
 
         private void ClickedAdd()
@@ -145,23 +218,6 @@ namespace Netphonebook.Modules.Models.ViewModels
             _regionManager.Regions["ContentRegion"].RemoveAll();
             _regionManager.Regions["ContentRegion"].Add(new ModulesView(), "ModelsViewer");
             var view = _regionManager.Regions["ContentRegion"].GetView("ModelsViewer");
-        }
-
-        private ObservableCollection<SolidColorBrush> GetSolidColorBrushes()
-        {
-            var brushes = new ObservableCollection<SolidColorBrush>();
-            for (int i = 0; i <= 255; i+=40)
-            {
-                for (int j = 0; j <= 255; j+=40)
-                {
-                    for(int k = 0; k <= 255; k+=40)
-                    {
-                        var color = Color.FromRgb((byte)i, (byte)j, (byte)k);
-                        brushes.Add(new SolidColorBrush(color));
-                    }
-                }
-            }
-            return brushes;
         }
     }
 }

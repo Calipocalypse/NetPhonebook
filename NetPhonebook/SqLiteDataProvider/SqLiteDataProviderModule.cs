@@ -9,8 +9,9 @@ using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using NetPhonebook.Core.Collections;
+using NetPhonebook.Core;
 using System.Windows;
+using System.Windows.Media;
 
 namespace SqLiteDataProvider
 {
@@ -19,7 +20,6 @@ namespace SqLiteDataProvider
         public SqLiteDataProviderModule() { }
 
         /* Extra Category */
-
         public void AddCategory(ExtraCategory category)
         {
             using (var context = new NetphonebookContext())
@@ -116,5 +116,36 @@ namespace SqLiteDataProvider
                 context.SaveChanges();
             }
         }
+
+        /* Favourite Colors */
+        public void AddFavouriteColor(FavouriteColor toCreate)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                context.Add(toCreate);
+                context.SaveChanges();
+            }
+        }
+
+        public ObservableCollection<SolidColorBrush> GetFavouriteColors()
+        {
+            var oc = new ObservableCollection<SolidColorBrush>();
+            using (var context = new NetphonebookContext())
+            {
+                context.favouriteColors.ForEachAsync(x => oc.Add(x.SolidColorBrush));
+            }
+            return oc;
+        }
+
+        public void DestroyFavouriteColor(SolidColorBrush toDestroy)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                var favouriteColorToRemove = context.favouriteColors.FirstOrDefault(x => x.HexColor == HexColorConverter.ToHex(toDestroy));
+                context.Remove(favouriteColorToRemove);
+                context.SaveChanges();
+            }
+        }
+
     }
 }

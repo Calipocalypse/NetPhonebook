@@ -22,6 +22,18 @@ namespace SqLiteDataProvider.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "favouriteColors",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    HexColor = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_favouriteColors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "virtualModels",
                 columns: table => new
                 {
@@ -59,6 +71,7 @@ namespace SqLiteDataProvider.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ModelId = table.Column<Guid>(type: "TEXT", nullable: false),
                     CellId = table.Column<sbyte>(type: "INTEGER", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
                     BackgroundColor = table.Column<string>(type: "TEXT", nullable: true),
                     ForegroundColor = table.Column<string>(type: "TEXT", nullable: true),
                     BorderColor = table.Column<string>(type: "TEXT", nullable: true),
@@ -69,6 +82,11 @@ namespace SqLiteDataProvider.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_virtualModelsCustomizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_virtualModelsCustomizations_ExtraCategories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "ExtraCategories",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_virtualModelsCustomizations_virtualModels_ModelId",
                         column: x => x.ModelId,
@@ -83,6 +101,11 @@ namespace SqLiteDataProvider.Migrations
                 column: "ExtraCategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_virtualModelsCustomizations_CategoryId",
+                table: "virtualModelsCustomizations",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_virtualModelsCustomizations_ModelId",
                 table: "virtualModelsCustomizations",
                 column: "ModelId");
@@ -92,6 +115,9 @@ namespace SqLiteDataProvider.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ExtraInfos");
+
+            migrationBuilder.DropTable(
+                name: "favouriteColors");
 
             migrationBuilder.DropTable(
                 name: "virtualModelsCustomizations");

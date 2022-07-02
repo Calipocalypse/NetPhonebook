@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace NetPhonebook.Core.Interfaces
 {
@@ -12,5 +13,6 @@ namespace NetPhonebook.Core.Interfaces
         void DestroyCategory(ExtraCategory toDestroy);
         void DestroyInfo(ExtraInfo toDestroy);
         void DestroyModel(VirtualModel toDestroy);
+        void DestroyFavouriteColor(SolidColorBrush toDestroy);
     }
 }

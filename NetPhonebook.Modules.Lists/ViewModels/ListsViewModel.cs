@@ -17,7 +17,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using Prism.Events;
 using System.Runtime.CompilerServices;
-using NetPhonebook.Core.Collections;
 
 namespace NetPhonebook.Modules.Lists.ViewModels
 {

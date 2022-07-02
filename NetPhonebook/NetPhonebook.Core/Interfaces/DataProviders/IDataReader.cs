@@ -1,5 +1,4 @@
-﻿using NetPhonebook.Core.Collections;
-using NetPhonebook.Core.Models;
+﻿using NetPhonebook.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace NetPhonebook.Core.Interfaces
 {
@@ -15,5 +15,6 @@ namespace NetPhonebook.Core.Interfaces
         ObservableCollection<ExtraCategory> GetCategoryList();
         ObservableCollection<ExtraInfo> GetExtraInfo();
         ObservableCollection<VirtualModel> GetVirtualModels();
+        ObservableCollection<SolidColorBrush> GetFavouriteColors();
     }
 }
