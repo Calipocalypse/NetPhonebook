@@ -11,7 +11,7 @@ namespace NetPhonebook.Core.Models
         public Guid Id { get; init; }
         public VirtualModel Model{ get; set; }
         public Guid ModelId { get; set; }
-        public sbyte CellId { get; set; }
+        public byte CellId { get; set; }
 
         public ExtraCategory Category { get; set; }
         public string BackgroundColor { get; set; }

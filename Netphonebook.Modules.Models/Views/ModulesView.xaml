@@ -17,8 +17,8 @@
                 </ListView.ItemTemplate>
         </ListView>
             <StackPanel Orientation="Vertical" Margin="15">
-                <Button Command="{Binding NavigateToModelCreator}" CommandParameter="Add" Margin="15">Add</Button>
-                <Button Command="{Binding NavigateToModelCreator}" CommandParameter="Edit" Margin="15">Edit</Button>
+                <Button Command="{Binding AddModelCreator}" Margin="15">Add</Button>
+                <Button Command="{Binding EditModelCreator}" Margin="15">Edit</Button>
                 <Button Command="{Binding DeleteCommand}" Margin="15">Delete</Button>
             </StackPanel>
         </StackPanel>

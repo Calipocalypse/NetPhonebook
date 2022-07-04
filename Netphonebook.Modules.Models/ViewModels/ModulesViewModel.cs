@@ -14,10 +14,12 @@ namespace Netphonebook.Modules.Models.ViewModels
 {
     public class ModulesViewModel : BindableBase
     {
+        private readonly INavigateAsync _navigator;
         private readonly IRegionManager _regionManager;
         private readonly IDataProvider _dataProvider;
 
-        public DelegateCommand<string> NavigateToModelCreator { get; set; }
+        public DelegateCommand AddModelCreator { get; set; }
+        public DelegateCommand EditModelCreator { get; set; }
         public DelegateCommand DeleteCommand { get; set; }
 
         public ObservableCollection<VirtualModel> VirtualModels { get; set; }
@@ -34,11 +36,21 @@ namespace Netphonebook.Modules.Models.ViewModels
             _regionManager = regionManager;
             _dataProvider = dataProvider;
             VirtualModels = _dataProvider.GetVirtualModels();
-            NavigateToModelCreator = new DelegateCommand<string>(Navigate);
-            DeleteCommand = new DelegateCommand(DeleteModel, CanDeleteModel).ObservesProperty(() => SelectedModel);
+            AddModelCreator = new DelegateCommand(OpenAddModelCreator);
+            EditModelCreator = new DelegateCommand(OpenEditModelCreator, CanDeleteOrEditModel).ObservesProperty(() => SelectedModel);
+            DeleteCommand = new DelegateCommand(DeleteModel, CanDeleteOrEditModel).ObservesProperty(() => SelectedModel);
+        }
+        private void OpenAddModelCreator()
+        {
+            SwitchView(new ModelCreatorView(), "AddModelCreatorView", "add");
         }
 
-        private bool CanDeleteModel()
+        private void OpenEditModelCreator()
+        {
+            SwitchView(new ModelCreatorView(), "EditModelCreatorView", "edit");
+        }
+
+        private bool CanDeleteOrEditModel()
         {
             if (SelectedModel == null) return false;
             else return true;
@@ -51,24 +63,18 @@ namespace Netphonebook.Modules.Models.ViewModels
             _dataProvider.DestroyModel(toDelete);
         }
 
-        private void Navigate(string uri)
+        private void SwitchView(object obj, string uri, string mode)
         {
-            switch (uri)
+            NavigationParameters navPar = new NavigationParameters()
             {
-                case "Add": SwitchView(new ModelCreatorView(), "AddModelCreatorView");
-                    break;
-                case "Edit": SwitchView(new ModelCreatorView(),"EditModelCreatorView");
-                    break;
-                default:
-                    break;
-            }
-        }
+                { "model", SelectedModel },
+                { "mode", mode }
+            };
 
-        private void SwitchView(object obj, string uri)
-        {
             _regionManager.Regions["ContentRegion"].RemoveAll();
             _regionManager.Regions["ContentRegion"].Add(obj, uri);
-            var view = _regionManager.Regions["ContentRegion"].GetView("uri");
+            _regionManager.Regions["ContentRegion"].Activate(obj);
+            _regionManager.Regions["ContentRegion"].RequestNavigate(uri, navPar);
         }
     }
 }

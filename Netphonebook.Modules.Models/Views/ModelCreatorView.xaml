@@ -119,8 +119,8 @@
                 <TextBlock>red</TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Command="{Binding ClickAdd}">Add</Button>
-                <Button Command="{Binding ClickBack}">Back</Button>
+                        <Button Command="{Binding ClickAdd}" Content="{Binding AddEditButtonContent}" />
+                        <Button Command="{Binding ClickBack}">Back</Button>
             </StackPanel>
             </StackPanel>
         </StackPanel>

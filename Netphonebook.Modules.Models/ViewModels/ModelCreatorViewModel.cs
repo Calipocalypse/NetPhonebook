@@ -14,15 +14,26 @@ using NetPhonebook.Core;
 
 namespace Netphonebook.Modules.Models.ViewModels
 {
-    public class ModelCreatorViewModel : BindableBase
+    public class ModelCreatorViewModel : BindableBase, INavigationAware
     {
         private IRegionManager _regionManager;
         private IDataProvider _dataProvider;
+
+        public VirtualModel toEdit;
 
         public DelegateCommand ClickBack { get; set; }
         public DelegateCommand ClickAdd { get; set; }
         public DelegateCommand<string> SetColor { get; set; }
         public DelegateCommand<string> FavouriteColorCommand { get; set; }
+
+        /* Edit or Add preparation */
+        private string addEditButtonContent;
+        public string AddEditButtonContent
+        {
+            get { return addEditButtonContent; }
+            set { SetProperty(ref addEditButtonContent, value); }
+        }
+
         private string modelName;
         public string ModelName
         {
@@ -189,26 +200,37 @@ namespace Netphonebook.Modules.Models.ViewModels
                 case "borderColor":
                     BorderColor = OutcomingColor;
                     break;
+                default: throw new NotImplementedException();
             }
         }
 
         private void ClickedAdd()
         {
             var ModelId = Guid.NewGuid();
+
+            //VirtualModelsCusotmization First
+            List<VirtualModelsCustomization> virtualModelCustomizationToAdd = new List<VirtualModelsCustomization>();
+            for (byte i = 0; i < numberOfCells; i++)
+            {
+                var newVMC = new VirtualModelsCustomization {
+                    Id = Guid.NewGuid(),
+                    ModelId = ModelId,
+                    CellId = i,
+                    BorderColor = borderColor[i],
+                    ForegroundColor = fontColor[i],
+                    BackgroundColor = backgroundColor[i],
+                    CornerRadius = cornerRadius[i].ToString(),
+                    BorderSize = borderSize[i].ToString(),
+                    FontSize = fontSize[i].ToString()
+                };
+                virtualModelCustomizationToAdd.Add(newVMC);
+            }
+
             VirtualModel toAdd = new VirtualModel
             {
                 Id = ModelId,
                 Name = ModelName,
-                CustomizationCells =
-                new List<VirtualModelsCustomization>
-                {
-                    new VirtualModelsCustomization { Id = Guid.NewGuid(), ModelId = ModelId, CellId = 0 },
-                    new VirtualModelsCustomization { Id = Guid.NewGuid(), ModelId = ModelId, CellId = 1 },
-                    new VirtualModelsCustomization { Id = Guid.NewGuid(), ModelId = ModelId, CellId = 2 },
-                    new VirtualModelsCustomization { Id = Guid.NewGuid(), ModelId = ModelId, CellId = 3 },
-                    new VirtualModelsCustomization { Id = Guid.NewGuid(), ModelId = ModelId, CellId = 4 },
-                    new VirtualModelsCustomization { Id = Guid.NewGuid(), ModelId = ModelId, CellId = 5 }
-                }
+                CustomizationCells = virtualModelCustomizationToAdd
             };
             _dataProvider.AddVirtualModel(toAdd);
         }
@@ -218,6 +240,22 @@ namespace Netphonebook.Modules.Models.ViewModels
             _regionManager.Regions["ContentRegion"].RemoveAll();
             _regionManager.Regions["ContentRegion"].Add(new ModulesView(), "ModelsViewer");
             var view = _regionManager.Regions["ContentRegion"].GetView("ModelsViewer");
+        }
+
+        public bool IsNavigationTarget(NavigationContext navigationContext)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            toEdit = navigationContext.Parameters.GetValue<VirtualModel>("model");
+            AddEditButtonContent = navigationContext.Parameters.GetValue<string>("mode");
         }
     }
 }
