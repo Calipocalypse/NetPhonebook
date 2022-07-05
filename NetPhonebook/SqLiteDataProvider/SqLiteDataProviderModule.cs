@@ -99,7 +99,17 @@ namespace SqLiteDataProvider
                 return oc;
             }
         }
-        public void AddVirtualModel(VirtualModel toCreate)
+
+        public List<VirtualModel> GetVirtualModelsWithCustomization()
+        {
+            using (var context = new NetphonebookContext())
+            {
+                var oc = new List<VirtualModel>();
+                context.virtualModels.Include("VirtualModelsCustomization").ForEachAsync(x => oc.Add(x));
+                return oc;
+            }
+        }
+            public void AddVirtualModel(VirtualModel toCreate)
         {
             using (var context = new NetphonebookContext())
             {

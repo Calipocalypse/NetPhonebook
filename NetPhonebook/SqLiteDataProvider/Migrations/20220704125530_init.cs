@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SqLiteDataProvider.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -70,7 +70,7 @@ namespace SqLiteDataProvider.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ModelId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CellId = table.Column<sbyte>(type: "INTEGER", nullable: false),
+                    CellId = table.Column<byte>(type: "INTEGER", nullable: false),
                     CategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
                     BackgroundColor = table.Column<string>(type: "TEXT", nullable: true),
                     ForegroundColor = table.Column<string>(type: "TEXT", nullable: true),

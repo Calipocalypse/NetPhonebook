@@ -96,7 +96,7 @@ namespace SqLiteDataProvider.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("TEXT");
 
-                    b.Property<sbyte>("CellId")
+                    b.Property<byte>("CellId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CornerRadius")

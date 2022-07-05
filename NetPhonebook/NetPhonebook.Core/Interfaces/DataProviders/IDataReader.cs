@@ -15,6 +15,7 @@ namespace NetPhonebook.Core.Interfaces
         ObservableCollection<ExtraCategory> GetCategoryList();
         ObservableCollection<ExtraInfo> GetExtraInfo();
         ObservableCollection<VirtualModel> GetVirtualModels();
+        List<VirtualModel> GetVirtualModelsWithCustomization();
         ObservableCollection<SolidColorBrush> GetFavouriteColors();
     }
 }

@@ -11,8 +11,8 @@ using SqLiteDataProvider;
 namespace SqLiteDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    [Migration("20220702192143_Init")]
-    partial class Init
+    [Migration("20220704125530_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,7 +98,7 @@ namespace SqLiteDataProvider.Migrations
                     b.Property<Guid?>("CategoryId")
                         .HasColumnType("TEXT");
 
-                    b.Property<sbyte>("CellId")
+                    b.Property<byte>("CellId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CornerRadius")

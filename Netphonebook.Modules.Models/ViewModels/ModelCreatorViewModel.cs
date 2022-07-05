@@ -255,7 +255,25 @@ namespace Netphonebook.Modules.Models.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             toEdit = navigationContext.Parameters.GetValue<VirtualModel>("model");
-            AddEditButtonContent = navigationContext.Parameters.GetValue<string>("mode");
+            var mode = navigationContext.Parameters.GetValue<string>("mode");
+            switch (mode)
+            {
+                case "add": LoadAddMode(); break;
+                case "edit": LoadEditMode(toEdit); break;
+            }
+            AddEditButtonContent = navigationContext.Parameters.GetValue<string>("mode").ToUpper();
+        }
+
+        private void LoadAddMode()
+        {
+            AddEditButtonContent = "Add";
+        }
+
+        private void LoadEditMode(VirtualModel toEdit)
+        {
+            AddEditButtonContent = "Edit";
+            ModelName = toEdit.Name;
+            NumberOfCells = (sbyte)_dataProvider.GetVirtualModelsWithCustomization().FirstOrDefault(toEdit).CustomizationCells.Count();
         }
     }
 }
