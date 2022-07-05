@@ -273,7 +273,8 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             AddEditButtonContent = "Edit";
             ModelName = toEdit.Name;
-            NumberOfCells = (sbyte)_dataProvider.GetVirtualModelsWithCustomization().FirstOrDefault(toEdit).CustomizationCells.Count();
+            List<VirtualModel> c = _dataProvider.GetVirtualModelsWithCustomization();
+            NumberOfCells = (sbyte)c.FirstOrDefault(toEdit).CustomizationCells.Count();
         }
     }
 }
