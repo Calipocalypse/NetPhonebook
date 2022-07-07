@@ -210,22 +210,21 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             switch (Mode)
             {
-                case EditorsMode.Add: AddNewModel();
+                case EditorsMode.Add: AddNewModel(ComposeNewModel());
                     break;
-                case EditorsMode.Edit: EditCurrentModel();
+                case EditorsMode.Edit: EditCurrentModel(ComposeNewModel(toEdit.Id));
                     break;
             }
         }
 
-        private void AddNewModel()
+        private VirtualModel ComposeNewModel(Guid ModelId = new Guid())
         {
-            var ModelId = Guid.NewGuid();
-
+            if (ModelId == Guid.Empty) ModelId = Guid.NewGuid();
             //VirtualModelsCusotmization First
-            List<VirtualModelsCustomization> virtualModelCustomizationToAdd = new List<VirtualModelsCustomization>();
+            List<VirtualModelsCustomization> toAddVMC = new List<VirtualModelsCustomization>();
             for (byte i = 0; i < numberOfCells; i++)
             {
-                var newVMC = new VirtualModelsCustomization
+                var newSingleVMC = new VirtualModelsCustomization
                 {
                     Id = Guid.NewGuid(),
                     ModelId = ModelId,
@@ -237,27 +236,27 @@ namespace Netphonebook.Modules.Models.ViewModels
                     BorderSize = borderSize[i].ToString(),
                     FontSize = fontSize[i].ToString()
                 };
-                virtualModelCustomizationToAdd.Add(newVMC);
+                toAddVMC.Add(newSingleVMC);
             }
 
-            VirtualModel toAdd = new VirtualModel
+            VirtualModel toAddVM = new VirtualModel
             {
                 Id = ModelId,
                 Name = ModelName,
-                CustomizationCells = virtualModelCustomizationToAdd
+                CustomizationCells = toAddVMC
             };
+
+            return toAddVM;
+        }
+
+        private void AddNewModel(VirtualModel toAdd)
+        {
             _dataProvider.AddVirtualModel(toAdd);
         }
 
-        private void EditCurrentModel()
+        private void EditCurrentModel(VirtualModel toAdd)
         {
-            VirtualModel toAdd = new VirtualModel
-            {
-                Id = toEdit.Id,
-                Name = ModelName,
-                CustomizationCells = virtualModelCustomizationToAdd
-            };
-            _dataProvider.UpdateVirtualModel();
+            _dataProvider.UpdateVM(toEdit, toAdd);
         }
 
         private void NavigateBack()

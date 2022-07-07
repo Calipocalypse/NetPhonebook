@@ -1,16 +1,10 @@
 ﻿using NetPhonebook.Core.Interfaces;
 using NetPhonebook.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using NetPhonebook.Core;
-using System.Windows;
 using System.Windows.Media;
 
 namespace SqLiteDataProvider
@@ -123,7 +117,11 @@ namespace SqLiteDataProvider
         {
             using (var context = new NetphonebookContext())
             {
-                
+                var c = context.virtualModelsCustomizations.Where(x => x.ModelId == edited.Id);
+                context.RemoveRange(c);
+                context.Remove(edited);
+                context.Add(freshModel);
+                context.SaveChanges();
             }
         }
 
