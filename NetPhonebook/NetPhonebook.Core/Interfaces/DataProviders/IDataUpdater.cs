@@ -10,5 +10,6 @@ namespace NetPhonebook.Core.Interfaces.DataProviders
     public interface IDataUpdater
     {
         void UpdateCategory(ExtraCategory extraCategoryEdited, ExtraCategory extraCategory);
+        void UpdateVM(VirtualModel edited, VirtualModel freshModel);
     }
 }

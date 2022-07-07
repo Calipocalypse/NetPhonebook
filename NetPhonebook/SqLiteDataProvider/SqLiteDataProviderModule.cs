@@ -119,6 +119,14 @@ namespace SqLiteDataProvider
             }
         }
 
+        public void UpdateVM(VirtualModel edited, VirtualModel freshModel)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                
+            }
+        }
+
         public void DestroyModel(VirtualModel toDestroy)
         {
             using (var context = new NetphonebookContext())
@@ -157,6 +165,5 @@ namespace SqLiteDataProvider
                 context.SaveChanges();
             }
         }
-
     }
 }

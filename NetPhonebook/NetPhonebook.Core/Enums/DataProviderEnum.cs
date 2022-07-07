@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetPhonebook.Core
 {
-    public enum DataProviderEnum : sbyte
+    public enum DataProviderEnum : byte
     {
         CsvDataProvider = 0,
         MsSqlDataProvider = 1,

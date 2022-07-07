@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows.Media;
 using System.Windows;
 using NetPhonebook.Core;
+using NetPhonebook.Core.Enums;
 
 namespace Netphonebook.Modules.Models.ViewModels
 {
@@ -19,6 +20,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         private IRegionManager _regionManager;
         private IDataProvider _dataProvider;
 
+        public EditorsMode Mode { get; set; }
         public VirtualModel toEdit;
 
         public DelegateCommand ClickBack { get; set; }
@@ -206,13 +208,25 @@ namespace Netphonebook.Modules.Models.ViewModels
 
         private void ClickedAdd()
         {
+            switch (Mode)
+            {
+                case EditorsMode.Add: AddNewModel();
+                    break;
+                case EditorsMode.Edit: EditCurrentModel();
+                    break;
+            }
+        }
+
+        private void AddNewModel()
+        {
             var ModelId = Guid.NewGuid();
 
             //VirtualModelsCusotmization First
             List<VirtualModelsCustomization> virtualModelCustomizationToAdd = new List<VirtualModelsCustomization>();
             for (byte i = 0; i < numberOfCells; i++)
             {
-                var newVMC = new VirtualModelsCustomization {
+                var newVMC = new VirtualModelsCustomization
+                {
                     Id = Guid.NewGuid(),
                     ModelId = ModelId,
                     CellId = i,
@@ -233,6 +247,17 @@ namespace Netphonebook.Modules.Models.ViewModels
                 CustomizationCells = virtualModelCustomizationToAdd
             };
             _dataProvider.AddVirtualModel(toAdd);
+        }
+
+        private void EditCurrentModel()
+        {
+            VirtualModel toAdd = new VirtualModel
+            {
+                Id = toEdit.Id,
+                Name = ModelName,
+                CustomizationCells = virtualModelCustomizationToAdd
+            };
+            _dataProvider.UpdateVirtualModel();
         }
 
         private void NavigateBack()
@@ -261,20 +286,33 @@ namespace Netphonebook.Modules.Models.ViewModels
                 case "add": LoadAddMode(); break;
                 case "edit": LoadEditMode(toEdit); break;
             }
-            AddEditButtonContent = navigationContext.Parameters.GetValue<string>("mode").ToUpper();
         }
 
         private void LoadAddMode()
         {
             AddEditButtonContent = "Add";
+            Mode = EditorsMode.Add;
         }
 
         private void LoadEditMode(VirtualModel toEdit)
         {
             AddEditButtonContent = "Edit";
+            Mode = EditorsMode.Edit;
+
             ModelName = toEdit.Name;
             List<VirtualModel> c = _dataProvider.GetVirtualModelsWithCustomization();
-            NumberOfCells = (sbyte)c.FirstOrDefault(toEdit).CustomizationCells.Count();
+            var toEditFromCollection = c.FirstOrDefault(x => x.Id == toEdit.Id);
+            NumberOfCells = (sbyte)toEditFromCollection.CustomizationCells.Count();
+            for (int i = 0; i<NumberOfCells ; i++)
+            {
+                fontSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].FontSize);
+                cornerRadius[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].CornerRadius);
+                borderSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].BorderSize);
+                borderColor[toEditFromCollection.CustomizationCells[i].CellId] = toEditFromCollection.CustomizationCells[i].BorderColor;
+                fontColor[toEditFromCollection.CustomizationCells[i].CellId] = toEditFromCollection.CustomizationCells[i].ForegroundColor;
+                backgroundColor[toEditFromCollection.CustomizationCells[i].CellId] = toEditFromCollection.CustomizationCells[i].BackgroundColor;
+            }
+            OnCellChange();
         }
     }
 }

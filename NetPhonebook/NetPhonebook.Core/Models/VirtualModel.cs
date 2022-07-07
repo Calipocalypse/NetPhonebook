@@ -13,6 +13,6 @@ namespace NetPhonebook.Core.Models
         //public Image BaseImage { get; set; }
         //public Guid BaseImageId { get; set; }
         //Image color???
-        public ICollection<VirtualModelsCustomization> CustomizationCells { get; set; }
+        public List<VirtualModelsCustomization> CustomizationCells { get; set; }
     }
 }
