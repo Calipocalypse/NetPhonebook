@@ -1,4 +1,5 @@
 ﻿using Netphonebook.Modules.Models.ViewModels;
+using Netphonebook.Modules.Records.Views;
 using NetPhonebook.Core;
 using NetPhonebook.Modules.Lists.Views;
 using NetPhonebook.Modules.Menu.Views;
@@ -27,7 +28,7 @@ namespace NetPhonebook.Modules.Menu
         {
             containerRegistry.RegisterForNavigation<MenuView>();
             containerRegistry.RegisterForNavigation<SearchView>();
-            //containerRegistry.RegisterForNavigation<RecordsView>();
+            containerRegistry.RegisterForNavigation<RecordModelPicker>();
             containerRegistry.RegisterForNavigation<ModulesViewModel>();
             containerRegistry.RegisterForNavigation<ListsView>();
             //containerRegistry.RegisterForNavigation<PrintView>();

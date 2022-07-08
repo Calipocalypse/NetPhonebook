@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Netphonebook.Modules.Records.Views;
 
 namespace NetPhonebook.Modules.Menu.ViewModels
 {
@@ -30,11 +31,17 @@ namespace NetPhonebook.Modules.Menu.ViewModels
             //_regionManager.RequestNavigate("ContentRegion", uri);
             switch (uri)
             {
-                case "ListsView": SwitchView(new ListsView(), uri);
+                case "ListsView":
+                    SwitchView(new ListsView(), uri);
                     break;
-                case "SearchView": SwitchView(new SearchView(), uri);
+                case "SearchView":
+                    SwitchView(new SearchView(), uri);
                     break;
-                case "ModulesView": SwitchView(new ModulesView(), uri);
+                case "ModulesView":
+                    SwitchView(new ModulesView(), uri);
+                    break;
+                case "RecordsView":
+                    SwitchView(new RecordModelPicker(), uri);
                     break;
                 default:
                     break;

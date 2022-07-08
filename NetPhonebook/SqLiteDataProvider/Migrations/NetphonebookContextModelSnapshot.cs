@@ -78,6 +78,47 @@ namespace SqLiteDataProvider.Migrations
                     b.ToTable("virtualModels");
                 });
 
+            modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCellData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<sbyte>("CellId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstText")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsUsingPrefix")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsUsingSuffix")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("MainDataId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("PrefixId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SecondText")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("SuffixId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MainDataId");
+
+                    b.HasIndex("PrefixId");
+
+                    b.HasIndex("SuffixId");
+
+                    b.ToTable("virtualModelsCellDatas");
+                });
+
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCustomization", b =>
                 {
                     b.Property<Guid>("Id")
@@ -120,6 +161,20 @@ namespace SqLiteDataProvider.Migrations
                     b.ToTable("virtualModelsCustomizations");
                 });
 
+            modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DisplayedNumber")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("virtualModelsDatas");
+                });
+
             modelBuilder.Entity("NetPhonebook.Core.Models.ExtraInfo", b =>
                 {
                     b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "ExtraCategory")
@@ -129,6 +184,27 @@ namespace SqLiteDataProvider.Migrations
                         .IsRequired();
 
                     b.Navigation("ExtraCategory");
+                });
+
+            modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCellData", b =>
+                {
+                    b.HasOne("NetPhonebook.Core.Models.VirtualModelsData", "MainData")
+                        .WithMany()
+                        .HasForeignKey("MainDataId");
+
+                    b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "Prefix")
+                        .WithMany()
+                        .HasForeignKey("PrefixId");
+
+                    b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "Suffix")
+                        .WithMany()
+                        .HasForeignKey("SuffixId");
+
+                    b.Navigation("MainData");
+
+                    b.Navigation("Prefix");
+
+                    b.Navigation("Suffix");
                 });
 
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCustomization", b =>

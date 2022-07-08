@@ -11,7 +11,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <Button Command="{Binding NavigateCommand}" CommandParameter="SearchView" Content="Search"/>
-            <Button Content="Records"/>
+            <Button Command="{Binding NavigateCommand}" CommandParameter="RecordsView" Content="Records"/>
             <Button Command="{Binding NavigateCommand}" CommandParameter="ModulesView" Content="Models"/>
             <Button Command="{Binding NavigateCommand}" CommandParameter="ListsView" Content="Lists"/>
             <Button Content="Print"/>

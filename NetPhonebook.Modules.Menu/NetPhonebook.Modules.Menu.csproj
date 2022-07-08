@@ -11,5 +11,6 @@
     <ProjectReference Include="..\Netphonebook.Modules.Models\Netphonebook.Modules.Models.csproj" />
     <ProjectReference Include="..\NetPhonebook.Modules.Search\NetPhonebook.Modules.Search.csproj" />
     <ProjectReference Include="..\NetPhonebook\NetPhonebook.Core\NetPhonebook.Core.csproj" />
+    <ProjectReference Include="..\NetPhonebook\Netphonebook.Modules.Records\Netphonebook.Modules.Records.csproj" />
   </ItemGroup>
 </Project>

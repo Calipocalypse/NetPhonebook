@@ -23,8 +23,8 @@ namespace SqLiteDataProvider
         public DbSet<VirtualModel> virtualModels { get; set; }
         public DbSet<VirtualModelsCustomization> virtualModelsCustomizations { get; set; }
         public DbSet<FavouriteColor> favouriteColors { get; set; }
-        /*public DbSet<VirtualModelsData> virtualModelsDatas { get; set; }
-        public DbSet<VirtualModelsCellData> virtualModelsCellDatas { get; set; } */
+        public DbSet<VirtualModelsData> virtualModelsDatas { get; set; }
+        public DbSet<VirtualModelsCellData> virtualModelsCellDatas { get; set; }
 
         /* Code */
 

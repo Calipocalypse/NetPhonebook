@@ -46,6 +46,18 @@ namespace SqLiteDataProvider.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "virtualModelsDatas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    DisplayedNumber = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_virtualModelsDatas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ExtraInfos",
                 columns: table => new
                 {
@@ -95,10 +107,59 @@ namespace SqLiteDataProvider.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "virtualModelsCellDatas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    MainDataId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CellId = table.Column<sbyte>(type: "INTEGER", nullable: false),
+                    FirstText = table.Column<string>(type: "TEXT", nullable: true),
+                    SecondText = table.Column<string>(type: "TEXT", nullable: true),
+                    IsUsingPrefix = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PrefixId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsUsingSuffix = table.Column<bool>(type: "INTEGER", nullable: false),
+                    SuffixId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_virtualModelsCellDatas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_virtualModelsCellDatas_ExtraInfos_PrefixId",
+                        column: x => x.PrefixId,
+                        principalTable: "ExtraInfos",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_virtualModelsCellDatas_ExtraInfos_SuffixId",
+                        column: x => x.SuffixId,
+                        principalTable: "ExtraInfos",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_virtualModelsCellDatas_virtualModelsDatas_MainDataId",
+                        column: x => x.MainDataId,
+                        principalTable: "virtualModelsDatas",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ExtraInfos_ExtraCategoryId",
                 table: "ExtraInfos",
                 column: "ExtraCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_virtualModelsCellDatas_MainDataId",
+                table: "virtualModelsCellDatas",
+                column: "MainDataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_virtualModelsCellDatas_PrefixId",
+                table: "virtualModelsCellDatas",
+                column: "PrefixId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_virtualModelsCellDatas_SuffixId",
+                table: "virtualModelsCellDatas",
+                column: "SuffixId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_virtualModelsCustomizations_CategoryId",
@@ -114,19 +175,25 @@ namespace SqLiteDataProvider.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ExtraInfos");
+                name: "favouriteColors");
 
             migrationBuilder.DropTable(
-                name: "favouriteColors");
+                name: "virtualModelsCellDatas");
 
             migrationBuilder.DropTable(
                 name: "virtualModelsCustomizations");
 
             migrationBuilder.DropTable(
-                name: "ExtraCategories");
+                name: "ExtraInfos");
+
+            migrationBuilder.DropTable(
+                name: "virtualModelsDatas");
 
             migrationBuilder.DropTable(
                 name: "virtualModels");
+
+            migrationBuilder.DropTable(
+                name: "ExtraCategories");
         }
     }
 }
