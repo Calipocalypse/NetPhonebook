@@ -11,19 +11,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Netphonebook.Modules.Records.Views;
+using NetPhonebook.Core.Interfaces;
 
 namespace NetPhonebook.Modules.Menu.ViewModels
 {
     internal class MenuViewModel : BindableBase
     {
         private readonly IRegionManager _regionManager;
+        private readonly IDataProvider _dataProvider; 
 
         public DelegateCommand<string> NavigateCommand { get; set; }
-        public MenuViewModel(IRegionManager regionManager)
+        public MenuViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
             _regionManager = regionManager;
+            _dataProvider = dataProvider;
+            DataProviderType = _dataProvider.ToString();
             NavigateCommand = new DelegateCommand<string>(Navigate);
             //MessageBox.Show("Hello from MenuViewModel");
+        }
+
+        private string dataProviderType;
+        public string DataProviderType
+        {
+            get { return dataProviderType; }
+            set { SetProperty(ref dataProviderType, value); }
         }
 
         private void Navigate(string uri)

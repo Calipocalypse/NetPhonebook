@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:NetPhonebook.Modules.Menu.Views"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" d:Background="White"
              d:DesignHeight="450" d:DesignWidth="300">
     <Grid>
         <StackPanel Orientation="Vertical">
@@ -16,6 +16,10 @@
             <Button Command="{Binding NavigateCommand}" CommandParameter="ListsView" Content="Lists"/>
             <Button Content="Print"/>
             <Button Content="Manage"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Data provider: "/>
+                <TextBlock d:Text="SQLite" Text="{Binding DataProviderType}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

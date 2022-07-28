@@ -10,6 +10,7 @@ using NetPhonebook.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using SqLiteDataProvider;
+using SqLiteWithLinqDataProvider;
 using System.Windows;
 
 namespace NetPhonebook
@@ -26,7 +27,7 @@ namespace NetPhonebook
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<IDataProvider, SqLiteDataProviderModule>();
+            containerRegistry.Register<IDataProvider, SqLiteWithLinqDataProviderModule>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

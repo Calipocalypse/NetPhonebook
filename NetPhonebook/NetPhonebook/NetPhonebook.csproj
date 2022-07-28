@@ -15,9 +15,11 @@
     <ProjectReference Include="..\..\Netphonebook.Modules.Models\Netphonebook.Modules.Models.csproj" />
     <ProjectReference Include="..\..\NetPhonebook.Modules.Search\NetPhonebook.Modules.Search.csproj" />
     <ProjectReference Include="..\NetPhonebook.Core\NetPhonebook.Core.csproj" />
+    <ProjectReference Include="..\Netphonebook.Modules.Common\Netphonebook.Modules.Common.csproj" />
     <ProjectReference Include="..\Netphonebook.Modules.Records\Netphonebook.Modules.Records.csproj" />
     <ProjectReference Include="..\Services\NetPhonebook.Services.Interfaces\NetPhonebook.Services.Interfaces.csproj" />
     <ProjectReference Include="..\Services\NetPhonebook.Services\NetPhonebook.Services.csproj" />
     <ProjectReference Include="..\SqLiteDataProvider\SqLiteDataProvider.csproj" />
+    <ProjectReference Include="..\SqLiteWithLinqDataProvider\SqLiteWithLinqDataProvider.csproj" />
   </ItemGroup>
 </Project>

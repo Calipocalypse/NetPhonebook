@@ -12,21 +12,30 @@ using System.Windows.Media;
 using System.Windows;
 using NetPhonebook.Core;
 using NetPhonebook.Core.Enums;
+using Netphonebook.Modules.Common.ViewModels;
 
 namespace Netphonebook.Modules.Models.ViewModels
 {
     public class ModelCreatorViewModel : BindableBase, INavigationAware
     {
+        //ToDo Lets make cell pick as list of buttons with content as: "1", "2", "3"...
+
         private IRegionManager _regionManager;
         private IDataProvider _dataProvider;
 
         public EditorsMode Mode { get; set; }
         public VirtualModel toEdit;
 
+        public ColorPickerViewModel colorPickerInstance;
+        public ColorPickerViewModel ColorPickerInstance 
+        {
+            get { return colorPickerInstance; } 
+            set { SetProperty(ref colorPickerInstance, value); }
+        } 
+
         public DelegateCommand ClickBack { get; set; }
         public DelegateCommand ClickAdd { get; set; }
         public DelegateCommand<string> SetColor { get; set; }
-        public DelegateCommand<string> FavouriteColorCommand { get; set; }
 
         /* Edit or Add preparation */
         private string addEditButtonContent;
@@ -96,44 +105,6 @@ namespace Netphonebook.Modules.Models.ViewModels
             set { SetProperty(ref cornerRadius[SelectedCellNumber-1], value); }
         }
 
-        private string outcomingColor;
-        public SolidColorBrush OutcomingColor
-        {
-            get { return HexColorConverter.ToSolidColor(outcomingColor); }
-            set 
-            { 
-                SetProperty(ref outcomingColor, HexColorConverter.ToHex(value));
-            }
-        }
-
-        private byte[] colorPicker = new byte[3];
-        public byte[] ColorPicker
-        {
-            get
-            {
-                OutcomingColor = new SolidColorBrush(Color.FromRgb(colorPicker[0], colorPicker[1], colorPicker[2]));
-                return colorPicker;
-            }
-            set
-            {
-                SetProperty(ref colorPicker, value);
-                OutcomingColor = new SolidColorBrush(Color.FromRgb(colorPicker[0], colorPicker[1], colorPicker[2]));
-            }
-        }
-
-        public ObservableCollection<SolidColorBrush> FavouriteColors { get; set; }
-
-        private SolidColorBrush selectedFavouriteColor;
-        public SolidColorBrush SelectedFavouriteColor
-        {
-            get { return selectedFavouriteColor; }
-            set 
-            { 
-                SetProperty(ref selectedFavouriteColor, value);
-                if (selectedFavouriteColor != null) ColorPicker = new byte[3] { selectedFavouriteColor.Color.R, selectedFavouriteColor.Color.G, selectedFavouriteColor.Color.B};
-            }
-        }
-
         private string[] fontColor = new string[6];
         public SolidColorBrush FontColor
         {
@@ -161,32 +132,13 @@ namespace Netphonebook.Modules.Models.ViewModels
             _dataProvider = dataProvider;
             ClickBack = new DelegateCommand(NavigateBack);
             ClickAdd = new DelegateCommand(ClickedAdd);
-            FavouriteColorCommand = new DelegateCommand<string>(ClickedFavColorButton);
             SetColor = new DelegateCommand<string>(ClickedSetColor);
-            FavouriteColors = _dataProvider.GetFavouriteColors();
+            ComposeUiElements();
         }
 
-        private void ClickedFavColorButton(string parameter)
+        private void ComposeUiElements()
         {
-            switch (parameter)
-            {
-                case "Add": AddFavouriteColor(); 
-                    break;
-                case "Delete": RemoveFavouriteColor();
-                    break;
-            }
-        }
-
-        private void AddFavouriteColor()
-        {
-            FavouriteColors.Add(OutcomingColor);
-            _dataProvider.AddFavouriteColor(new FavouriteColor { Id = Guid.NewGuid(), HexColor = HexColorConverter.ToHex(OutcomingColor) });
-        }
-
-        private void RemoveFavouriteColor()
-        {
-            _dataProvider.DestroyFavouriteColor(SelectedFavouriteColor);
-            FavouriteColors.Remove(SelectedFavouriteColor);
+            ColorPickerInstance = new ColorPickerViewModel(_dataProvider);
         }
 
         private void ClickedSetColor(string parameter)
@@ -194,13 +146,13 @@ namespace Netphonebook.Modules.Models.ViewModels
             switch (parameter)
             {
                 case "fontColor":
-                    FontColor = OutcomingColor;
+                    FontColor = ColorPickerInstance.OutcomingColor;
                     break;
                 case "backgroundColor":
-                    BackgroundColor = OutcomingColor;
+                    BackgroundColor = ColorPickerInstance.OutcomingColor;
                     break;
                 case "borderColor":
-                    BorderColor = OutcomingColor;
+                    BorderColor = ColorPickerInstance.OutcomingColor;
                     break;
                 default: throw new NotImplementedException();
             }

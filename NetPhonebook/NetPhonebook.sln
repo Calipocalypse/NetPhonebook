@@ -35,7 +35,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqLiteDataProvider", "SqLit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netphonebook.Modules.Models", "..\Netphonebook.Modules.Models\Netphonebook.Modules.Models.csproj", "{B9E086E4-B5DD-4FFF-9EF7-B9C292D46462}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netphonebook.Modules.Records", "Netphonebook.Modules.Records\Netphonebook.Modules.Records.csproj", "{B28015D3-2630-45F3-9218-508B6A95197F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netphonebook.Modules.Records", "Netphonebook.Modules.Records\Netphonebook.Modules.Records.csproj", "{B28015D3-2630-45F3-9218-508B6A95197F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqLiteWithLinqDataProvider", "SqLiteWithLinqDataProvider\SqLiteWithLinqDataProvider.csproj", "{5E8BDF6A-A7F8-4A85-9B34-C35918C1B2D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlDataProvider", "XmlDataProvider\XmlDataProvider.csproj", "{CE7167EC-D3DE-4A67-BF4C-2B6F6726475B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netphonebook.Modules.Common", "Netphonebook.Modules.Common\Netphonebook.Modules.Common.csproj", "{2D08BB47-7529-452A-937D-B0C88DBB24FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +101,18 @@ Global
 		{B28015D3-2630-45F3-9218-508B6A95197F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B28015D3-2630-45F3-9218-508B6A95197F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B28015D3-2630-45F3-9218-508B6A95197F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E8BDF6A-A7F8-4A85-9B34-C35918C1B2D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E8BDF6A-A7F8-4A85-9B34-C35918C1B2D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E8BDF6A-A7F8-4A85-9B34-C35918C1B2D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E8BDF6A-A7F8-4A85-9B34-C35918C1B2D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE7167EC-D3DE-4A67-BF4C-2B6F6726475B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE7167EC-D3DE-4A67-BF4C-2B6F6726475B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE7167EC-D3DE-4A67-BF4C-2B6F6726475B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE7167EC-D3DE-4A67-BF4C-2B6F6726475B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D08BB47-7529-452A-937D-B0C88DBB24FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D08BB47-7529-452A-937D-B0C88DBB24FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D08BB47-7529-452A-937D-B0C88DBB24FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D08BB47-7529-452A-937D-B0C88DBB24FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +129,9 @@ Global
 		{D69A6F15-18CF-4B12-91BA-D21ADA5D7B11} = {0D80D4D2-E679-4762-8A03-C326A3448CDF}
 		{B9E086E4-B5DD-4FFF-9EF7-B9C292D46462} = {A300A3C3-3537-4C99-AC4B-B9362CE5577A}
 		{B28015D3-2630-45F3-9218-508B6A95197F} = {A300A3C3-3537-4C99-AC4B-B9362CE5577A}
+		{5E8BDF6A-A7F8-4A85-9B34-C35918C1B2D1} = {0D80D4D2-E679-4762-8A03-C326A3448CDF}
+		{CE7167EC-D3DE-4A67-BF4C-2B6F6726475B} = {0D80D4D2-E679-4762-8A03-C326A3448CDF}
+		{2D08BB47-7529-452A-937D-B0C88DBB24FA} = {A300A3C3-3537-4C99-AC4B-B9362CE5577A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FDD8703-6E5F-4CB3-949E-23259452DC5F}
