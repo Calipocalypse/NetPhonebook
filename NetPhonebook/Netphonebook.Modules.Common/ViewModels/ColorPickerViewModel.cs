@@ -32,13 +32,13 @@ namespace Netphonebook.Modules.Common.ViewModels
             }
         }
 
-        private string outcomingColor;
+        private SolidColorBrush outcomingColor;
         public SolidColorBrush OutcomingColor
         {
-            get { return HexColorConverter.ToSolidColor(outcomingColor); }
+            get { return outcomingColor; }
             set
             {
-                SetProperty(ref outcomingColor, HexColorConverter.ToHex(value));
+                SetProperty(ref outcomingColor, value);
             }
         }
 
