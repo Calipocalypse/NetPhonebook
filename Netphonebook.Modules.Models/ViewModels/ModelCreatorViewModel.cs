@@ -26,7 +26,14 @@ namespace Netphonebook.Modules.Models.ViewModels
         public EditorsMode Mode { get; set; }
         public VirtualModel toEdit;
 
-        public ColorPickerViewModel colorPickerInstance;
+        private CellCreatorTextViewModel textCellViewModelInstance;
+        internal CellCreatorTextViewModel TextCellViewModelInstance
+        {
+            get { return textCellViewModelInstance; }
+            set { SetProperty(ref textCellViewModelInstance, value); }
+        }
+
+        private ColorPickerViewModel colorPickerInstance;
         public ColorPickerViewModel ColorPickerInstance 
         {
             get { return colorPickerInstance; } 
@@ -76,55 +83,15 @@ namespace Netphonebook.Modules.Models.ViewModels
 
         private void OnCellChange()
         {
-            RaisePropertyChanged(nameof(FontSize));
-            RaisePropertyChanged(nameof(BorderSize));
-            RaisePropertyChanged(nameof(CornerRadius));
-            RaisePropertyChanged(nameof(FontColor));
-            RaisePropertyChanged(nameof(BackgroundColor));
-            RaisePropertyChanged(nameof(BorderColor));
+            RaisePropertyChanged(nameof(textCellViewModelInstance.FontSize));
+            RaisePropertyChanged(nameof(textCellViewModelInstance.BorderSize));
+            RaisePropertyChanged(nameof(textCellViewModelInstance.CornerRadius));
+            RaisePropertyChanged(nameof(textCellViewModelInstance.FontColor));
+            RaisePropertyChanged(nameof(textCellViewModelInstance.BackgroundColor));
+            RaisePropertyChanged(nameof(textCellViewModelInstance.BorderColor));
         }
 
-        private sbyte[] fontSize = new sbyte[6];
-        public sbyte FontSize
-        {
-            get { return fontSize[SelectedCellNumber-1]; }
-            set { SetProperty(ref fontSize[SelectedCellNumber-1], value); }
-        }
-
-        private sbyte[] borderSize = new sbyte[6];
-        public sbyte BorderSize
-        {
-            get { return borderSize[SelectedCellNumber-1]; }
-            set { SetProperty(ref borderSize[SelectedCellNumber-1], value); }
-        }
-
-        private sbyte[] cornerRadius = new sbyte[6];
-        public sbyte CornerRadius
-        {
-            get { return cornerRadius[SelectedCellNumber-1]; }
-            set { SetProperty(ref cornerRadius[SelectedCellNumber-1], value); }
-        }
-
-        private string[] fontColor = new string[6];
-        public SolidColorBrush FontColor
-        {
-            get { return HexColorConverter.ToSolidColor(fontColor[SelectedCellNumber - 1]); }
-            set { SetProperty(ref fontColor[SelectedCellNumber-1], HexColorConverter.ToHex(value)); }
-        }
-
-        private string[] backgroundColor = new string[6];
-        public SolidColorBrush BackgroundColor
-        {
-            get { return HexColorConverter.ToSolidColor(backgroundColor[SelectedCellNumber - 1]); }
-            set { SetProperty(ref backgroundColor[SelectedCellNumber-1], HexColorConverter.ToHex(value)); }
-        }
-
-        private string[] borderColor = new string[6];
-        public SolidColorBrush BorderColor
-        {
-            get { return HexColorConverter.ToSolidColor(borderColor[SelectedCellNumber - 1]); }
-            set { SetProperty(ref borderColor[SelectedCellNumber-1], HexColorConverter.ToHex(value)); }
-        }
+        
 
         public ModelCreatorViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
@@ -139,6 +106,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         private void ComposeUiElements()
         {
             ColorPickerInstance = new ColorPickerViewModel(_dataProvider);
+            TextCellViewModelInstance = new CellCreatorTextViewModel(_dataProvider);
         }
 
         private void ClickedSetColor(string parameter)
@@ -146,13 +114,13 @@ namespace Netphonebook.Modules.Models.ViewModels
             switch (parameter)
             {
                 case "fontColor":
-                    FontColor = ColorPickerInstance.OutcomingColor;
+                    textCellViewModelInstance.FontColor[SelectedCellNumber-1] = ColorPickerInstance.OutcomingColor;
                     break;
                 case "backgroundColor":
-                    BackgroundColor = ColorPickerInstance.OutcomingColor;
+                    textCellViewModelInstance.BackgroundColor[SelectedCellNumber-1] = ColorPickerInstance.OutcomingColor;
                     break;
                 case "borderColor":
-                    BorderColor = ColorPickerInstance.OutcomingColor;
+                    textCellViewModelInstance.BorderColor[SelectedCellNumber-1] = ColorPickerInstance.OutcomingColor;
                     break;
                 default: throw new NotImplementedException();
             }
@@ -181,12 +149,12 @@ namespace Netphonebook.Modules.Models.ViewModels
                     Id = Guid.NewGuid(),
                     ModelId = ModelId,
                     CellId = i,
-                    BorderColor = borderColor[i],
-                    ForegroundColor = fontColor[i],
-                    BackgroundColor = backgroundColor[i],
-                    CornerRadius = cornerRadius[i].ToString(),
-                    BorderSize = borderSize[i].ToString(),
-                    FontSize = fontSize[i].ToString()
+                    BorderColor = HexColorConverter.ToHex((TextCellViewModelInstance.BorderColor[i])),
+                    ForegroundColor = HexColorConverter.ToHex(TextCellViewModelInstance.FontColor[i]),
+                    BackgroundColor = HexColorConverter.ToHex(TextCellViewModelInstance.BackgroundColor[i]),
+                    CornerRadius = TextCellViewModelInstance.CornerRadius[i].ToString(),
+                    BorderSize = TextCellViewModelInstance.BorderSize[i].ToString(),
+                    FontSize = TextCellViewModelInstance.FontSize[i].ToString()
                 };
                 toAddVMC.Add(newSingleVMC);
             }
@@ -256,12 +224,12 @@ namespace Netphonebook.Modules.Models.ViewModels
             NumberOfCells = (sbyte)toEditFromCollection.CustomizationCells.Count();
             for (int i = 0; i<NumberOfCells ; i++)
             {
-                fontSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].FontSize);
-                cornerRadius[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].CornerRadius);
-                borderSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].BorderSize);
-                borderColor[toEditFromCollection.CustomizationCells[i].CellId] = toEditFromCollection.CustomizationCells[i].BorderColor;
-                fontColor[toEditFromCollection.CustomizationCells[i].CellId] = toEditFromCollection.CustomizationCells[i].ForegroundColor;
-                backgroundColor[toEditFromCollection.CustomizationCells[i].CellId] = toEditFromCollection.CustomizationCells[i].BackgroundColor;
+                TextCellViewModelInstance.FontSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].FontSize);
+                TextCellViewModelInstance.CornerRadius[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].CornerRadius);
+                TextCellViewModelInstance.BorderSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].BorderSize);
+                TextCellViewModelInstance.BorderColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BorderColor);
+                TextCellViewModelInstance.FontColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].ForegroundColor);
+                TextCellViewModelInstance.BackgroundColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BackgroundColor);
             }
             OnCellChange();
         }
