@@ -27,7 +27,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         public VirtualModel toEdit;
 
         private CellCreatorTextViewModel textCellViewModelInstance;
-        internal CellCreatorTextViewModel TextCellViewModelInstance
+        public CellCreatorTextViewModel TextCellViewModelInstance
         {
             get { return textCellViewModelInstance; }
             set { SetProperty(ref textCellViewModelInstance, value); }
@@ -42,7 +42,6 @@ namespace Netphonebook.Modules.Models.ViewModels
 
         public DelegateCommand ClickBack { get; set; }
         public DelegateCommand ClickAdd { get; set; }
-        public DelegateCommand<string> SetColor { get; set; }
 
         /* Edit or Add preparation */
         private string addEditButtonContent;
@@ -77,53 +76,48 @@ namespace Netphonebook.Modules.Models.ViewModels
             set
             {
                 SetProperty(ref selectedCellNumber, value);
-                OnCellChange();
+                TextCellViewModelInstance.OnCellChange();
             }
         }
 
-        private void OnCellChange()
+        public ObservableCollection<CellRecordType> CellDataTypes
         {
-            RaisePropertyChanged(nameof(textCellViewModelInstance.FontSize));
-            RaisePropertyChanged(nameof(textCellViewModelInstance.BorderSize));
-            RaisePropertyChanged(nameof(textCellViewModelInstance.CornerRadius));
-            RaisePropertyChanged(nameof(textCellViewModelInstance.FontColor));
-            RaisePropertyChanged(nameof(textCellViewModelInstance.BackgroundColor));
-            RaisePropertyChanged(nameof(textCellViewModelInstance.BorderColor));
+            get { return new ObservableCollection<CellRecordType>(Enum.GetValues<CellRecordType>()); }
         }
-
-        
 
         public ModelCreatorViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
             _regionManager = regionManager;
             _dataProvider = dataProvider;
-            ClickBack = new DelegateCommand(NavigateBack);
-            ClickAdd = new DelegateCommand(ClickedAdd);
-            SetColor = new DelegateCommand<string>(ClickedSetColor);
             ComposeUiElements();
+            ComposeDelegateCommands();
+        }
+
+        private void ComposeDelegateCommands()
+        {
+            ClickBack = new DelegateCommand(NavigateBack);
+            ClickAdd = new DelegateCommand(ClickedAdd, IsModelValid)
+                .ObservesProperty(() => TextCellViewModelInstance.BackgroundColorCell)
+                .ObservesProperty(() => TextCellViewModelInstance.FontColorCell)
+                .ObservesProperty(() => TextCellViewModelInstance.BorderColorCell)
+                .ObservesProperty(() => NumberOfCells);
         }
 
         private void ComposeUiElements()
         {
             ColorPickerInstance = new ColorPickerViewModel(_dataProvider);
-            TextCellViewModelInstance = new CellCreatorTextViewModel(_dataProvider);
+            TextCellViewModelInstance = new CellCreatorTextViewModel(_dataProvider,this,ColorPickerInstance);
         }
 
-        private void ClickedSetColor(string parameter)
+        private bool IsModelValid()
         {
-            switch (parameter)
-            {
-                case "fontColor":
-                    textCellViewModelInstance.FontColor[SelectedCellNumber-1] = ColorPickerInstance.OutcomingColor;
-                    break;
-                case "backgroundColor":
-                    textCellViewModelInstance.BackgroundColor[SelectedCellNumber-1] = ColorPickerInstance.OutcomingColor;
-                    break;
-                case "borderColor":
-                    textCellViewModelInstance.BorderColor[SelectedCellNumber-1] = ColorPickerInstance.OutcomingColor;
-                    break;
-                default: throw new NotImplementedException();
-            }
+            if (TextCellViewModelInstance.IsCellModelValid() && IsMainModelInfoValid()) return true;
+            else return false;
+        }
+
+        private bool IsMainModelInfoValid()
+        {
+            return true;
         }
 
         private void ClickedAdd()
@@ -231,7 +225,7 @@ namespace Netphonebook.Modules.Models.ViewModels
                 TextCellViewModelInstance.FontColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].ForegroundColor);
                 TextCellViewModelInstance.BackgroundColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BackgroundColor);
             }
-            OnCellChange();
+            TextCellViewModelInstance.OnCellChange();
         }
     }
 }

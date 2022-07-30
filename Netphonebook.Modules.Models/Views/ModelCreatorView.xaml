@@ -32,6 +32,10 @@
                 <Slider Minimum="1" Width="200" Maximum="{Binding NumberOfCells, UpdateSourceTrigger=PropertyChanged}" Value="{Binding SelectedCellNumber, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock d:Text="2" Text="{Binding SelectedCellNumber}" />
             </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Cell Data Type: "/>
+                        <ComboBox ItemsSource="{Binding CellDataTypes}" MinWidth="150"/>
+                    </StackPanel>
             <StackPanel Background="Yellow">
                         <local:CellCreatorText DataContext="{Binding TextCellViewModelInstance}"/>
             </StackPanel>

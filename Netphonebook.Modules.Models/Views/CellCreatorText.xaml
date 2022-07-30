@@ -12,30 +12,30 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Font size"/>
-            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding FontSize}"/>
-            <TextBlock d:Text="23" Text="{Binding FontSize}"/>
+            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding FontSizeCell}"/>
+            <TextBlock d:Text="23" Text="{Binding FontSizeCell}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Font Color"/>
-            <Button Content="GetColor" Background="{Binding FontColor[RealSelectedCellNumber]}" Command="{Binding SetColor}" CommandParameter="fontColor" />
+            <Button Content="GetColor" Background="{Binding FontColorCell}" Command="{Binding SetColor}" CommandParameter="fontColor" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Background Color"/>
-            <Button Content="GetColor" Background="{Binding BackgroundColor[RealSelectedCellNumber]}" Command="{Binding SetColor}" CommandParameter="backgroundColor" />
+            <Button Content="GetColor" Background="{Binding BackgroundColorCell}" Command="{Binding SetColor}" CommandParameter="backgroundColor" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Border Color"/>
-            <Button Content="GetColor" Background="{Binding BorderColor[RealSelectedCellNumber]}" Command="{Binding SetColor}" CommandParameter="borderColor" />
+            <Button Content="GetColor" Background="{Binding BorderColorCell}" Command="{Binding SetColor}" CommandParameter="borderColor" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Border Size"/>
-            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding BorderSize}"/>
-            <TextBlock Text="{Binding BorderSize}" d:Text="23"/>
+            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding BorderSizeCell}"/>
+            <TextBlock Text="{Binding BorderSizeCell}" d:Text="23"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Corner radius"/>
-            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding CornerRadius}"/>
-            <TextBlock d:Text="4" Text="{Binding CornerRadius}"/>
+            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding CornerRadiusCell}"/>
+            <TextBlock d:Text="4" Text="{Binding CornerRadiusCell}"/>
         </StackPanel>
     </StackPanel>
 </UserControl>
