@@ -11,8 +11,8 @@ using SqLiteWithLinqDataProvider;
 namespace SqLiteWithLinqDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    [Migration("20220724103516_Init")]
-    partial class Init
+    [Migration("20220730171648_AddedId")]
+    partial class AddedId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,6 +98,9 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Property<bool>("IsUsingSuffix")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid>("ListTypeElementId")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid?>("MainDataId")
                         .HasColumnType("TEXT");
 
@@ -111,6 +114,8 @@ namespace SqLiteWithLinqDataProvider.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListTypeElementId");
 
                     b.HasIndex("MainDataId");
 
@@ -190,6 +195,12 @@ namespace SqLiteWithLinqDataProvider.Migrations
 
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCellData", b =>
                 {
+                    b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "ListTypeElement")
+                        .WithMany()
+                        .HasForeignKey("ListTypeElementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("NetPhonebook.Core.Models.VirtualModelsData", "MainData")
                         .WithMany()
                         .HasForeignKey("MainDataId");
@@ -201,6 +212,8 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "Suffix")
                         .WithMany()
                         .HasForeignKey("SuffixId");
+
+                    b.Navigation("ListTypeElement");
 
                     b.Navigation("MainData");
 

@@ -1,5 +1,6 @@
 ﻿using Netphonebook.Modules.Common.ViewModels;
 using NetPhonebook.Core;
+using NetPhonebook.Core.Enums;
 using NetPhonebook.Core.Interfaces;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Netphonebook.Modules.Models.ViewModels
@@ -37,6 +39,14 @@ namespace Netphonebook.Modules.Models.ViewModels
         //    get { return fontSize[SelectedCellNumber - 1]; }
         //    set { SetProperty(ref fontSize[SelectedCellNumber - 1], value); }
         //}
+
+        private Visibility cellCreatorTextVisibility = Visibility.Visible;
+        public Visibility CellCreatorTextVisibility
+        {
+            get { return cellCreatorTextVisibility; }
+            set { SetProperty(ref cellCreatorTextVisibility, value); }
+        }
+
 
         /* 1. FontSize */
         private sbyte[] fontSize = new sbyte[6] {1,2,3,4,5,6};
@@ -157,6 +167,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             for (int i = 0; i< parentView.NumberOfCells; i++ )
             {
+                if (parentView.CellRecordTypeArray[i] != CellRecordType.Text) continue;
                 if (BackgroundColor[i] == null) return false;
                 if (FontColor[i] == null) return false;
                 if (BorderColor[i] == null) return false;

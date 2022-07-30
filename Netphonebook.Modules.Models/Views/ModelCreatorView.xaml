@@ -34,10 +34,11 @@
             </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Cell Data Type: "/>
-                        <ComboBox ItemsSource="{Binding CellDataTypes}" MinWidth="150"/>
+                        <ComboBox ItemsSource="{Binding CellDataTypes}" SelectedItem="{Binding CellRecordTypeCell}" MinWidth="150"/>
                     </StackPanel>
             <StackPanel Background="Yellow">
-                        <local:CellCreatorText DataContext="{Binding TextCellViewModelInstance}"/>
+                        <local:CellCreatorList DataContext="{Binding ListCellViewModelInstance}" Background="red" Visibility="{Binding CellCreatorListVisibility}"/>
+                        <local:CellCreatorText DataContext="{Binding TextCellViewModelInstance}" Visibility="{Binding CellCreatorTextVisibility}"/>
             </StackPanel>
             <StackPanel Background="Navy">
                 <TextBlock>red</TextBlock>

@@ -102,7 +102,7 @@ namespace SqLiteWithLinqDataProvider
             using (var context = new NetphonebookContext())
             {
                 var oc = new List<VirtualModel>();
-                context.virtualModels.Include("CustomizationCells").ForEachAsync(x => oc.Add(x));
+                context.virtualModels.Include("CustomizationCells").Include("CustomizationCells.Category").ForEachAsync(x => oc.Add(x));
                 //context.virtualModels.Include("VirtualModelsCustomization").ForEachAsync(x => oc.Add(x));
                 return oc;
             }

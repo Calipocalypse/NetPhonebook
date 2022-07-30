@@ -26,6 +26,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         public EditorsMode Mode { get; set; }
         public VirtualModel toEdit;
 
+        #region Another Instances
         private CellCreatorTextViewModel textCellViewModelInstance;
         public CellCreatorTextViewModel TextCellViewModelInstance
         {
@@ -33,12 +34,20 @@ namespace Netphonebook.Modules.Models.ViewModels
             set { SetProperty(ref textCellViewModelInstance, value); }
         }
 
+        private CellCreatorListViewModel listCellViewModelInstance;
+        public CellCreatorListViewModel ListCellViewModelInstance
+        {
+            get { return listCellViewModelInstance; }
+            set { SetProperty(ref listCellViewModelInstance, value); }
+        }
+
         private ColorPickerViewModel colorPickerInstance;
         public ColorPickerViewModel ColorPickerInstance 
         {
             get { return colorPickerInstance; } 
             set { SetProperty(ref colorPickerInstance, value); }
-        } 
+        }
+        #endregion
 
         public DelegateCommand ClickBack { get; set; }
         public DelegateCommand ClickAdd { get; set; }
@@ -76,14 +85,28 @@ namespace Netphonebook.Modules.Models.ViewModels
             set
             {
                 SetProperty(ref selectedCellNumber, value);
-                TextCellViewModelInstance.OnCellChange();
+                OnCellChange();
             }
         }
 
-        public ObservableCollection<CellRecordType> CellDataTypes
+        public ObservableCollection<CellRecordType> CellDataTypes =>  new ObservableCollection<CellRecordType>(Enum.GetValues<CellRecordType>());
+
+        private CellRecordType[] cellRecordTypeArray = new CellRecordType[6];
+        public CellRecordType[] CellRecordTypeArray
         {
-            get { return new ObservableCollection<CellRecordType>(Enum.GetValues<CellRecordType>()); }
+            get { return cellRecordTypeArray; }
+            set { SetProperty(ref cellRecordTypeArray, value); }
         }
+        public CellRecordType CellRecordTypeCell
+        { 
+            get { return cellRecordTypeArray[SelectedCellNumber - 1]; }
+            set 
+            { 
+                SetProperty(ref cellRecordTypeArray[SelectedCellNumber - 1], value);
+                OnCellTypeChange();
+            }
+        }
+
 
         public ModelCreatorViewModel(IRegionManager regionManager, IDataProvider dataProvider)
         {
@@ -100,13 +123,16 @@ namespace Netphonebook.Modules.Models.ViewModels
                 .ObservesProperty(() => TextCellViewModelInstance.BackgroundColorCell)
                 .ObservesProperty(() => TextCellViewModelInstance.FontColorCell)
                 .ObservesProperty(() => TextCellViewModelInstance.BorderColorCell)
+                .ObservesProperty(() => CellRecordTypeCell)
                 .ObservesProperty(() => NumberOfCells);
         }
 
         private void ComposeUiElements()
         {
             ColorPickerInstance = new ColorPickerViewModel(_dataProvider);
-            TextCellViewModelInstance = new CellCreatorTextViewModel(_dataProvider,this,ColorPickerInstance);
+            TextCellViewModelInstance = new CellCreatorTextViewModel(_dataProvider, this, ColorPickerInstance);
+            ListCellViewModelInstance = new CellCreatorListViewModel(_dataProvider, this);
+            OnCellTypeChange();
         }
 
         private bool IsModelValid()
@@ -119,6 +145,35 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             return true;
         }
+
+        private void OnCellChange()
+        {
+            RaisePropertyChanged(nameof(CellRecordTypeCell));
+            TextCellViewModelInstance.OnCellChange();
+            ListCellViewModelInstance.OnCellChange();
+            OnCellTypeChange();
+        }
+
+        private void OnCellTypeChange()
+        {
+            switch (CellRecordTypeCell)
+            {
+                case CellRecordType.Text:
+                    {
+                        TextCellViewModelInstance.CellCreatorTextVisibility = Visibility.Visible;
+                        ListCellViewModelInstance.CellCreatorListVisibility = Visibility.Collapsed;
+                    }
+                    break;
+                case CellRecordType.List:
+                    {
+                        TextCellViewModelInstance.CellCreatorTextVisibility = Visibility.Collapsed;
+                        ListCellViewModelInstance.CellCreatorListVisibility = Visibility.Visible;
+                    }
+                    break;
+            }
+        }
+
+        //Creation below
 
         private void ClickedAdd()
         {
@@ -134,25 +189,44 @@ namespace Netphonebook.Modules.Models.ViewModels
         private VirtualModel ComposeNewModel(Guid ModelId = new Guid())
         {
             if (ModelId == Guid.Empty) ModelId = Guid.NewGuid();
-            //VirtualModelsCusotmization First
+            //Virtual Models Customization First
             List<VirtualModelsCustomization> toAddVMC = new List<VirtualModelsCustomization>();
             for (byte i = 0; i < numberOfCells; i++)
             {
-                var newSingleVMC = new VirtualModelsCustomization
+                if (CellRecordTypeArray[i] == CellRecordType.Text)
                 {
-                    Id = Guid.NewGuid(),
-                    ModelId = ModelId,
-                    CellId = i,
-                    BorderColor = HexColorConverter.ToHex((TextCellViewModelInstance.BorderColor[i])),
-                    ForegroundColor = HexColorConverter.ToHex(TextCellViewModelInstance.FontColor[i]),
-                    BackgroundColor = HexColorConverter.ToHex(TextCellViewModelInstance.BackgroundColor[i]),
-                    CornerRadius = TextCellViewModelInstance.CornerRadius[i].ToString(),
-                    BorderSize = TextCellViewModelInstance.BorderSize[i].ToString(),
-                    FontSize = TextCellViewModelInstance.FontSize[i].ToString()
-                };
-                toAddVMC.Add(newSingleVMC);
+                    var newSingleVMC = new VirtualModelsCustomization
+                    {
+                        Id = Guid.NewGuid(),
+                        ModelId = ModelId,
+                        CellId = i,
+                        CellType = CellRecordTypeArray[i],
+                        BorderColor = HexColorConverter.ToHex((TextCellViewModelInstance.BorderColor[i])),
+                        ForegroundColor = HexColorConverter.ToHex(TextCellViewModelInstance.FontColor[i]),
+                        BackgroundColor = HexColorConverter.ToHex(TextCellViewModelInstance.BackgroundColor[i]),
+                        CategoryId = null,
+                        CornerRadius = TextCellViewModelInstance.CornerRadius[i].ToString(),
+                        BorderSize = TextCellViewModelInstance.BorderSize[i].ToString(),
+                        FontSize = TextCellViewModelInstance.FontSize[i].ToString()
+                    };
+                    toAddVMC.Add(newSingleVMC);
+                }
+                else if (CellRecordTypeArray[i] == CellRecordType.List)
+                {
+                    var newSingleVMC = new VirtualModelsCustomization
+                    {
+                        Id = Guid.NewGuid(),
+                        ModelId = ModelId,
+                        CellId = i,
+                        CellType = CellRecordTypeArray[i],
+                        FontSize = ListCellViewModelInstance.FontSize[i].ToString(),
+                        CategoryId = ListCellViewModelInstance.ExtraCategories[i].Id
+                    };
+                    toAddVMC.Add(newSingleVMC);
+                }
             }
 
+            //Virtual Model Second
             VirtualModel toAddVM = new VirtualModel
             {
                 Id = ModelId,
@@ -218,14 +292,24 @@ namespace Netphonebook.Modules.Models.ViewModels
             NumberOfCells = (sbyte)toEditFromCollection.CustomizationCells.Count();
             for (int i = 0; i<NumberOfCells ; i++)
             {
-                TextCellViewModelInstance.FontSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].FontSize);
-                TextCellViewModelInstance.CornerRadius[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].CornerRadius);
-                TextCellViewModelInstance.BorderSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].BorderSize);
-                TextCellViewModelInstance.BorderColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BorderColor);
-                TextCellViewModelInstance.FontColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].ForegroundColor);
-                TextCellViewModelInstance.BackgroundColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BackgroundColor);
+                CellRecordTypeArray[i] = toEditFromCollection.CustomizationCells[i].CellType;
+                if (CellRecordTypeArray[i] == CellRecordType.Text)
+                {
+                    TextCellViewModelInstance.FontSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].FontSize);
+                    TextCellViewModelInstance.CornerRadius[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].CornerRadius);
+                    TextCellViewModelInstance.BorderSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].BorderSize);
+                    TextCellViewModelInstance.BorderColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BorderColor);
+                    TextCellViewModelInstance.FontColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].ForegroundColor);
+                    TextCellViewModelInstance.BackgroundColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BackgroundColor);
+                }
+                else if (CellRecordTypeArray[i] == CellRecordType.List)
+                {
+                    ListCellViewModelInstance.FontSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].FontSize);
+                    ListCellViewModelInstance.ExtraCategories[toEditFromCollection.CustomizationCells[i].CellId] = toEditFromCollection.CustomizationCells[i].Category;
+                }
+                else throw new NotImplementedException();
             }
-            TextCellViewModelInstance.OnCellChange();
+            OnCellChange();
         }
     }
 }

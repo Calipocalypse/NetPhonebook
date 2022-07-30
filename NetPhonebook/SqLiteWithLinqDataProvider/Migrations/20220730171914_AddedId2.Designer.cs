@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SqLiteWithLinqDataProvider;
 
@@ -10,9 +11,10 @@ using SqLiteWithLinqDataProvider;
 namespace SqLiteWithLinqDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    partial class NetphonebookContextModelSnapshot : ModelSnapshot
+    [Migration("20220730171914_AddedId2")]
+    partial class AddedId2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
@@ -134,13 +136,10 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Property<string>("BorderSize")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("TEXT");
 
                     b.Property<byte>("CellId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<byte>("CellType")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CornerRadius")
@@ -214,7 +213,9 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 {
                     b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("NetPhonebook.Core.Models.VirtualModel", "Model")
                         .WithMany("CustomizationCells")

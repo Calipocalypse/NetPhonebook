@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SqLiteWithLinqDataProvider.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -119,11 +119,17 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     IsUsingPrefix = table.Column<bool>(type: "INTEGER", nullable: false),
                     PrefixId = table.Column<Guid>(type: "TEXT", nullable: true),
                     IsUsingSuffix = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SuffixId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    SuffixId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    ListTypeElementId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_virtualModelsCellDatas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_virtualModelsCellDatas_ExtraInfos_ListTypeElementId",
+                        column: x => x.ListTypeElementId,
+                        principalTable: "ExtraInfos",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_virtualModelsCellDatas_ExtraInfos_PrefixId",
                         column: x => x.PrefixId,
@@ -145,6 +151,11 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 name: "IX_ExtraInfos_ExtraCategoryId",
                 table: "ExtraInfos",
                 column: "ExtraCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_virtualModelsCellDatas_ListTypeElementId",
+                table: "virtualModelsCellDatas",
+                column: "ListTypeElementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_virtualModelsCellDatas_MainDataId",

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SqLiteWithLinqDataProvider;
 
@@ -10,9 +11,10 @@ using SqLiteWithLinqDataProvider;
 namespace SqLiteWithLinqDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    partial class NetphonebookContextModelSnapshot : ModelSnapshot
+    [Migration("20220730171416_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
@@ -96,6 +98,9 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Property<bool>("IsUsingSuffix")
                         .HasColumnType("INTEGER");
 
+                    b.Property<Guid?>("ListTypeElementId")
+                        .HasColumnType("TEXT");
+
                     b.Property<Guid?>("MainDataId")
                         .HasColumnType("TEXT");
 
@@ -109,6 +114,8 @@ namespace SqLiteWithLinqDataProvider.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListTypeElementId");
 
                     b.HasIndex("MainDataId");
 
@@ -138,9 +145,6 @@ namespace SqLiteWithLinqDataProvider.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<byte>("CellId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<byte>("CellType")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CornerRadius")
@@ -191,6 +195,10 @@ namespace SqLiteWithLinqDataProvider.Migrations
 
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCellData", b =>
                 {
+                    b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "ListTypeElement")
+                        .WithMany()
+                        .HasForeignKey("ListTypeElementId");
+
                     b.HasOne("NetPhonebook.Core.Models.VirtualModelsData", "MainData")
                         .WithMany()
                         .HasForeignKey("MainDataId");
@@ -202,6 +210,8 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "Suffix")
                         .WithMany()
                         .HasForeignKey("SuffixId");
+
+                    b.Navigation("ListTypeElement");
 
                     b.Navigation("MainData");
 

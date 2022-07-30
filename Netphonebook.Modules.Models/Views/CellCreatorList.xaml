@@ -3,10 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Netphonebook.Modules.Models.Views"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
-             d:Background="Yellow"
+             d:Background="Green"
 >
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Font size"/>
+            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding FontSizeCell}"/>
+            <TextBlock d:Text="23" Text="{Binding FontSizeCell}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Category"/>
+            <ComboBox MinWidth="150"  ItemsSource="{Binding Categories}" SelectedIndex="{Binding SelectedIndex}" IsSynchronizedWithCurrentItem="False" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+    </StackPanel>
 </UserControl>
