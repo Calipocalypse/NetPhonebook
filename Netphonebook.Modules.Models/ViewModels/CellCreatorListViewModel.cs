@@ -29,8 +29,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             _dataProvider = dataProvider;
             parentView = ParentView;
-            Categories = GetCategories();
-            SelectedIndex = 1; //ToDO
+            Categories = GetCategories(); 
         }
 
         public ObservableCollection<ExtraCategory> Categories { get; }
@@ -45,29 +44,30 @@ namespace Netphonebook.Modules.Models.ViewModels
             return oc;
         }
 
-        private ExtraCategory[] extraCategories = new ExtraCategory[5];
-        public ExtraCategory[] ExtraCategories
+        private ObservableCollection<ExtraCategory> extraCategories = new ObservableCollection<ExtraCategory>(new ExtraCategory[6]);
+        public ObservableCollection<ExtraCategory> ExtraCategories
         {
             get { return extraCategories; }
-            set 
-            { 
-                SetProperty(ref extraCategories, value);
-                RaisePropertyChanged(nameof(ExtraCategoryCell));
-            }
-        }
-        public ExtraCategory ExtraCategoryCell
-        {
-            get { return extraCategories[RealSelectedCellNumber]; }
-            set { SetProperty(ref ExtraCategories[RealSelectedCellNumber], value); }
+            set { SetProperty(ref extraCategories, value); }
         }
 
         private int selectedIndex = 0;
         public int SelectedIndex
         {
             get { return selectedIndex; }
-            set { SetProperty(ref selectedIndex, value); }
+            set 
+            { 
+                SetProperty(ref selectedIndex, value);
+                SaveSelectionChangeToExtraCategories();
+            }
         }
-        
+
+        private void SaveSelectionChangeToExtraCategories()
+        {
+            ExtraCategories[RealSelectedCellNumber] = Categories[selectedIndex];
+            ExtraCategories = ExtraCategories;
+        }
+
         /* 1. FontSize */
         private sbyte[] fontSize = new sbyte[6] { 1, 2, 3, 4, 5, 6 };
         public sbyte[] FontSize
@@ -83,8 +83,30 @@ namespace Netphonebook.Modules.Models.ViewModels
 
         public void OnCellChange()
         {
-            RaisePropertyChanged(nameof(ExtraCategories));
-            RaisePropertyChanged(nameof(ExtraCategoryCell));
+            RaisePropertyChanged(nameof(FontSizeCell));
+            SelectedIndex = GetSelectedIndex();
+        }
+
+        private int GetSelectedIndex()
+        {
+            for (int i = 0; i < Categories.Count; i++)
+            {
+                if (ExtraCategories[RealSelectedCellNumber] == null) continue;
+                if (ExtraCategories[RealSelectedCellNumber].Id == Categories[i].Id) return i;
+            }
+            return 0;
+        }
+
+        public void AssignCorrectSelectedIndexToComboBox()
+        {
+            for (int i = 0; i < Categories.Count; i++)
+            {
+                for (int j = 0; j < ExtraCategories.Count; j++)
+                {
+                    if (ExtraCategories[j] == null) continue;
+                    if (Categories[i].Id == ExtraCategories[j].Id) SelectedIndex = i;
+                }
+            }
         }
     }
 }

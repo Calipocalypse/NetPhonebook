@@ -149,8 +149,8 @@ namespace Netphonebook.Modules.Models.ViewModels
         private void OnCellChange()
         {
             RaisePropertyChanged(nameof(CellRecordTypeCell));
-            TextCellViewModelInstance.OnCellChange();
-            ListCellViewModelInstance.OnCellChange();
+            if (CellRecordTypeArray[SelectedCellNumber - 1] == CellRecordType.Text) TextCellViewModelInstance.OnCellChange();
+            if (CellRecordTypeArray[SelectedCellNumber - 1] == CellRecordType.List) ListCellViewModelInstance.OnCellChange();
             OnCellTypeChange();
         }
 
@@ -184,6 +184,7 @@ namespace Netphonebook.Modules.Models.ViewModels
                 case EditorsMode.Edit: EditCurrentModel(ComposeNewModel(toEdit.Id));
                     break;
             }
+            NavigateBack();
         }
 
         private VirtualModel ComposeNewModel(Guid ModelId = new Guid())
@@ -309,6 +310,7 @@ namespace Netphonebook.Modules.Models.ViewModels
                 }
                 else throw new NotImplementedException();
             }
+            ListCellViewModelInstance.AssignCorrectSelectedIndexToComboBox();
             OnCellChange();
         }
     }

@@ -16,7 +16,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Category"/>
-            <ComboBox MinWidth="150"  ItemsSource="{Binding Categories}" SelectedIndex="{Binding SelectedIndex}" IsSynchronizedWithCurrentItem="False" >
+            <ComboBox MinWidth="150"  ItemsSource="{Binding Categories}" SelectedIndex="{Binding SelectedIndex}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}"/>
