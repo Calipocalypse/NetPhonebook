@@ -168,6 +168,7 @@ namespace Netphonebook.Modules.Models.ViewModels
                     {
                         TextCellViewModelInstance.CellCreatorTextVisibility = Visibility.Collapsed;
                         ListCellViewModelInstance.CellCreatorListVisibility = Visibility.Visible;
+                        ListCellViewModelInstance.OnCellChange();
                     }
                     break;
             }
@@ -179,7 +180,12 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             switch (Mode)
             {
-                case EditorsMode.Add: AddNewModel(ComposeNewModel());
+                case EditorsMode.Add:
+                    try
+                    {
+                        AddNewModel(ComposeNewModel());
+                    }
+                    catch(Exception ex) { MessageBox.Show("Wystąpił błąd: " + ex.Message); }
                     break;
                 case EditorsMode.Edit: EditCurrentModel(ComposeNewModel(toEdit.Id));
                     break;

@@ -13,28 +13,19 @@
             <StackPanel Orientation="Vertical">
                 <TextBlock>Current Model:</TextBlock>
                 <TextBlock>Poniżej lista wszystkich wpisów - klikasz, wybierasz, edytujesz</TextBlock>
-                <ListView MinWidth="33" MinHeight="33" ItemsSource="{Binding VirtualModels}" SelectedItem="{Binding SelectedModel}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <local:RecordEntriesClicker/>
+                <TextBlock Text="Viewer here soon"/>
             </StackPanel>
-            <StackPanel Background="Yellow">
+            <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="Cell Number"/>
-                    <Slider Margin="5" MinWidth="100"></Slider>
-                    <TextBlock d:Text="5" Margin="5"/>
+                    <TextBlock Text="Displayed Number"/>
+                    <TextBox MinWidth="100" d:Text="169/99" Text=""/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="First text"/>
-                    <TextBox Margin="5" MinWidth="50"/>
+                <StackPanel>
+                    <Slider Minimum="0" Maximum="5"></Slider>
+                    <TextBlock Text="Selected Cell: 1"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="Second text"/>
-                    <TextBox Margin="5" MinWidth="50"/>
-                </StackPanel>
+                <local:EntryEditor/>
             </StackPanel>
         </StackPanel>
     </Grid>
