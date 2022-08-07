@@ -14,5 +14,6 @@ namespace NetPhonebook.Core.Interfaces
         void AddInfo(ExtraInfo toCreate);
         void AddVirtualModel(VirtualModel toCreate);
         void AddFavouriteColor(FavouriteColor toCreate);
+        void AddVirtualData(VirtualModelsData toCreate);
     }
 }

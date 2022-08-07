@@ -11,5 +11,7 @@ namespace NetPhonebook.Core.Models
         public Guid Id { get; set; }
         //public Image Image { get; set; }
         public string DisplayedNumber { get; set; }
+        public ICollection<VirtualModelsCellData> CellDatas { get; set; }
+        //TODO ADD RELATION TO VIRTUAL MODEL AND GET BACK TO RecordEntriesClickerViewModel TO 28 LINE
     }
 }

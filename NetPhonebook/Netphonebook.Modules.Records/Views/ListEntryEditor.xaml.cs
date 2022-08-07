@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Netphonebook.Modules.Records.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,12 +17,14 @@ using System.Windows.Shapes;
 namespace Netphonebook.Modules.Records.Views
 {
     /// <summary>
-    /// Logika interakcji dla klasy EntryEditor.xaml
+    /// Logika interakcji dla klasy ListEntryEditor.xaml
     /// </summary>
-    public partial class EntryEditor : UserControl
+    public partial class ListEntryEditor : UserControl
     {
-        public EntryEditor()
+        public ListEntryEditorViewModel ViewModel;
+        public ListEntryEditor(ListEntryEditorViewModel viewModel)
         {
+            ViewModel = viewModel;
             InitializeComponent();
         }
     }

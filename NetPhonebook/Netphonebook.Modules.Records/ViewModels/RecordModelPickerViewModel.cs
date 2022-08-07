@@ -15,7 +15,7 @@ namespace Netphonebook.Modules.Records.ViewModels
 {
     public class RecordModelPickerViewModel : BindableBase
     {
-        public ObservableCollection<VirtualModel> VirtualModels { get; set; }
+        public List<VirtualModel> VirtualModels { get; set; }
 
         public DelegateCommand Choose { get; set; }
 
@@ -33,7 +33,7 @@ namespace Netphonebook.Modules.Records.ViewModels
         {
             _regionManager = regionManager;
             _dataProvider = dataProvider;
-            VirtualModels = _dataProvider.GetVirtualModels();
+            VirtualModels = _dataProvider.GetVirtualModelsWithCustomization();
             Choose = new DelegateCommand(ChooseClicked);
         }
 

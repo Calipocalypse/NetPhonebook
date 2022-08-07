@@ -166,5 +166,34 @@ namespace SqLiteWithLinqDataProvider
                 context.SaveChanges();
             }
         }
+
+        public void AddVirtualData(VirtualModelsData toCreate)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                context.Add(toCreate);
+                context.SaveChanges();
+            }
+        }
+
+        public ObservableCollection<VirtualModelsData> GetVirtualModelsDataWithCellData()
+        {
+            using (var context = new NetphonebookContext())
+            {
+                var toReturn = new ObservableCollection<VirtualModelsData>();
+                var c = context.virtualModelsDatas.Include("CellDatas").Include("CellDatas.extraInfo");
+                c.ForEachAsync(c => toReturn.Add(c));
+                return toReturn;
+            }
+        }
+
+        public void DestroyVirtualData(VirtualModelsData toDestroy)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                context.Remove(toDestroy);
+                context.SaveChanges();
+            }
+        }
     }
 }

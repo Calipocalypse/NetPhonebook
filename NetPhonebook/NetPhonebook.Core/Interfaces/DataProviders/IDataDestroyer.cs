@@ -14,5 +14,6 @@ namespace NetPhonebook.Core.Interfaces
         void DestroyInfo(ExtraInfo toDestroy);
         void DestroyModel(VirtualModel toDestroy);
         void DestroyFavouriteColor(SolidColorBrush toDestroy);
+        void DestroyVirtualData(VirtualModelsData toDestroy);
     }
 }

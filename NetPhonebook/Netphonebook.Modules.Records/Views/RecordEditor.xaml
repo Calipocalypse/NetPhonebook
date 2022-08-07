@@ -13,19 +13,28 @@
             <StackPanel Orientation="Vertical">
                 <TextBlock>Current Model:</TextBlock>
                 <TextBlock>Poniżej lista wszystkich wpisów - klikasz, wybierasz, edytujesz</TextBlock>
-                <local:RecordEntriesClicker/>
+                <local:RecordEntriesClicker DataContext="{Binding EntriesClickerContext}"/>
                 <TextBlock Text="Viewer here soon"/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Displayed Number"/>
+                    <TextBox MinWidth="100" d:Text="12 34 45 332" Text=""/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Secondary Number"/>
                     <TextBox MinWidth="100" d:Text="169/99" Text=""/>
                 </StackPanel>
-                <StackPanel>
-                    <Slider Minimum="0" Maximum="5"></Slider>
-                    <TextBlock Text="Selected Cell: 1"/>
+                <ContentControl prism:RegionManager.RegionName="FirstCellRegion"/>
+                <ContentControl prism:RegionManager.RegionName="SecondCellRegion"/>
+                <ContentControl prism:RegionManager.RegionName="ThirdCellRegion"/>
+                <ContentControl prism:RegionManager.RegionName="FourthCellRegion"/>
+                <ContentControl prism:RegionManager.RegionName="FifthCellRegion"/>
+                <ContentControl prism:RegionManager.RegionName="SixthCellRegion"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button Command="{Binding AddSaveButton}" Content="Save"/>
+                    <Button Content="Delete"/>
                 </StackPanel>
-                <local:EntryEditor/>
             </StackPanel>
         </StackPanel>
     </Grid>

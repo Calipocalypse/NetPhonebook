@@ -1,5 +1,6 @@
 ﻿using CsvDataProvider;
 using Netphonebook.Modules.Models;
+using Netphonebook.Modules.Records;
 using NetPhonebook.Core.Interfaces;
 using NetPhonebook.Modules.Lists;
 using NetPhonebook.Modules.Menu;
@@ -36,6 +37,7 @@ namespace NetPhonebook
             moduleCatalog.AddModule<MenuModule>();
             moduleCatalog.AddModule<ListsModule>();
             moduleCatalog.AddModule<ModelsModule>();
+            moduleCatalog.AddModule<RecordsModule>();
         }
     }
 }

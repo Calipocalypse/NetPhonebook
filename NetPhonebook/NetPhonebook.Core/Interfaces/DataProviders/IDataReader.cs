@@ -17,5 +17,6 @@ namespace NetPhonebook.Core.Interfaces
         ObservableCollection<VirtualModel> GetVirtualModels();
         List<VirtualModel> GetVirtualModelsWithCustomization();
         ObservableCollection<SolidColorBrush> GetFavouriteColors();
+        ObservableCollection<VirtualModelsData> GetVirtualModelsDataWithCellData();
     }
 }

@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace SqLiteDataProvider
 {
-    public class SqLiteDataProviderModule : IDataProvider
+    public class SqLiteDataProviderModule// : IDataProvider
     {
         public SqLiteDataProviderModule() { }
 
@@ -162,6 +162,21 @@ namespace SqLiteDataProvider
                 context.Remove(favouriteColorToRemove);
                 context.SaveChanges();
             }
+        }
+
+        public void AddVirtualData(VirtualModelsData toCreate)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ObservableCollection<VirtualModelsData> GetVirtualModelsDataWithCellData()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DestroyVirtualData(VirtualModelsData toDestroy)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
