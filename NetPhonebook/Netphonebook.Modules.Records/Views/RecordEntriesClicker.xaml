@@ -11,7 +11,10 @@
             <ListView MinWidth="33" MinHeight="333" ItemsSource="{Binding VirtualModelsData}" SelectedItem="{Binding SelectedModel}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Id}"/>
+                            <TextBlock Text="{Binding }"/>
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

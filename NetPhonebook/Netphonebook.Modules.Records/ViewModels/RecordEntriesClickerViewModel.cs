@@ -12,20 +12,37 @@ namespace Netphonebook.Modules.Records.ViewModels
 {
     public class RecordEntriesClickerViewModel : BindableBase
     {
-        public ObservableCollection<VirtualModelsData> VirtualModelsData;
+        public ObservableCollection<VirtualModelsData> VirtualModelsData { get; set; }
         private IDataProvider _dataProvider;
 
         private VirtualModelsData selectedItem;
         public VirtualModelsData SelectedItem
         {
             get { return selectedItem; }
-            set { SetProperty(ref selectedItem, value); }
+            set 
+            { 
+                SetProperty(ref selectedItem, value);
+                parentViewModel.OnEntryChange(selectedItem);
+            }
         }
 
-        public RecordEntriesClickerViewModel(IDataProvider dataProvider)
+        private RecordEditorViewModel parentViewModel;
+        public RecordEditorViewModel ParentViewModel
+        {
+            get { return parentViewModel; }
+            set { SetProperty(ref parentViewModel, value); }
+        }
+
+        public RecordEntriesClickerViewModel(RecordEditorViewModel parentViewModel, IDataProvider dataProvider, Guid ModelId)
         {
             _dataProvider = dataProvider;
-            VirtualModelsData = _dataProvider.GetVirtualModelsDataWithCellData().Where(x => x.);
+            ParentViewModel = parentViewModel;
+            VirtualModelsData = _dataProvider.GetVirtualModelsDataWithCellDataForGivenModel(ModelId);
+        }
+        
+        public void AddEntry(VirtualModelsData newEntry)
+        {
+            VirtualModelsData.Add(newEntry);
         }
     }
 }

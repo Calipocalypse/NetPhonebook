@@ -180,12 +180,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             switch (Mode)
             {
-                case EditorsMode.Add:
-                    try
-                    {
-                        AddNewModel(ComposeNewModel());
-                    }
-                    catch(Exception ex) { MessageBox.Show("Wystąpił błąd: " + ex.Message); }
+                case EditorsMode.Add: AddNewModel(ComposeNewModel());
                     break;
                 case EditorsMode.Edit: EditCurrentModel(ComposeNewModel(toEdit.Id));
                     break;

@@ -25,6 +25,7 @@ namespace Netphonebook.Modules.Records.Views
         public TextEntryEditor(TextEntryEditorViewModel viewModel)
         {
             ViewModel = viewModel;
+            this.DataContext = viewModel;
             InitializeComponent();
         }
     }

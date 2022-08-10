@@ -87,16 +87,19 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Property<sbyte>("CellId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<byte>("CellType")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("FirstText")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("MainDataId")
+                    b.Property<Guid>("MainDataId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecondText")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("extraInfoId")
+                    b.Property<Guid?>("extraInfoId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -162,7 +165,12 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Property<string>("DisplayedNumber")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("ModelBaseId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ModelBaseId");
 
                     b.ToTable("virtualModelsDatas");
                 });
@@ -181,14 +189,14 @@ namespace SqLiteWithLinqDataProvider.Migrations
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCellData", b =>
                 {
                     b.HasOne("NetPhonebook.Core.Models.VirtualModelsData", "MainData")
-                        .WithMany()
-                        .HasForeignKey("MainDataId");
+                        .WithMany("CellDatas")
+                        .HasForeignKey("MainDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "extraInfo")
                         .WithMany()
-                        .HasForeignKey("extraInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("extraInfoId");
 
                     b.Navigation("MainData");
 
@@ -212,6 +220,17 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Navigation("Model");
                 });
 
+            modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsData", b =>
+                {
+                    b.HasOne("NetPhonebook.Core.Models.VirtualModel", "ModelBase")
+                        .WithMany()
+                        .HasForeignKey("ModelBaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ModelBase");
+                });
+
             modelBuilder.Entity("NetPhonebook.Core.Models.ExtraCategory", b =>
                 {
                     b.Navigation("ExtraInfos");
@@ -220,6 +239,11 @@ namespace SqLiteWithLinqDataProvider.Migrations
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModel", b =>
                 {
                     b.Navigation("CustomizationCells");
+                });
+
+            modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsData", b =>
+                {
+                    b.Navigation("CellDatas");
                 });
 #pragma warning restore 612, 618
         }

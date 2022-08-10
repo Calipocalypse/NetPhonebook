@@ -5,6 +5,7 @@ using NetPhonebook.Core.Models;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -182,6 +183,17 @@ namespace SqLiteWithLinqDataProvider
             {
                 var toReturn = new ObservableCollection<VirtualModelsData>();
                 var c = context.virtualModelsDatas.Include("CellDatas").Include("CellDatas.extraInfo");
+                c.ForEachAsync(c => toReturn.Add(c));
+                return toReturn;
+            }
+        }
+
+        public ObservableCollection<VirtualModelsData> GetVirtualModelsDataWithCellDataForGivenModel(Guid ModelId)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                var toReturn = new ObservableCollection<VirtualModelsData>();
+                var c = context.virtualModelsDatas.Include("CellDatas").Include("CellDatas.extraInfo").Where(x => x.ModelBaseId == ModelId);
                 c.ForEachAsync(c => toReturn.Add(c));
                 return toReturn;
             }

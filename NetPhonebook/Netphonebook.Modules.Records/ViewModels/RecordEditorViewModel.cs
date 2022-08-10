@@ -42,6 +42,28 @@ namespace Netphonebook.Modules.Records.ViewModels
             AddSaveButton = new DelegateCommand(ClickedAddSaveButton);
         }
         
+        /* Trigger */
+
+        public void OnEntryChange(VirtualModelsData selectedItem)
+        {
+            //Iteration for every Cell Instance
+            for (int i = 0; i < Cell.Length; i++)
+            {
+                //Iteration to find right cell data to Cell
+                for (int j = 0; i < Cell.Length; j++)
+                {
+                    var singleCells = selectedItem.CellDatas;
+                    var wantedCell = singleCells.FirstOrDefault(x => x.CellId == i);
+                    Cell[i].FillCellData(wantedCell);
+                }
+            }
+        }
+
+        private VirtualModelsCustomization GetCellCustomization(int index)
+        {
+            return givenModel.CustomizationCells[index];
+        }
+
         /* Buttons */
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -52,9 +74,14 @@ namespace Netphonebook.Modules.Records.ViewModels
         {
             givenModel = navigationContext.Parameters.GetValue<VirtualModel>("model");
             ComposeRegionManager();
-            EntriesClickerContext = new RecordEntriesClickerViewModel();
-            EntriesClickerContext.
+            CreateInstanceOfEntriesClicker();
         }
+
+        private void CreateInstanceOfEntriesClicker()
+        {
+            EntriesClickerContext = new RecordEntriesClickerViewModel(this, _dataProvider, givenModel.Id);
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             throw new NotImplementedException();
@@ -70,17 +97,33 @@ namespace Netphonebook.Modules.Records.ViewModels
         {
             var newEntry = ComposeNewEntry();
             _dataProvider.AddVirtualData(newEntry);
-
-            //Add new record to list
-            //Add new record to database
+            EntriesClickerContext.AddEntry(newEntry);
         }
 
         private VirtualModelsData ComposeNewEntry()
         {
-            GetCellDatas();
+            var newEntry = new VirtualModelsData
+            {
+                Id = Guid.NewGuid(),
+                DisplayedNumber = "5344",
+                ModelBaseId = givenModel.Id,
+                CellDatas = GetCellDatas()
+            };
+            return newEntry;
         }
 
-        private void GetCellDatas()
+        private ICollection<VirtualModelsCellData> GetCellDatas()
+        {
+            ICollection<VirtualModelsCellData> cellDatas = new List<VirtualModelsCellData>();
+            for (int i = 0; i < givenModel.CustomizationCells.Count; i++)
+            {
+                VirtualModelsCellData cellData = Cell[i].GetVirtualCellData(givenModel.Id, i);
+                cellDatas.Add(cellData);
+            }
+            return cellDatas;
+        }
+
+        private VirtualModelsCellData ComposeCellDataOfList()
         {
             throw new NotImplementedException();
         }
@@ -115,15 +158,22 @@ namespace Netphonebook.Modules.Records.ViewModels
                         break;
                     case CellRecordType.Text: CreateCellTextType(i);
                         break;
-                    default: throw new Exception();
+                    default: throw new NotImplementedException();
                         break;
                 }
             }
         }
 
+        private void InjectCellViewToRegion(object view, int cellId)
+        {
+            CellRegions[cellId].Add(view);
+            CellRegions[cellId].Activate(view);
+        }
+
         private void CreateCellListType(int cellId)
         {
-            var newVM = new ListEntryEditorViewModel();
+            Guid? categoryId = GetCellCustomization(cellId).CategoryId;
+            var newVM = new ListEntryEditorViewModel(_dataProvider, categoryId);
             InjectCellViewToRegion(new ListEntryEditor(newVM), cellId);
             Cell[cellId] = newVM;
         }
@@ -133,12 +183,6 @@ namespace Netphonebook.Modules.Records.ViewModels
             var newVM = new TextEntryEditorViewModel();
             InjectCellViewToRegion(new TextEntryEditor(newVM), cellId);
             Cell[cellId] = newVM;
-        }
-
-        private void InjectCellViewToRegion(object view, int cellId)
-        {
-            CellRegions[cellId].Add(view);
-            CellRegions[cellId].Activate(view);
         }
     }
 }

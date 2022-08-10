@@ -10,7 +10,7 @@
         <StackPanel Background="LightBlue">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="5" Text="Static type"/>
-                <ComboBox MinWidth="150"  ItemsSource="{Binding Categories}" SelectedIndex="{Binding SelectedIndex}">
+                <ComboBox MinWidth="150" ItemsSource="{Binding ListOfCategory}" SelectedIndex="{Binding SelectedIndex}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>

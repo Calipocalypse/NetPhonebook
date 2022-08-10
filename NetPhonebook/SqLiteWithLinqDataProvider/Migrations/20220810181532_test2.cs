@@ -5,16 +5,38 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SqLiteWithLinqDataProvider.Migrations
 {
-    public partial class AddedId : Migration
+    public partial class test2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_virtualModelsCellDatas_ExtraInfos_ListTypeElementId",
+                name: "FK_virtualModelsCellDatas_ExtraInfos_extraInfoId",
                 table: "virtualModelsCellDatas");
 
             migrationBuilder.AlterColumn<Guid>(
-                name: "ListTypeElementId",
+                name: "extraInfoId",
+                table: "virtualModelsCellDatas",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(Guid),
+                oldType: "TEXT");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_virtualModelsCellDatas_ExtraInfos_extraInfoId",
+                table: "virtualModelsCellDatas",
+                column: "extraInfoId",
+                principalTable: "ExtraInfos",
+                principalColumn: "Id");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_virtualModelsCellDatas_ExtraInfos_extraInfoId",
+                table: "virtualModelsCellDatas");
+
+            migrationBuilder.AlterColumn<Guid>(
+                name: "extraInfoId",
                 table: "virtualModelsCellDatas",
                 type: "TEXT",
                 nullable: false,
@@ -24,34 +46,12 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_virtualModelsCellDatas_ExtraInfos_ListTypeElementId",
+                name: "FK_virtualModelsCellDatas_ExtraInfos_extraInfoId",
                 table: "virtualModelsCellDatas",
-                column: "ListTypeElementId",
+                column: "extraInfoId",
                 principalTable: "ExtraInfos",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_virtualModelsCellDatas_ExtraInfos_ListTypeElementId",
-                table: "virtualModelsCellDatas");
-
-            migrationBuilder.AlterColumn<Guid>(
-                name: "ListTypeElementId",
-                table: "virtualModelsCellDatas",
-                type: "TEXT",
-                nullable: true,
-                oldClrType: typeof(Guid),
-                oldType: "TEXT");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_virtualModelsCellDatas_ExtraInfos_ListTypeElementId",
-                table: "virtualModelsCellDatas",
-                column: "ListTypeElementId",
-                principalTable: "ExtraInfos",
-                principalColumn: "Id");
         }
     }
 }

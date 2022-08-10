@@ -46,18 +46,6 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "virtualModelsDatas",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    DisplayedNumber = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_virtualModelsDatas", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ExtraInfos",
                 columns: table => new
                 {
@@ -83,7 +71,8 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     ModelId = table.Column<Guid>(type: "TEXT", nullable: false),
                     CellId = table.Column<byte>(type: "INTEGER", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CellType = table.Column<byte>(type: "INTEGER", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "TEXT", nullable: false),
                     BackgroundColor = table.Column<string>(type: "TEXT", nullable: true),
                     ForegroundColor = table.Column<string>(type: "TEXT", nullable: true),
                     BorderColor = table.Column<string>(type: "TEXT", nullable: true),
@@ -98,10 +87,30 @@ namespace SqLiteWithLinqDataProvider.Migrations
                         name: "FK_virtualModelsCustomizations_ExtraCategories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "ExtraCategories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_virtualModelsCustomizations_virtualModels_ModelId",
                         column: x => x.ModelId,
+                        principalTable: "virtualModels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "virtualModelsDatas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    DisplayedNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    ModelBaseId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_virtualModelsDatas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_virtualModelsDatas_virtualModels_ModelBaseId",
+                        column: x => x.ModelBaseId,
                         principalTable: "virtualModels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -112,39 +121,28 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    MainDataId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    MainDataId = table.Column<Guid>(type: "TEXT", nullable: false),
                     CellId = table.Column<sbyte>(type: "INTEGER", nullable: false),
+                    CellType = table.Column<byte>(type: "INTEGER", nullable: false),
                     FirstText = table.Column<string>(type: "TEXT", nullable: true),
                     SecondText = table.Column<string>(type: "TEXT", nullable: true),
-                    IsUsingPrefix = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PrefixId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    IsUsingSuffix = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SuffixId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    ListTypeElementId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    extraInfoId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_virtualModelsCellDatas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_virtualModelsCellDatas_ExtraInfos_ListTypeElementId",
-                        column: x => x.ListTypeElementId,
+                        name: "FK_virtualModelsCellDatas_ExtraInfos_extraInfoId",
+                        column: x => x.extraInfoId,
                         principalTable: "ExtraInfos",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_virtualModelsCellDatas_ExtraInfos_PrefixId",
-                        column: x => x.PrefixId,
-                        principalTable: "ExtraInfos",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_virtualModelsCellDatas_ExtraInfos_SuffixId",
-                        column: x => x.SuffixId,
-                        principalTable: "ExtraInfos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_virtualModelsCellDatas_virtualModelsDatas_MainDataId",
                         column: x => x.MainDataId,
                         principalTable: "virtualModelsDatas",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -153,24 +151,14 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 column: "ExtraCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_virtualModelsCellDatas_ListTypeElementId",
+                name: "IX_virtualModelsCellDatas_extraInfoId",
                 table: "virtualModelsCellDatas",
-                column: "ListTypeElementId");
+                column: "extraInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_virtualModelsCellDatas_MainDataId",
                 table: "virtualModelsCellDatas",
                 column: "MainDataId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_virtualModelsCellDatas_PrefixId",
-                table: "virtualModelsCellDatas",
-                column: "PrefixId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_virtualModelsCellDatas_SuffixId",
-                table: "virtualModelsCellDatas",
-                column: "SuffixId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_virtualModelsCustomizations_CategoryId",
@@ -181,6 +169,11 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 name: "IX_virtualModelsCustomizations_ModelId",
                 table: "virtualModelsCustomizations",
                 column: "ModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_virtualModelsDatas_ModelBaseId",
+                table: "virtualModelsDatas",
+                column: "ModelBaseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -201,10 +194,10 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 name: "virtualModelsDatas");
 
             migrationBuilder.DropTable(
-                name: "virtualModels");
+                name: "ExtraCategories");
 
             migrationBuilder.DropTable(
-                name: "ExtraCategories");
+                name: "virtualModels");
         }
     }
 }

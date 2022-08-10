@@ -11,8 +11,8 @@ using SqLiteWithLinqDataProvider;
 namespace SqLiteWithLinqDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    [Migration("20220730172116_AddedEnum")]
-    partial class AddedEnum
+    [Migration("20220810181532_test2")]
+    partial class test2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -89,34 +89,26 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Property<sbyte>("CellId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<byte>("CellType")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("FirstText")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsUsingPrefix")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsUsingSuffix")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid?>("MainDataId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("PrefixId")
+                    b.Property<Guid>("MainDataId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecondText")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("SuffixId")
+                    b.Property<Guid?>("extraInfoId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MainDataId");
 
-                    b.HasIndex("PrefixId");
-
-                    b.HasIndex("SuffixId");
+                    b.HasIndex("extraInfoId");
 
                     b.ToTable("virtualModelsCellDatas");
                 });
@@ -136,7 +128,7 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Property<string>("BorderSize")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("TEXT");
 
                     b.Property<byte>("CellId")
@@ -175,7 +167,12 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Property<string>("DisplayedNumber")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("ModelBaseId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ModelBaseId");
 
                     b.ToTable("virtualModelsDatas");
                 });
@@ -194,31 +191,25 @@ namespace SqLiteWithLinqDataProvider.Migrations
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCellData", b =>
                 {
                     b.HasOne("NetPhonebook.Core.Models.VirtualModelsData", "MainData")
-                        .WithMany()
-                        .HasForeignKey("MainDataId");
+                        .WithMany("CellDatas")
+                        .HasForeignKey("MainDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "Prefix")
+                    b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "extraInfo")
                         .WithMany()
-                        .HasForeignKey("PrefixId");
-
-                    b.HasOne("NetPhonebook.Core.Models.ExtraInfo", "Suffix")
-                        .WithMany()
-                        .HasForeignKey("SuffixId");
+                        .HasForeignKey("extraInfoId");
 
                     b.Navigation("MainData");
 
-                    b.Navigation("Prefix");
-
-                    b.Navigation("Suffix");
+                    b.Navigation("extraInfo");
                 });
 
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsCustomization", b =>
                 {
                     b.HasOne("NetPhonebook.Core.Models.ExtraCategory", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("NetPhonebook.Core.Models.VirtualModel", "Model")
                         .WithMany("CustomizationCells")
@@ -231,6 +222,17 @@ namespace SqLiteWithLinqDataProvider.Migrations
                     b.Navigation("Model");
                 });
 
+            modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsData", b =>
+                {
+                    b.HasOne("NetPhonebook.Core.Models.VirtualModel", "ModelBase")
+                        .WithMany()
+                        .HasForeignKey("ModelBaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ModelBase");
+                });
+
             modelBuilder.Entity("NetPhonebook.Core.Models.ExtraCategory", b =>
                 {
                     b.Navigation("ExtraInfos");
@@ -239,6 +241,11 @@ namespace SqLiteWithLinqDataProvider.Migrations
             modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModel", b =>
                 {
                     b.Navigation("CustomizationCells");
+                });
+
+            modelBuilder.Entity("NetPhonebook.Core.Models.VirtualModelsData", b =>
+                {
+                    b.Navigation("CellDatas");
                 });
 #pragma warning restore 612, 618
         }

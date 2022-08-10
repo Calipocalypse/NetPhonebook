@@ -1,4 +1,5 @@
-﻿using NetPhonebook.Core.Models;
+﻿using NetPhonebook.Core.Enums;
+using NetPhonebook.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Netphonebook.Modules.Records
 {
     internal interface IVirtualCellDataProvider
     {
-        VirtualModelsCellData GetCellData();
+        CellRecordType CellRecordType { get; set; }
+        VirtualModelsCellData GetVirtualCellData(Guid? mainModelData, int cellId);
+        void FillCellData(VirtualModelsCellData selectedItemCell);
     }
 }

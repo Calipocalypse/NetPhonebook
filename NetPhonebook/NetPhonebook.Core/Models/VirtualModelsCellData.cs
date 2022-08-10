@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetPhonebook.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,15 @@ namespace NetPhonebook.Core.Models
     {
         public Guid Id { get; set; }
         public VirtualModelsData MainData { get; set;}
+        public Guid MainDataId { get; set;}
         public sbyte CellId { get; set; }
+        public CellRecordType CellType { get; set; }
 
         public string FirstText { get; set; }
         public string SecondText { get; set; }
 
         public ExtraInfo extraInfo { get; set; }
-        public Guid extraInfoId { get ; set; }
+        public Guid? extraInfoId { get ; set; }
 
         /*
         public bool IsUsingPrefix { get; set; }
