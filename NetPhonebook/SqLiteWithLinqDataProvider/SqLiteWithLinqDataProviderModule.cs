@@ -177,6 +177,18 @@ namespace SqLiteWithLinqDataProvider
             }
         }
 
+        public void UpdateVirtualData(VirtualModelsData oldData, VirtualModelsData toUpdate)
+        {
+            using (var context = new NetphonebookContext())
+            {
+                //var c = context.virtualModelsCellDatas.Where(x => x.MainDataId == oldData.Id);
+                //context.RemoveRange(c);
+                context.Remove(oldData);
+                context.Add(toUpdate);
+                context.SaveChanges();
+            }
+        }
+
         public ObservableCollection<VirtualModelsData> GetVirtualModelsDataWithCellData()
         {
             using (var context = new NetphonebookContext())

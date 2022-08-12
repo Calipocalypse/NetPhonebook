@@ -33,16 +33,31 @@ namespace Netphonebook.Modules.Records.ViewModels
             set { SetProperty(ref parentViewModel, value); }
         }
 
-        public RecordEntriesClickerViewModel(RecordEditorViewModel parentViewModel, IDataProvider dataProvider, Guid ModelId)
+        public RecordEntriesClickerViewModel(RecordEditorViewModel parentViewModel, IDataProvider dataProvider)
         {
             _dataProvider = dataProvider;
             ParentViewModel = parentViewModel;
+        }
+
+        public void GetEntriesListOfGivenModelId(Guid ModelId)
+        {
             VirtualModelsData = _dataProvider.GetVirtualModelsDataWithCellDataForGivenModel(ModelId);
+        }
+
+        public bool IsSelectedItemNull()
+        {
+            if (selectedItem == null) return true;
+            else return false;
         }
         
         public void AddEntry(VirtualModelsData newEntry)
         {
             VirtualModelsData.Add(newEntry);
+        }
+
+        internal void DeleteEntry()
+        {
+            VirtualModelsData.Remove(SelectedItem);
         }
     }
 }

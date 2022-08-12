@@ -201,7 +201,7 @@ namespace Netphonebook.Modules.Models.ViewModels
                     {
                         Id = Guid.NewGuid(),
                         ModelId = ModelId,
-                        CellId = i,
+                        CellId = i, //Probably here to change
                         CellType = CellRecordTypeArray[i],
                         BorderColor = HexColorConverter.ToHex((TextCellViewModelInstance.BorderColor[i])),
                         ForegroundColor = HexColorConverter.ToHex(TextCellViewModelInstance.FontColor[i]),

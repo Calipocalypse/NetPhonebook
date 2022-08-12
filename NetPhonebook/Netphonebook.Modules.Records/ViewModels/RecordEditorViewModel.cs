@@ -1,4 +1,5 @@
-﻿using Netphonebook.Modules.Records.Views;
+﻿using Netphonebook.Modules.Records.Interfaces;
+using Netphonebook.Modules.Records.Views;
 using NetPhonebook.Core.Enums;
 using NetPhonebook.Core.Interfaces;
 using NetPhonebook.Core.Models;
@@ -10,13 +11,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace Netphonebook.Modules.Records.ViewModels
 {
-    public class RecordEditorViewModel : BindableBase, INavigationAware
+    public class RecordEditorViewModel : BindableBase, INavigationAware, ICellStateWatcher
     {
         public VirtualModel givenModel;
         private IDataProvider _dataProvider;
@@ -29,28 +31,77 @@ namespace Netphonebook.Modules.Records.ViewModels
             set { SetProperty(ref entriesClickerContext, value); }
         }
 
+        private string displayedNumber;
+        public string DisplayedNumber
+        { 
+            get { return displayedNumber;}
+            set 
+            {
+                SetProperty(ref displayedNumber, value);
+                CheckIfDataModelIsValid();
+            }
+        }
+
+        private string serialNumber;
+        public string SerialNumber
+        {
+            get { return serialNumber;}
+            set 
+            {
+                SetProperty(ref serialNumber, value);
+                CheckIfDataModelIsValid();
+            }
+        }
+
         private IRegion[] CellRegions = new IRegion[6];
         private IVirtualCellDataProvider[] Cell = new IVirtualCellDataProvider[6];
 
-        public DelegateCommand AddSaveButton { get; set; }
-        private DelegateCommand DeleteButton;
+        private ICellStateWatcher CellStateWatcher;
+
+        public DelegateCommand AddButton { get; set; }
+        public DelegateCommand EditButton { get; set; }
+        public DelegateCommand DeleteButton { get; set; }
+
+        private bool canComposeEntry;
+        public bool CanComposeEntry
+        {
+            get { return canComposeEntry; }
+            set { SetProperty(ref canComposeEntry, value); }
+        }
 
         public RecordEditorViewModel(IDataProvider dataProvider, IRegionManager regionManager) 
         {
             _dataProvider = dataProvider;
             _regionManager = regionManager;
-            AddSaveButton = new DelegateCommand(ClickedAddSaveButton);
+            CellStateWatcher = this;
+            CreateInstanceOfEntriesClicker();
+            ComposeButtons();
         }
-        
+
+        private void ComposeButtons()
+        {
+            AddButton = new DelegateCommand(ClickedAddButton, AreDatasValidForAdd).ObservesProperty(() => CanComposeEntry);
+            EditButton = new DelegateCommand(ClickedEditButton, AreDatasValidForEdit).ObservesProperty(() => CanComposeEntry);
+            DeleteButton = new DelegateCommand(ClickedDeleteButton);
+        }
+
         /* Trigger */
 
         public void OnEntryChange(VirtualModelsData selectedItem)
         {
+            if (selectedItem == null)
+            {
+                return;
+            }
+            //Change for displayed and serial number
+            DisplayedNumber = selectedItem.DisplayedNumber;
+            SerialNumber = selectedItem.SerialNumber;
+
             //Iteration for every Cell Instance
             for (int i = 0; i < Cell.Length; i++)
             {
                 //Iteration to find right cell data to Cell
-                for (int j = 0; i < Cell.Length; j++)
+                for (int j = 0; j < Cell.Length; j++)
                 {
                     var singleCells = selectedItem.CellDatas;
                     var wantedCell = singleCells.FirstOrDefault(x => x.CellId == i);
@@ -64,8 +115,6 @@ namespace Netphonebook.Modules.Records.ViewModels
             return givenModel.CustomizationCells[index];
         }
 
-        /* Buttons */
-
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             throw new NotImplementedException();
@@ -73,13 +122,13 @@ namespace Netphonebook.Modules.Records.ViewModels
         public void OnNavigatedFrom(NavigationContext navigationContext)
         {
             givenModel = navigationContext.Parameters.GetValue<VirtualModel>("model");
+            EntriesClickerContext.GetEntriesListOfGivenModelId(givenModel.Id);
             ComposeRegionManager();
-            CreateInstanceOfEntriesClicker();
         }
 
         private void CreateInstanceOfEntriesClicker()
         {
-            EntriesClickerContext = new RecordEntriesClickerViewModel(this, _dataProvider, givenModel.Id);
+            EntriesClickerContext = new RecordEntriesClickerViewModel(this, _dataProvider);
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -87,29 +136,30 @@ namespace Netphonebook.Modules.Records.ViewModels
             throw new NotImplementedException();
         }
 
-        /* Entry Picker Load */
-
-        /* Loading model */
-
-
-        /* Creating Data */
-        private void ClickedAddSaveButton()
+        /* ButtonAdd - Creating Data */
+        private void ClickedAddButton()
         {
-            var newEntry = ComposeNewEntry();
+            var newEntry = ComposeEntry();
             _dataProvider.AddVirtualData(newEntry);
             EntriesClickerContext.AddEntry(newEntry);
         }
 
-        private VirtualModelsData ComposeNewEntry()
+        private VirtualModelsData ComposeEntry(Guid? id = null)
         {
-            var newEntry = new VirtualModelsData
+            if (id == null)
             {
-                Id = Guid.NewGuid(),
-                DisplayedNumber = "5344",
+                id = Guid.NewGuid();
+            }
+
+            var composedEntry = new VirtualModelsData
+            {
+                Id = (Guid)id,
+                DisplayedNumber = DisplayedNumber,
+                SerialNumber = SerialNumber,
                 ModelBaseId = givenModel.Id,
                 CellDatas = GetCellDatas()
             };
-            return newEntry;
+            return composedEntry;
         }
 
         private ICollection<VirtualModelsCellData> GetCellDatas()
@@ -123,9 +173,61 @@ namespace Netphonebook.Modules.Records.ViewModels
             return cellDatas;
         }
 
-        private VirtualModelsCellData ComposeCellDataOfList()
+        /* ButtonEdit - Editing Data */
+
+        private void ClickedEditButton()
         {
-            throw new NotImplementedException();
+            var editEntry = ComposeEntry(EntriesClickerContext.SelectedItem.Id);
+            _dataProvider.UpdateVirtualData(EntriesClickerContext.SelectedItem, editEntry);
+            EntriesClickerContext.GetEntriesListOfGivenModelId(givenModel.Id);
+        }
+
+        /* Data Validation */
+
+        public void CheckIfDataModelIsValid()
+        {
+            if (CanComposeEntry == true) CanComposeEntry = false;
+            else CanComposeEntry = true; //Buttons react for this and then checks by AreDatasValid validation of data
+        }
+
+        private bool AreDatasValidForAdd()
+        {
+            return AreDatasValid();
+        }
+
+        private bool AreDatasValidForEdit()
+        {
+            if (EntriesClickerContext.IsSelectedItemNull() == true) return false;
+            return AreDatasValid();
+        }
+
+        private bool AreDatasValid()
+        {
+            if (DisplayedNumber == null || DisplayedNumber == "") return false;
+            if (SerialNumber == null || SerialNumber == "") return false;
+            foreach (var cellData in Cell)
+            {
+                if (cellData == null) return false;
+                if (cellData.IsCellReadyToCompose() == false) return false;
+            }
+            return true;
+        }
+
+
+        /* ButtonDelete - Deleting Data */
+
+        private void ClickedDeleteButton()
+        {
+            _dataProvider.DestroyVirtualData(EntriesClickerContext.SelectedItem);
+            EntriesClickerContext.DeleteEntry();
+            ClearDisplayedData();
+        }
+
+        private void ClearDisplayedData()
+        {
+            foreach (var cell in Cell) cell.ClearCellData();
+            DisplayedNumber = null;
+            SerialNumber = null;
         }
 
         /* Cells */
@@ -151,7 +253,6 @@ namespace Netphonebook.Modules.Records.ViewModels
         {
             for (int i = 0; i < givenModel.CustomizationCells.Count; i++)
             {
-                object newView;
                 switch (givenModel.CustomizationCells[i].CellType)
                 {
                     case CellRecordType.List: CreateCellListType(i);
@@ -159,7 +260,6 @@ namespace Netphonebook.Modules.Records.ViewModels
                     case CellRecordType.Text: CreateCellTextType(i);
                         break;
                     default: throw new NotImplementedException();
-                        break;
                 }
             }
         }
@@ -173,14 +273,14 @@ namespace Netphonebook.Modules.Records.ViewModels
         private void CreateCellListType(int cellId)
         {
             Guid? categoryId = GetCellCustomization(cellId).CategoryId;
-            var newVM = new ListEntryEditorViewModel(_dataProvider, categoryId);
+            var newVM = new ListEntryEditorViewModel(_dataProvider, CellStateWatcher, cellId, categoryId);
             InjectCellViewToRegion(new ListEntryEditor(newVM), cellId);
             Cell[cellId] = newVM;
         }
 
         private void CreateCellTextType(int cellId)
         {
-            var newVM = new TextEntryEditorViewModel();
+            var newVM = new TextEntryEditorViewModel(CellStateWatcher, cellId);
             InjectCellViewToRegion(new TextEntryEditor(newVM), cellId);
             Cell[cellId] = newVM;
         }

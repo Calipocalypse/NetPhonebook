@@ -1,4 +1,5 @@
-﻿using NetPhonebook.Core.Enums;
+﻿using Netphonebook.Modules.Records.Interfaces;
+using NetPhonebook.Core.Enums;
 using NetPhonebook.Core.Models;
 using Prism.Mvvm;
 using System;
@@ -11,6 +12,9 @@ namespace Netphonebook.Modules.Records.ViewModels
 {
     public class TextEntryEditorViewModel : BindableBase, IVirtualCellDataProvider
     {
+        private ICellStateWatcher _cellStateMainWatcher;
+        private int _cellId;
+
         private CellRecordType cellRecordType;
         public CellRecordType CellRecordType
         {
@@ -22,14 +26,28 @@ namespace Netphonebook.Modules.Records.ViewModels
         public string FirstText
         {
             get { return firstText; }
-            set { SetProperty(ref firstText, value); }
+            set 
+            {
+                SetProperty(ref firstText, value);
+                SendSignalToCheckIfValid();
+            }
         }
 
         private string secondText;
         public string SecondText
         {
             get { return secondText; }
-            set { SetProperty(ref secondText, value); }
+            set 
+            { 
+                SetProperty(ref secondText, value);
+                SendSignalToCheckIfValid();
+            }
+        }
+
+        public TextEntryEditorViewModel(ICellStateWatcher cellStateWatcher, int cellId)
+        {
+            _cellStateMainWatcher = cellStateWatcher;
+            _cellId = cellId;
         }
 
         public VirtualModelsCellData GetVirtualCellData(Guid? mainModelData, int cellId)
@@ -49,6 +67,23 @@ namespace Netphonebook.Modules.Records.ViewModels
         {
             SecondText = selectedItemCell.SecondText;
             FirstText = selectedItemCell.FirstText;
+        }
+
+        public void ClearCellData()
+        {
+            SecondText = null;
+            FirstText = null;
+        }
+
+        public bool IsCellReadyToCompose()
+        {
+            if (FirstText != null && FirstText !="" && SecondText != null && SecondText != "") return true;
+            else return false;
+        }
+
+        private void SendSignalToCheckIfValid()
+        {
+            _cellStateMainWatcher.CheckIfDataModelIsValid();
         }
     }
 }

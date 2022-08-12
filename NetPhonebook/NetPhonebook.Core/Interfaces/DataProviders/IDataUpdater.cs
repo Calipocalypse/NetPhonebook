@@ -11,5 +11,6 @@ namespace NetPhonebook.Core.Interfaces.DataProviders
     {
         void UpdateCategory(ExtraCategory extraCategoryEdited, ExtraCategory extraCategory);
         void UpdateVM(VirtualModel edited, VirtualModel freshModel);
+        void UpdateVirtualData(VirtualModelsData oldData, VirtualModelsData newData);
     }
 }

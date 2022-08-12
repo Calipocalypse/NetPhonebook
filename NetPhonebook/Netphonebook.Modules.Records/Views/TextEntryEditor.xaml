@@ -10,11 +10,11 @@
         <StackPanel Background="Yellow">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="5" Text="First text"/>
-                <TextBox Text="{Binding FirstText}" Margin="5" MinWidth="50"/>
+                <TextBox Text="{Binding FirstText, UpdateSourceTrigger=PropertyChanged}" Margin="5" MinWidth="50"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Margin="5" Text="Second text"/>
-                <TextBox Text="{Binding SecondText}" Margin="5" MinWidth="50"/>
+                <TextBox Text="{Binding SecondText, UpdateSourceTrigger=PropertyChanged}" Margin="5" MinWidth="50"/>
             </StackPanel>
         </StackPanel>
     </Grid>

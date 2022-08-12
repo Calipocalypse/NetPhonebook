@@ -13,5 +13,8 @@ namespace Netphonebook.Modules.Records
         CellRecordType CellRecordType { get; set; }
         VirtualModelsCellData GetVirtualCellData(Guid? mainModelData, int cellId);
         void FillCellData(VirtualModelsCellData selectedItemCell);
+        void ClearCellData();
+        bool IsCellReadyToCompose();
+
     }
 }

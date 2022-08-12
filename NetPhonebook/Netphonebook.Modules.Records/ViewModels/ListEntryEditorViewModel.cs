@@ -1,4 +1,5 @@
-﻿using NetPhonebook.Core.Enums;
+﻿using Netphonebook.Modules.Records.Interfaces;
+using NetPhonebook.Core.Enums;
 using NetPhonebook.Core.Interfaces;
 using NetPhonebook.Core.Models;
 using Prism.Mvvm;
@@ -13,11 +14,17 @@ namespace Netphonebook.Modules.Records.ViewModels
 {
     public class ListEntryEditorViewModel : BindableBase, IVirtualCellDataProvider
     {
+        private int _cellId;
+
+        private ICellStateWatcher _cellStateMainWatcher { get; }
+
         private IDataProvider _dataProvider;
         public ObservableCollection<ExtraInfo> ListOfCategory {get;set;}
 
-        public ListEntryEditorViewModel(IDataProvider dataProvider, Guid? extraCategoryId)
+        public ListEntryEditorViewModel(IDataProvider dataProvider, ICellStateWatcher cellStateMainWatcher, int cellId, Guid? extraCategoryId)
         {
+            _cellId = cellId;
+            _cellStateMainWatcher = cellStateMainWatcher;
             _dataProvider = dataProvider;
             ListOfCategory = GetListOfGivenCategory(extraCategoryId);
         }
@@ -29,11 +36,15 @@ namespace Netphonebook.Modules.Records.ViewModels
             set { SetProperty(ref cellRecordType, value); }
         }
 
-        private int selectedIndex;
-        public int SelectedIndex
+        private int? selectedIndex;
+        public int? SelectedIndex
         {
             get { return selectedIndex; }
-            set { SetProperty(ref selectedIndex, value); }
+            set 
+            { 
+                SetProperty(ref selectedIndex, value);
+                SendSignalToCheckIfValid();
+            }
         }
 
         private ObservableCollection<ExtraInfo> GetListOfGivenCategory(Guid? extraCategoryId)
@@ -48,7 +59,16 @@ namespace Netphonebook.Modules.Records.ViewModels
 
         public void FillCellData(VirtualModelsCellData selectedItemCell)
         {
-            
+            SelectedIndex = GetIndexOfGivenExtraInfo(selectedItemCell);
+        }
+
+        private int GetIndexOfGivenExtraInfo(VirtualModelsCellData selectedItemCell)
+        {
+            for (int i = 0; i < ListOfCategory.Count; i++)
+            {
+                if (selectedItemCell.extraInfoId == ListOfCategory[i].Id) return i;
+            }
+            throw new InvalidOperationException();
         }
 
         public VirtualModelsCellData GetVirtualCellData(Guid? mainModelData, int cellId)
@@ -59,8 +79,24 @@ namespace Netphonebook.Modules.Records.ViewModels
                 MainDataId = (Guid)mainModelData,
                 CellId = (sbyte)cellId,
                 CellType = cellRecordType,
-                extraInfoId = ListOfCategory[selectedIndex].Id
+                extraInfoId = ListOfCategory[(int)selectedIndex].Id
             };
+        }
+
+        public void ClearCellData()
+        {
+            SelectedIndex = null;
+        }
+
+        public bool IsCellReadyToCompose()
+        {
+            if (SelectedIndex != null) return true;
+            else return false;
+        }
+
+        private void SendSignalToCheckIfValid()
+        {
+            _cellStateMainWatcher.CheckIfDataModelIsValid();
         }
     }
 }

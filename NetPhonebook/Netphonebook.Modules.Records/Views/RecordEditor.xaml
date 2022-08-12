@@ -19,11 +19,11 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Displayed Number"/>
-                    <TextBox MinWidth="100" d:Text="12 34 45 332" Text=""/>
+                    <TextBox MinWidth="100" d:Text="12 34 45 332" Text="{Binding DisplayedNumber, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Secondary Number"/>
-                    <TextBox MinWidth="100" d:Text="169/99" Text=""/>
+                    <TextBox MinWidth="100" d:Text="169/99" Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                 <ContentControl prism:RegionManager.RegionName="FirstCellRegion"/>
@@ -34,8 +34,9 @@
                 <ContentControl prism:RegionManager.RegionName="SixthCellRegion"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding AddSaveButton}" Content="Save"/>
-                    <Button Content="Delete"/>
+                    <Button Command="{Binding EditButton}" Content="Edit"/>
+                    <Button Command="{Binding AddButton}" Content="Add"/>
+                    <Button Command="{Binding DeleteButton}" Content="Delete"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

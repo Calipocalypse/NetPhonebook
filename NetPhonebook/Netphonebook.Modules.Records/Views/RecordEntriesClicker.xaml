@@ -8,12 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel>
-            <ListView MinWidth="33" MinHeight="333" ItemsSource="{Binding VirtualModelsData}" SelectedItem="{Binding SelectedModel}">
+            <ListView MinWidth="33" MinHeight="333" ItemsSource="{Binding VirtualModelsData}" SelectedItem="{Binding SelectedItem}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Id}"/>
-                            <TextBlock Text="{Binding }"/>
+                            <TextBlock Text="{Binding DisplayedNumber}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
