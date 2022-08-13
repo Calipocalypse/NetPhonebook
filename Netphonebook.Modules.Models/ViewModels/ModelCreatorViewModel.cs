@@ -294,20 +294,24 @@ namespace Netphonebook.Modules.Models.ViewModels
             NumberOfCells = (sbyte)toEditFromCollection.CustomizationCells.Count();
             for (int i = 0; i<NumberOfCells ; i++)
             {
-                CellRecordTypeArray[i] = toEditFromCollection.CustomizationCells[i].CellType;
-                if (CellRecordTypeArray[i] == CellRecordType.Text)
+                var customizedCell = toEditFromCollection.CustomizationCells[i];
+                int cellId = customizedCell.CellId;
+
+                CellRecordTypeArray[cellId] = customizedCell.CellType;
+
+                if (CellRecordTypeArray[cellId] == CellRecordType.Text)
                 {
-                    TextCellViewModelInstance.FontSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].FontSize);
-                    TextCellViewModelInstance.CornerRadius[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].CornerRadius);
-                    TextCellViewModelInstance.BorderSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].BorderSize);
-                    TextCellViewModelInstance.BorderColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BorderColor);
-                    TextCellViewModelInstance.FontColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].ForegroundColor);
-                    TextCellViewModelInstance.BackgroundColor[toEditFromCollection.CustomizationCells[i].CellId] = HexColorConverter.ToSolidColor(toEditFromCollection.CustomizationCells[i].BackgroundColor);
+                    TextCellViewModelInstance.FontSize[cellId] = Convert.ToSByte(customizedCell.FontSize);
+                    TextCellViewModelInstance.CornerRadius[cellId] = Convert.ToSByte(customizedCell.CornerRadius);
+                    TextCellViewModelInstance.BorderSize[cellId] = Convert.ToSByte(customizedCell.BorderSize);
+                    TextCellViewModelInstance.BorderColor[cellId] = HexColorConverter.ToSolidColor(customizedCell.BorderColor);
+                    TextCellViewModelInstance.FontColor[cellId] = HexColorConverter.ToSolidColor(customizedCell.ForegroundColor);
+                    TextCellViewModelInstance.BackgroundColor[cellId] = HexColorConverter.ToSolidColor(customizedCell.BackgroundColor);
                 }
-                else if (CellRecordTypeArray[i] == CellRecordType.List)
+                else if (CellRecordTypeArray[cellId] == CellRecordType.List)
                 {
-                    ListCellViewModelInstance.FontSize[toEditFromCollection.CustomizationCells[i].CellId] = Convert.ToSByte(toEditFromCollection.CustomizationCells[i].FontSize);
-                    ListCellViewModelInstance.ExtraCategories[toEditFromCollection.CustomizationCells[i].CellId] = toEditFromCollection.CustomizationCells[i].Category;
+                    ListCellViewModelInstance.FontSize[cellId] = Convert.ToSByte(customizedCell.FontSize);
+                    ListCellViewModelInstance.ExtraCategories[cellId] = customizedCell.Category;
                 }
                 else throw new NotImplementedException();
             }

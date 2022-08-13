@@ -110,9 +110,9 @@ namespace Netphonebook.Modules.Records.ViewModels
             }
         }
 
-        private VirtualModelsCustomization GetCellCustomization(int index)
+        private VirtualModelsCustomization GetCellCustomization(int cellId)
         {
-            return givenModel.CustomizationCells[index];
+            return givenModel.CustomizationCells.FirstOrDefault(x => x.CellId == cellId);
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -254,11 +254,14 @@ namespace Netphonebook.Modules.Records.ViewModels
         {
             for (int i = 0; i < givenModel.CustomizationCells.Count; i++)
             {
-                switch (givenModel.CustomizationCells[i].CellType)
+                var givenCustomizationCell = givenModel.CustomizationCells[i];
+                var cellId = givenCustomizationCell.CellId;
+
+                switch (givenCustomizationCell.CellType)
                 {
-                    case CellRecordType.List: CreateCellListType(i);
+                    case CellRecordType.List: CreateCellListType(cellId);
                         break;
-                    case CellRecordType.Text: CreateCellTextType(i);
+                    case CellRecordType.Text: CreateCellTextType(cellId);
                         break;
                     default: throw new NotImplementedException();
                 }
