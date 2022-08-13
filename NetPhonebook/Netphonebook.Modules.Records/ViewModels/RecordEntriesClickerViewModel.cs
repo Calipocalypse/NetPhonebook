@@ -12,7 +12,16 @@ namespace Netphonebook.Modules.Records.ViewModels
 {
     public class RecordEntriesClickerViewModel : BindableBase
     {
-        public ObservableCollection<VirtualModelsData> VirtualModelsData { get; set; }
+        private ObservableCollection<VirtualModelsData> virtualModelsData;
+        public ObservableCollection<VirtualModelsData> VirtualModelsData
+        {
+            get { return virtualModelsData; }
+            set 
+            { 
+                SetProperty(ref virtualModelsData, value);
+            }
+        }
+
         private IDataProvider _dataProvider;
 
         private VirtualModelsData selectedItem;
@@ -42,6 +51,7 @@ namespace Netphonebook.Modules.Records.ViewModels
         public void GetEntriesListOfGivenModelId(Guid ModelId)
         {
             VirtualModelsData = _dataProvider.GetVirtualModelsDataWithCellDataForGivenModel(ModelId);
+            SelectedItem = null;
         }
 
         public bool IsSelectedItemNull()

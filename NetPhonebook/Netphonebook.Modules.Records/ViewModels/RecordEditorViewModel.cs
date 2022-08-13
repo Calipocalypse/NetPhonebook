@@ -180,6 +180,7 @@ namespace Netphonebook.Modules.Records.ViewModels
             var editEntry = ComposeEntry(EntriesClickerContext.SelectedItem.Id);
             _dataProvider.UpdateVirtualData(EntriesClickerContext.SelectedItem, editEntry);
             EntriesClickerContext.GetEntriesListOfGivenModelId(givenModel.Id);
+            CheckIfDataModelIsValid();
         }
 
         /* Data Validation */
