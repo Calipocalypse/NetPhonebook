@@ -1,4 +1,5 @@
 ﻿using Netphonebook.Modules.Common.ViewModels;
+using NetPhonebook.Core.Enums;
 using NetPhonebook.Core.Interfaces;
 using NetPhonebook.Core.Models;
 using Prism.Commands;
@@ -251,6 +252,24 @@ namespace Netphonebook.Modules.Models.ViewModels
                     if (Categories[i].Id == ExtraCategories[j].Id) SelectedIndex = i;
                 }
             }
+        }
+
+        public bool IsCellModelValid()
+        {
+            if (ColorsNotNull()) return true;
+            else return false;
+        }
+
+        private bool ColorsNotNull()
+        {
+            for (int i = 0; i < parentView.NumberOfCells; i++)
+            {
+                if (parentView.CellRecordTypeArray[i] != CellRecordType.List) continue;
+                if (BackgroundColor[i] == null) return false;
+                if (FontColor[i] == null) return false;
+                if (BorderColor[i] == null) return false;
+            }
+            return true;
         }
     }
 }

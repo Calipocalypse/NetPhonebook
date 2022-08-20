@@ -29,7 +29,9 @@ namespace Netphonebook.Modules.Common.ViewModels
             PresentedCollection = new ObservableCollection<PresentedEntry>();
         }
 
-        public void AddToCollection(string displayedNumber, string serialNumber, string[] texts, 
+        public void AddToCollection(string displayedNumber, string serialNumber, 
+            SolidColorBrush BackgroundColor, SolidColorBrush BorderColor, SolidColorBrush ForegroundColor, int FontSize, int CornerRadius, int BorderSize,
+            string[] texts, 
             SolidColorBrush[] backgroundColors, SolidColorBrush[] foregroundColors, SolidColorBrush[] borderColors,
             int[] borderSizes, int[] cornerRadius, int[] fontSize)
         {
@@ -58,6 +60,15 @@ namespace Netphonebook.Modules.Common.ViewModels
             {
                 DisplayedNumber = displayedNumber,
                 SerialNumber = serialNumber,
+
+                FontSize = FontSize,
+                SecondaryFontSize = FontSize*2/3,
+                CornerRadius = CornerRadius,
+                BorderSize = BorderSize,
+                BackgroundColor = BackgroundColor,
+                ForegroundColor = ForegroundColor,
+                BorderColor = BorderColor,
+
                 PresentedCells = cells
             };
 

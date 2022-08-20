@@ -14,6 +14,7 @@ namespace NetPhonebook.Core.Models
         public string SerialNumber { get; set; }
         
         public int FontSize { get; set; }
+        public int SecondaryFontSize { get; set; }
         public int CornerRadius { get; set; }
         public int BorderSize { get; set; }
 

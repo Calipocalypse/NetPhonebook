@@ -208,6 +208,12 @@ namespace Netphonebook.Modules.Models.ViewModels
                 .ObservesProperty(() => TextCellViewModelInstance.BackgroundColorCell)
                 .ObservesProperty(() => TextCellViewModelInstance.FontColorCell)
                 .ObservesProperty(() => TextCellViewModelInstance.BorderColorCell)
+                .ObservesProperty(() => ListCellViewModelInstance.BackgroundColorCell)
+                .ObservesProperty(() => ListCellViewModelInstance.FontColorCell)
+                .ObservesProperty(() => ListCellViewModelInstance.BorderColorCell)
+                .ObservesProperty(() => BackgroundColor)
+                .ObservesProperty(() => ForegroundColor)
+                .ObservesProperty(() => BorderColor)
                 .ObservesProperty(() => CellRecordTypeCell)
                 .ObservesProperty(() => NumberOfCells);
             SetColor = new DelegateCommand<string>(SetColorClicked);
@@ -237,13 +243,14 @@ namespace Netphonebook.Modules.Models.ViewModels
 
         private bool IsModelValid()
         {
-            if (TextCellViewModelInstance.IsCellModelValid() && IsMainModelInfoValid()) return true;
+            if (TextCellViewModelInstance.IsCellModelValid() && ListCellViewModelInstance.IsCellModelValid() && IsMainModelInfoValid()) return true;
             else return false;
         }
 
         private bool IsMainModelInfoValid()
         {
-            return true;
+            if (BackgroundColor != null && BorderColor != null && ForegroundColor != null) return true;
+            else return false;
         }
 
         private void OnCellChange()
@@ -453,21 +460,22 @@ namespace Netphonebook.Modules.Models.ViewModels
         public void UpdatePresenter()
         {
             PresenterInstance.CleanCollection();
-            PresenterInstance.AddToCollection("6000", "555/19", GetTextes(), GetBackgroundColors(), GetForegroundColors(), GetBorderColors(),
+            PresenterInstance.AddToCollection("6000", "555/19", BackgroundColor, BorderColor, ForegroundColor, FontSize, CornerRadius, BorderSize,
+                GetTextes(), GetBackgroundColors(), GetForegroundColors(), GetBorderColors(),
                 GetBorderSizes(), GetCornerRadiuses(), GetFontSizes());
         }
 
         private string[] GetTextes()
         {
             string[] textes = new string[6];
-            for (int i = 0; i < textes.Length; i++) textes[i] = "Lorem Ipsum";
+            for (int i = 0; i < numberOfCells; i++) textes[i] = "Lorem Ipsum";
             return textes;
         }
 
         private SolidColorBrush[] GetBackgroundColors()
         {
             SolidColorBrush[] colors = new SolidColorBrush[6];
-            for (int i = 0; i < colors.Count(); i++)
+            for (int i = 0; i < numberOfCells; i++)
             {
                 switch (CellRecordTypeArray[i])
                 {
@@ -485,7 +493,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         private SolidColorBrush[] GetForegroundColors()
         {
             SolidColorBrush[] colors = new SolidColorBrush[6];
-            for (int i = 0; i < colors.Count(); i++)
+            for (int i = 0; i < numberOfCells; i++)
             {
                 switch (CellRecordTypeArray[i])
                 {
@@ -503,7 +511,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         private SolidColorBrush[] GetBorderColors()
         {
             SolidColorBrush[] colors = new SolidColorBrush[6];
-            for (int i = 0; i < colors.Count(); i++)
+            for (int i = 0; i < numberOfCells; i++)
             {
                 switch (CellRecordTypeArray[i])
                 {
@@ -521,7 +529,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         private int[] GetBorderSizes()
         {
             var borderSizes = new int[6];
-            for (int i = 0; i<borderSizes.Count(); i++)
+            for (int i = 0; i< numberOfCells; i++)
             {
                 switch (CellRecordTypeArray[i])
                 {
@@ -539,7 +547,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         private int[] GetCornerRadiuses()
         {
             var cornerRadiuses = new int[6];
-            for (int i = 0; i < cornerRadiuses.Count(); i++)
+            for (int i = 0; i < numberOfCells; i++)
             {
                 switch (CellRecordTypeArray[i])
                 {
@@ -557,7 +565,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         private int[] GetFontSizes()
         {
             var fontSizes = new int[6];
-            for (int i = 0; i < fontSizes.Count(); i++)
+            for (int i = 0; i < numberOfCells; i++)
             {
                 switch (CellRecordTypeArray[i])
                 {

@@ -13,10 +13,10 @@
                 <ListView.ItemTemplate>
                         <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Border>
+                            <Border BorderThickness="{Binding BorderSize}" Background="{Binding BackgroundColor}" BorderBrush="{Binding BorderColor}" CornerRadius="{Binding CornerRadius}">
                                 <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding DisplayedNumber}"/>
-                                    <TextBlock Text="{Binding SerialNumber}"/>
+                                    <TextBlock FontSize="{Binding FontSize}" Padding="5" Foreground="{Binding ForegroundColor}" Text="{Binding DisplayedNumber}"/>
+                                    <TextBlock FontSize="{Binding SecondaryFontSize}" Padding="5" Foreground="{Binding ForegroundColor}" Text="{Binding SerialNumber}"/>
                                 </StackPanel>
                             </Border>
                             <ListView ItemsSource="{Binding PresentedCells}" IsEnabled="False">
