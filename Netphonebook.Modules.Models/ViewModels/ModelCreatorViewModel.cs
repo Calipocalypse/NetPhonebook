@@ -47,6 +47,13 @@ namespace Netphonebook.Modules.Models.ViewModels
             get { return colorPickerInstance; } 
             set { SetProperty(ref colorPickerInstance, value); }
         }
+
+        private RecordPresenterViewModel presenterInstance;
+        public RecordPresenterViewModel PresenterInstance
+        {
+            get { return presenterInstance; }
+            set { SetProperty(ref presenterInstance, value); }
+        }
         #endregion
 
         public DelegateCommand ClickBack { get; set; }
@@ -64,7 +71,11 @@ namespace Netphonebook.Modules.Models.ViewModels
         public string ModelName
         {
             get { return modelName; }
-            set { SetProperty(ref modelName, value); }
+            set 
+            {
+                SetProperty(ref modelName, value);
+                UpdatePresenter();
+            }
         }
 
         private sbyte numberOfCells = 1;
@@ -74,7 +85,8 @@ namespace Netphonebook.Modules.Models.ViewModels
             set
             {
                 if (selectedCellNumber > value) SelectedCellNumber = value; 
-                SetProperty(ref numberOfCells, value); 
+                SetProperty(ref numberOfCells, value);
+                UpdatePresenter();
             }
         }
 
@@ -131,7 +143,8 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             ColorPickerInstance = new ColorPickerViewModel(_dataProvider);
             TextCellViewModelInstance = new CellCreatorTextViewModel(_dataProvider, this, ColorPickerInstance);
-            ListCellViewModelInstance = new CellCreatorListViewModel(_dataProvider, this);
+            ListCellViewModelInstance = new CellCreatorListViewModel(_dataProvider, this, ColorPickerInstance);
+            PresenterInstance = new RecordPresenterViewModel();
             OnCellTypeChange();
         }
 
@@ -201,7 +214,7 @@ namespace Netphonebook.Modules.Models.ViewModels
                     {
                         Id = Guid.NewGuid(),
                         ModelId = ModelId,
-                        CellId = i, //Probably here to change
+                        CellId = i,
                         CellType = CellRecordTypeArray[i],
                         BorderColor = HexColorConverter.ToHex((TextCellViewModelInstance.BorderColor[i])),
                         ForegroundColor = HexColorConverter.ToHex(TextCellViewModelInstance.FontColor[i]),
@@ -222,7 +235,12 @@ namespace Netphonebook.Modules.Models.ViewModels
                         CellId = i,
                         CellType = CellRecordTypeArray[i],
                         FontSize = ListCellViewModelInstance.FontSize[i].ToString(),
-                        CategoryId = ListCellViewModelInstance.ExtraCategories[i].Id
+                        CategoryId = ListCellViewModelInstance.ExtraCategories[i].Id,
+                        BorderColor = HexColorConverter.ToHex((ListCellViewModelInstance.BorderColor[i])),
+                        ForegroundColor = HexColorConverter.ToHex(ListCellViewModelInstance.FontColor[i]),
+                        BackgroundColor = HexColorConverter.ToHex(ListCellViewModelInstance.BackgroundColor[i]),
+                        CornerRadius = ListCellViewModelInstance.CornerRadius[i].ToString(),
+                        BorderSize = ListCellViewModelInstance.BorderSize[i].ToString(),
                     };
                     toAddVMC.Add(newSingleVMC);
                 }
@@ -281,6 +299,7 @@ namespace Netphonebook.Modules.Models.ViewModels
         {
             AddEditButtonContent = "Add";
             Mode = EditorsMode.Add;
+            UpdatePresenter();
         }
 
         private void LoadEditMode(VirtualModel toEdit)
@@ -312,11 +331,143 @@ namespace Netphonebook.Modules.Models.ViewModels
                 {
                     ListCellViewModelInstance.FontSize[cellId] = Convert.ToSByte(customizedCell.FontSize);
                     ListCellViewModelInstance.ExtraCategories[cellId] = customizedCell.Category;
+                    ListCellViewModelInstance.CornerRadius[cellId] = Convert.ToSByte(customizedCell.CornerRadius);
+                    ListCellViewModelInstance.BorderSize[cellId] = Convert.ToSByte(customizedCell.BorderSize);
+                    ListCellViewModelInstance.BorderColor[cellId] = HexColorConverter.ToSolidColor(customizedCell.BorderColor);
+                    ListCellViewModelInstance.FontColor[cellId] = HexColorConverter.ToSolidColor(customizedCell.ForegroundColor);
+                    ListCellViewModelInstance.BackgroundColor[cellId] = HexColorConverter.ToSolidColor(customizedCell.BackgroundColor);
                 }
                 else throw new NotImplementedException();
             }
             ListCellViewModelInstance.AssignCorrectSelectedIndexToComboBox();
             OnCellChange();
+            UpdatePresenter();
         }
+
+        /* Presenter handling below */
+        #region Presenter
+
+        public void UpdatePresenter()
+        {
+            PresenterInstance.CleanCollection();
+            PresenterInstance.AddToCollection("6000", "555/19", GetTextes(), GetBackgroundColors(), GetForegroundColors(), GetBorderColors(),
+                GetBorderSizes(), GetCornerRadiuses(), GetFontSizes());
+        }
+
+        private string[] GetTextes()
+        {
+            string[] textes = new string[6];
+            for (int i = 0; i < textes.Length; i++) textes[i] = "Lorem Ipsum";
+            return textes;
+        }
+
+        private SolidColorBrush[] GetBackgroundColors()
+        {
+            SolidColorBrush[] colors = new SolidColorBrush[6];
+            for (int i = 0; i < colors.Count(); i++)
+            {
+                switch (CellRecordTypeArray[i])
+                {
+                    case CellRecordType.Text:
+                        colors[i] = TextCellViewModelInstance.BackgroundColor[i];
+                        break;
+                    case CellRecordType.List:
+                        colors[i] = ListCellViewModelInstance.BackgroundColor[i];
+                        break;
+                }
+            }
+            return colors;
+        }
+
+        private SolidColorBrush[] GetForegroundColors()
+        {
+            SolidColorBrush[] colors = new SolidColorBrush[6];
+            for (int i = 0; i < colors.Count(); i++)
+            {
+                switch (CellRecordTypeArray[i])
+                {
+                    case CellRecordType.Text:
+                        colors[i] = TextCellViewModelInstance.FontColor[i];
+                        break;
+                    case CellRecordType.List:
+                        colors[i] = ListCellViewModelInstance.FontColor[i];
+                        break;
+                }
+            }
+            return colors;
+        }
+
+        private SolidColorBrush[] GetBorderColors()
+        {
+            SolidColorBrush[] colors = new SolidColorBrush[6];
+            for (int i = 0; i < colors.Count(); i++)
+            {
+                switch (CellRecordTypeArray[i])
+                {
+                    case CellRecordType.Text:
+                        colors[i] = TextCellViewModelInstance.BorderColor[i];
+                        break;
+                    case CellRecordType.List:
+                        colors[i] = ListCellViewModelInstance.BorderColor[i];
+                        break;
+                }
+            }
+            return colors;
+        }
+
+        private int[] GetBorderSizes()
+        {
+            var borderSizes = new int[6];
+            for (int i = 0; i<borderSizes.Count(); i++)
+            {
+                switch (CellRecordTypeArray[i])
+                {
+                    case CellRecordType.Text:
+                        borderSizes[i] = TextCellViewModelInstance.BorderSize[i];
+                        break;
+                    case CellRecordType.List:
+                        borderSizes[i] = ListCellViewModelInstance.BorderSize[i];
+                        break;
+                }
+            }
+            return borderSizes;
+        }
+
+        private int[] GetCornerRadiuses()
+        {
+            var cornerRadiuses = new int[6];
+            for (int i = 0; i < cornerRadiuses.Count(); i++)
+            {
+                switch (CellRecordTypeArray[i])
+                {
+                    case CellRecordType.Text:
+                        cornerRadiuses[i] = TextCellViewModelInstance.CornerRadius[i];
+                        break;
+                    case CellRecordType.List:
+                        cornerRadiuses[i] = ListCellViewModelInstance.CornerRadius[i];
+                        break;
+                }
+            }
+            return cornerRadiuses;
+        }
+
+        private int[] GetFontSizes()
+        {
+            var fontSizes = new int[6];
+            for (int i = 0; i < fontSizes.Count(); i++)
+            {
+                switch (CellRecordTypeArray[i])
+                {
+                    case CellRecordType.Text:
+                        fontSizes[i] = TextCellViewModelInstance.FontSize[i];
+                        break;
+                    case CellRecordType.List:
+                        fontSizes[i] = ListCellViewModelInstance.FontSize[i];
+                        break;
+                }
+            }
+            return fontSizes;
+        }
+        #endregion
     }
 }

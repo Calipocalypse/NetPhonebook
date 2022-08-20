@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqLiteWithLinqDataProvider"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XmlDataProvider", "XmlDataProvider\XmlDataProvider.csproj", "{CE7167EC-D3DE-4A67-BF4C-2B6F6726475B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netphonebook.Modules.Common", "Netphonebook.Modules.Common\Netphonebook.Modules.Common.csproj", "{2D08BB47-7529-452A-937D-B0C88DBB24FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netphonebook.Modules.Common", "Netphonebook.Modules.Common\Netphonebook.Modules.Common.csproj", "{2D08BB47-7529-452A-937D-B0C88DBB24FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

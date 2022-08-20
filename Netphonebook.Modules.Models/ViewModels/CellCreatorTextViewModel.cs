@@ -53,12 +53,20 @@ namespace Netphonebook.Modules.Models.ViewModels
         public sbyte[] FontSize
         {
             get { return fontSize; }
-            set { SetProperty(ref fontSize, value); }
+            set 
+            { 
+                SetProperty(ref fontSize, value);
+                parentView.UpdatePresenter();
+            }
         }
         public sbyte FontSizeCell //for XAML
         { 
             get { return fontSize[RealSelectedCellNumber]; }
-            set { SetProperty(ref fontSize[RealSelectedCellNumber], value); }
+            set 
+            {
+                SetProperty(ref fontSize[RealSelectedCellNumber], value);
+                parentView.UpdatePresenter();
+            }
         }
 
         /* 2. BorderSize */
@@ -66,12 +74,20 @@ namespace Netphonebook.Modules.Models.ViewModels
         public sbyte[] BorderSize
         {
             get { return borderSize; }
-            set { SetProperty(ref borderSize, value); }
+            set 
+            { 
+                SetProperty(ref borderSize, value);
+                parentView.UpdatePresenter();
+            }
         }
         public sbyte BorderSizeCell //for XAML
         {
             get { return borderSize[RealSelectedCellNumber]; }
-            set { SetProperty(ref borderSize[RealSelectedCellNumber], value); }
+            set 
+            { 
+                SetProperty(ref borderSize[RealSelectedCellNumber], value);
+                parentView.UpdatePresenter();
+            }
         }
 
         /* 3. CornerRadius */
@@ -80,12 +96,20 @@ namespace Netphonebook.Modules.Models.ViewModels
         public sbyte[] CornerRadius
         {
             get { return cornerRadius; }
-            set { SetProperty(ref cornerRadius, value); }
+            set 
+            {
+                SetProperty(ref cornerRadius, value);
+                parentView.UpdatePresenter();
+            }
         }
         public sbyte CornerRadiusCell //for XAML
         {
             get { return cornerRadius[RealSelectedCellNumber]; }
-            set { SetProperty(ref cornerRadius[RealSelectedCellNumber], value); }
+            set 
+            { 
+                SetProperty(ref cornerRadius[RealSelectedCellNumber], value);
+                parentView.UpdatePresenter();
+            }
         }
 
         /* 4. FontColor */
@@ -93,12 +117,20 @@ namespace Netphonebook.Modules.Models.ViewModels
         public SolidColorBrush[] FontColor
         {
             get { return fontColor; }
-            set { SetProperty(ref fontColor, value); }
+            set 
+            { 
+                SetProperty(ref fontColor, value);
+                parentView.UpdatePresenter();
+            }
         }
         public SolidColorBrush FontColorCell
         {
             get { return fontColor[RealSelectedCellNumber]; }
-            set { SetProperty(ref fontColor[RealSelectedCellNumber], value); }
+            set 
+            { 
+                SetProperty(ref fontColor[RealSelectedCellNumber], value);
+                parentView.UpdatePresenter();
+            }
         }
 
         /* 5. BackgroundColor */
@@ -106,12 +138,20 @@ namespace Netphonebook.Modules.Models.ViewModels
         public SolidColorBrush[] BackgroundColor
         {
             get { return backgroundColor; }
-            set { SetProperty(ref backgroundColor, value); }
+            set 
+            { 
+                SetProperty(ref backgroundColor, value);
+                parentView.UpdatePresenter();
+            }
         }
         public SolidColorBrush BackgroundColorCell
         {
             get { return backgroundColor[RealSelectedCellNumber]; }
-            set { SetProperty(ref backgroundColor[RealSelectedCellNumber], value); }
+            set 
+            { 
+                SetProperty(ref backgroundColor[RealSelectedCellNumber], value);
+                parentView.UpdatePresenter();
+            }
         }
 
         /* 6. BorderColor */
@@ -119,12 +159,20 @@ namespace Netphonebook.Modules.Models.ViewModels
         public SolidColorBrush[] BorderColor
         {
             get { return borderColor; }
-            set { SetProperty(ref borderColor, value); }
+            set 
+            { 
+                SetProperty(ref borderColor, value);
+                parentView.UpdatePresenter();
+            }
         }
         public SolidColorBrush BorderColorCell
         {
             get { return borderColor[RealSelectedCellNumber]; }
-            set { SetProperty (ref borderColor[RealSelectedCellNumber], value); }
+            set 
+            { 
+                SetProperty (ref borderColor[RealSelectedCellNumber], value);
+                parentView.UpdatePresenter();
+            }
         }
 
         #endregion

@@ -9,5 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\CsvDataProvider\CsvDataProvider.csproj" />
     <ProjectReference Include="..\MsSqlDataProvider\MsSqlDataProvider.csproj" />
+    <ProjectReference Include="..\NetPhonebook\Netphonebook.Modules.Common\Netphonebook.Modules.Common.csproj" />
   </ItemGroup>
 </Project>

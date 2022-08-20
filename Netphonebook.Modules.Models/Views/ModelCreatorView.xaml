@@ -17,38 +17,41 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
         <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Model Name: "/>
-                <TextBox Text="{Binding ModelName}" MinWidth="50"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Number of cells"/>
-                <Slider Minimum="1" Maximum="6" Value="{Binding NumberOfCells, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
-                <TextBlock d:Text="4" Text="{Binding NumberOfCells}" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Cell picker"/>
-                <Slider Minimum="1" Width="200" Maximum="{Binding NumberOfCells, UpdateSourceTrigger=PropertyChanged}" Value="{Binding SelectedCellNumber, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock d:Text="2" Text="{Binding SelectedCellNumber}" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Model Name: "/>
+                        <TextBox Text="{Binding ModelName}" MinWidth="50"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Number of cells"/>
+                        <Slider Minimum="1" Maximum="6" Value="{Binding NumberOfCells, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                        <TextBlock d:Text="4" Text="{Binding NumberOfCells}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Cell picker"/>
+                        <Slider Minimum="1" Width="200" Maximum="{Binding NumberOfCells, UpdateSourceTrigger=PropertyChanged}" Value="{Binding SelectedCellNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock d:Text="2" Text="{Binding SelectedCellNumber}" />
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Cell Data Type: "/>
                         <ComboBox ItemsSource="{Binding CellDataTypes}" SelectedItem="{Binding CellRecordTypeCell}" MinWidth="150"/>
                     </StackPanel>
-            <StackPanel Background="Yellow">
+                    <StackPanel Background="Yellow">
                         <local:CellCreatorList DataContext="{Binding ListCellViewModelInstance}" Background="red" Visibility="{Binding CellCreatorListVisibility}"/>
                         <local:CellCreatorText DataContext="{Binding TextCellViewModelInstance}" Visibility="{Binding CellCreatorTextVisibility}"/>
-            </StackPanel>
-            <StackPanel Background="Navy">
-                <TextBlock>red</TextBlock>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    </StackPanel>
+                    <StackPanel Background="Navy">
+                        <TextBlock>red</TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button Command="{Binding ClickAdd}" Content="{Binding AddEditButtonContent}" />
                         <Button Command="{Binding ClickBack}">Back</Button>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel>
+                    <common:RecordPresenter DataContext="{Binding PresenterInstance}"/>
+                </StackPanel>
             </StackPanel>
-            </StackPanel>
-        </StackPanel>
             <common:ColorPicker DataContext="{Binding ColorPickerInstance}"/>
         </StackPanel>
     </Grid>
