@@ -12,20 +12,28 @@
             <ListView ItemsSource="{Binding PresentedCollection}" IsEnabled="False">
                 <ListView.ItemTemplate>
                         <DataTemplate>
-                        <ListView ItemsSource="{Binding PresentedCells}" IsEnabled="False">
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="3" Rows="2"/>
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="{Binding BorderColor}" CornerRadius="{Binding CornerRadius}" BorderThickness="{Binding BorderSize}" Background="{Binding BackgroundColor}">
-                                        <TextBlock Foreground="{Binding ForegroundColor}" FontSize="{Binding FontSize}" Text="{Binding Text}"/>
-                                    </Border>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                        <StackPanel Orientation="Horizontal">
+                            <Border>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding DisplayedNumber}"/>
+                                    <TextBlock Text="{Binding SerialNumber}"/>
+                                </StackPanel>
+                            </Border>
+                            <ListView ItemsSource="{Binding PresentedCells}" IsEnabled="False">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="3" Rows="2"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="{Binding BorderColor}" CornerRadius="{Binding CornerRadius}" BorderThickness="{Binding BorderSize}" Background="{Binding BackgroundColor}">
+                                            <TextBlock Foreground="{Binding ForegroundColor}" FontSize="{Binding FontSize}" Text="{Binding Text}" Padding="5"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
                         </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

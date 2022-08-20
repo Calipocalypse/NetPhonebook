@@ -56,8 +56,10 @@ namespace Netphonebook.Modules.Models.ViewModels
         }
         #endregion
 
+
         public DelegateCommand ClickBack { get; set; }
         public DelegateCommand ClickAdd { get; set; }
+        public DelegateCommand<string> SetColor { get; set; }
 
         /* Edit or Add preparation */
         private string addEditButtonContent;
@@ -77,6 +79,77 @@ namespace Netphonebook.Modules.Models.ViewModels
                 UpdatePresenter();
             }
         }
+
+        #region Bindings for XxxxXNumber customization
+
+        /* 1. FontSize */
+        private int fontSize = 5;
+        public int FontSize
+        {
+            get { return fontSize; }
+            set 
+            {
+                SetProperty(ref fontSize, value);
+                UpdatePresenter();
+            }
+        }
+
+        /* 2. CornerRadius */
+        private int cornerRadius = 5;
+        public int CornerRadius
+        {
+            get { return cornerRadius; }
+            set
+            {
+                SetProperty(ref cornerRadius, value);
+                UpdatePresenter();
+            }
+        }
+        /* 3. BorderSize */
+        private int borderSize = 5;
+        public int BorderSize
+        {
+            get { return borderSize; }
+            set
+            {
+                SetProperty(ref borderSize, value);
+                UpdatePresenter();
+            }
+        }
+        /* 4. BackgroundColor */
+        private SolidColorBrush backgroundColor;
+        public SolidColorBrush BackgroundColor
+        {
+            get { return backgroundColor; }
+            set
+            {
+                SetProperty(ref backgroundColor, value);
+                UpdatePresenter();
+            }
+        }
+        /* 5. BorderColor */
+        private SolidColorBrush borderColor;
+        public SolidColorBrush BorderColor
+        {
+            get { return borderColor; }
+            set 
+            { 
+                SetProperty(ref borderColor, value);
+                UpdatePresenter();
+            }
+        }
+        /* 6. ForegroundColor */
+        private SolidColorBrush foregroundColor;
+        public SolidColorBrush ForegroundColor
+        {
+            get { return foregroundColor; }
+            set
+            {
+                SetProperty(ref foregroundColor, value);
+                UpdatePresenter();
+            }
+        }
+        #endregion
 
         private sbyte numberOfCells = 1;
         public sbyte NumberOfCells
@@ -137,6 +210,20 @@ namespace Netphonebook.Modules.Models.ViewModels
                 .ObservesProperty(() => TextCellViewModelInstance.BorderColorCell)
                 .ObservesProperty(() => CellRecordTypeCell)
                 .ObservesProperty(() => NumberOfCells);
+            SetColor = new DelegateCommand<string>(SetColorClicked);
+        }
+
+        private void SetColorClicked(string parameter)
+        {
+            switch(parameter)
+            {
+                case "backgroundColor": BackgroundColor = colorPickerInstance.OutcomingColor;
+                    break;
+                case "foregroundColor": ForegroundColor = colorPickerInstance.OutcomingColor;
+                    break;
+                case "borderColor": BorderColor = colorPickerInstance.OutcomingColor;
+                    break;
+            }
         }
 
         private void ComposeUiElements()
@@ -251,6 +338,14 @@ namespace Netphonebook.Modules.Models.ViewModels
             {
                 Id = ModelId,
                 Name = ModelName,
+
+                FontSize = FontSize.ToString(),
+                CornerRadius = CornerRadius.ToString(),
+                BorderSize = BorderSize.ToString(),
+                BackgroundColor = HexColorConverter.ToHex(BackgroundColor),
+                BorderColor = HexColorConverter.ToHex(BorderColor),
+                ForegroundColor = HexColorConverter.ToHex(ForegroundColor),
+
                 CustomizationCells = toAddVMC
             };
 
@@ -315,6 +410,14 @@ namespace Netphonebook.Modules.Models.ViewModels
             {
                 var customizedCell = toEditFromCollection.CustomizationCells[i];
                 int cellId = customizedCell.CellId;
+
+                //MainModelCustomization below
+                FontSize = Convert.ToInt32(customizedCell.FontSize);
+                CornerRadius = Convert.ToInt32(customizedCell.CornerRadius);
+                BorderSize = Convert.ToInt32(customizedCell.BorderSize);
+                BackgroundColor = HexColorConverter.ToSolidColor(customizedCell.BackgroundColor);
+                BorderColor = HexColorConverter.ToSolidColor(customizedCell.BorderColor);
+                ForegroundColor = HexColorConverter.ToSolidColor(customizedCell.ForegroundColor);
 
                 CellRecordTypeArray[cellId] = customizedCell.CellType;
 

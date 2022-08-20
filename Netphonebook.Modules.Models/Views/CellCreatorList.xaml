@@ -38,12 +38,12 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Border Size"/>
-            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding BorderSizeCell}"/>
+            <Slider Minimum="0" Maximum="5" Width="250" Value="{Binding BorderSizeCell}"/>
             <TextBlock Text="{Binding BorderSizeCell}" d:Text="23"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Corner radius"/>
-            <Slider Minimum="8" Maximum="18" Width="250" Value="{Binding CornerRadiusCell}"/>
+            <Slider Minimum="0" Maximum="25" Width="250" Value="{Binding CornerRadiusCell}"/>
             <TextBlock d:Text="4" Text="{Binding CornerRadiusCell}"/>
         </StackPanel>
     </StackPanel>

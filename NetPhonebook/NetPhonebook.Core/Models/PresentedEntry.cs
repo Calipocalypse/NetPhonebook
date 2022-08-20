@@ -12,6 +12,16 @@ namespace NetPhonebook.Core.Models
     {
         public string DisplayedNumber { get; set; }
         public string SerialNumber { get; set; }
+        
+        public int FontSize { get; set; }
+        public int CornerRadius { get; set; }
+        public int BorderSize { get; set; }
+
+        public SolidColorBrush BackgroundColor { get; set; }
+        public SolidColorBrush BorderColor { get; set; }
+        public SolidColorBrush ForegroundColor { get; set; }
+
+        
         public ObservableCollection<PresentedEntryCell> PresentedCells { get; set; }
     }
 }

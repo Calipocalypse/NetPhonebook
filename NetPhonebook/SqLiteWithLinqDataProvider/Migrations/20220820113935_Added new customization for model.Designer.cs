@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SqLiteWithLinqDataProvider;
 
@@ -10,9 +11,10 @@ using SqLiteWithLinqDataProvider;
 namespace SqLiteWithLinqDataProvider.Migrations
 {
     [DbContext(typeof(NetphonebookContext))]
-    partial class NetphonebookContextModelSnapshot : ModelSnapshot
+    [Migration("20220820113935_Added new customization for model")]
+    partial class Addednewcustomizationformodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
@@ -68,24 +70,6 @@ namespace SqLiteWithLinqDataProvider.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("BackgroundColor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("BorderColor")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("BorderSize")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CornerRadius")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FontSize")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ForegroundColor")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -180,7 +164,25 @@ namespace SqLiteWithLinqDataProvider.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("BackgroundColor")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BorderColor")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BorderSize")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CornerRadius")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("DisplayedNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FontSize")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ForegroundColor")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("ModelBaseId")

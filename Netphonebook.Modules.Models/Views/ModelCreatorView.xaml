@@ -36,6 +36,32 @@
                         <TextBlock Text="Cell Data Type: "/>
                         <ComboBox ItemsSource="{Binding CellDataTypes}" SelectedItem="{Binding CellRecordTypeCell}" MinWidth="150"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="FontSize: "/>
+                        <Slider Minimum="1" Width="200" Value="{Binding FontSize}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="CornerRadius: "/>
+                        <Slider Minimum="1" Width="200" Value="{Binding CornerRadius}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="BorderSize: "/>
+                        <Slider Minimum="1" Width="200" Value="{Binding BorderSize}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="BackgroundColor: "/>
+                        <Button Content="GetColor" Background="{Binding BackgroundColor}" Command="{Binding SetColor}" CommandParameter="backgroundColor" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="ForegroundColor: "/>
+                        <Button Content="GetColor" Background="{Binding ForegroundColor}" Command="{Binding SetColor}" CommandParameter="foregroundColor" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="BorderColor: "/>
+                        <Button Content="GetColor" Background="{Binding BorderColor}" Command="{Binding SetColor}" CommandParameter="borderColor" />
+                    </StackPanel>
+                    
+                    
                     <StackPanel Background="Yellow">
                         <local:CellCreatorList DataContext="{Binding ListCellViewModelInstance}" Background="red" Visibility="{Binding CellCreatorListVisibility}"/>
                         <local:CellCreatorText DataContext="{Binding TextCellViewModelInstance}" Visibility="{Binding CellCreatorTextVisibility}"/>
