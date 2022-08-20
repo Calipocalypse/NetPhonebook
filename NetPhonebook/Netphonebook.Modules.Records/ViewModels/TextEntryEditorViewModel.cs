@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Netphonebook.Modules.Records.ViewModels
 {
@@ -30,6 +31,7 @@ namespace Netphonebook.Modules.Records.ViewModels
             {
                 SetProperty(ref firstText, value);
                 SendSignalToCheckIfValid();
+                _cellStateMainWatcher.UpdatePresenter();
             }
         }
 
@@ -41,6 +43,7 @@ namespace Netphonebook.Modules.Records.ViewModels
             { 
                 SetProperty(ref secondText, value);
                 SendSignalToCheckIfValid();
+                _cellStateMainWatcher.UpdatePresenter();
             }
         }
 
@@ -84,6 +87,11 @@ namespace Netphonebook.Modules.Records.ViewModels
         private void SendSignalToCheckIfValid()
         {
             _cellStateMainWatcher.CheckIfDataModelIsValid();
+        }
+
+        public string GetText()
+        {
+            return FirstText + " " + SecondText;
         }
     }
 }

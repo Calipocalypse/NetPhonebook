@@ -1,5 +1,8 @@
-﻿using Netphonebook.Modules.Records.Interfaces;
+﻿using Netphonebook.Modules.Common.ViewModels;
+using Netphonebook.Modules.Records.Enums;
+using Netphonebook.Modules.Records.Interfaces;
 using Netphonebook.Modules.Records.Views;
+using NetPhonebook.Core;
 using NetPhonebook.Core.Enums;
 using NetPhonebook.Core.Interfaces;
 using NetPhonebook.Core.Models;
@@ -15,6 +18,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Netphonebook.Modules.Records.ViewModels
 {
@@ -31,11 +35,18 @@ namespace Netphonebook.Modules.Records.ViewModels
             set { SetProperty(ref entriesClickerContext, value); }
         }
 
+        private RecordPresenterViewModel presenterInstance;
+        public RecordPresenterViewModel PresenterInstance
+        {
+            get { return presenterInstance; }
+            set { SetProperty(ref presenterInstance, value); }
+        }
+
         private string displayedNumber;
         public string DisplayedNumber
-        { 
-            get { return displayedNumber;}
-            set 
+        {
+            get { return displayedNumber; }
+            set
             {
                 SetProperty(ref displayedNumber, value);
                 CheckIfDataModelIsValid();
@@ -45,8 +56,8 @@ namespace Netphonebook.Modules.Records.ViewModels
         private string serialNumber;
         public string SerialNumber
         {
-            get { return serialNumber;}
-            set 
+            get { return serialNumber; }
+            set
             {
                 SetProperty(ref serialNumber, value);
                 CheckIfDataModelIsValid();
@@ -69,7 +80,7 @@ namespace Netphonebook.Modules.Records.ViewModels
             set { SetProperty(ref canComposeEntry, value); }
         }
 
-        public RecordEditorViewModel(IDataProvider dataProvider, IRegionManager regionManager) 
+        public RecordEditorViewModel(IDataProvider dataProvider, IRegionManager regionManager)
         {
             _dataProvider = dataProvider;
             _regionManager = regionManager;
@@ -97,15 +108,15 @@ namespace Netphonebook.Modules.Records.ViewModels
             DisplayedNumber = selectedItem.DisplayedNumber;
             SerialNumber = selectedItem.SerialNumber;
 
-            //Iteration for every Cell Instance
-            for (int i = 0; i < Cell.Length; i++)
+            //Iteration for every USED Cell Instance
+            for (int i = 0; i < givenModel.CustomizationCells.Count; i++)
             {
                 //Iteration to find right cell data to Cell
-                for (int j = 0; j < Cell.Length; j++)
+                for (int j = 0; j < givenModel.CustomizationCells.Count; j++)
                 {
                     var singleCells = selectedItem.CellDatas;
                     var wantedCell = singleCells.FirstOrDefault(x => x.CellId == i);
-                    Cell[i].FillCellData(wantedCell);
+                    Cell[wantedCell.CellId].FillCellData(wantedCell);
                 }
             }
         }
@@ -129,6 +140,7 @@ namespace Netphonebook.Modules.Records.ViewModels
         private void CreateInstanceOfEntriesClicker()
         {
             EntriesClickerContext = new RecordEntriesClickerViewModel(this, _dataProvider);
+            PresenterInstance = new RecordPresenterViewModel();
         }
 
         public void OnNavigatedTo(NavigationContext navigationContext)
@@ -206,10 +218,10 @@ namespace Netphonebook.Modules.Records.ViewModels
         {
             if (DisplayedNumber == null || DisplayedNumber == "") return false;
             if (SerialNumber == null || SerialNumber == "") return false;
-            foreach (var cellData in Cell)
+            for (int i = 0; i < givenModel.CustomizationCells.Count; i++)
             {
-                if (cellData == null) return false;
-                if (cellData.IsCellReadyToCompose() == false) return false;
+                if (Cell[i] == null) return false;
+                else if (Cell[i].IsCellReadyToCompose() == false) return false;
             }
             return true;
         }
@@ -226,7 +238,7 @@ namespace Netphonebook.Modules.Records.ViewModels
 
         private void ClearDisplayedData()
         {
-            foreach (var cell in Cell) cell.ClearCellData();
+            for (int i = 0; i < givenModel.CustomizationCells.Count; i++) Cell[i].ClearCellData();
             DisplayedNumber = null;
             SerialNumber = null;
         }
@@ -288,5 +300,87 @@ namespace Netphonebook.Modules.Records.ViewModels
             InjectCellViewToRegion(new TextEntryEditor(newVM), cellId);
             Cell[cellId] = newVM;
         }
+
+        //Add adding to presenter here down there/* Presenter handling below */
+        #region Presenter
+
+        public void UpdatePresenter()
+        {
+            PresenterInstance.CleanCollection();
+            PresenterInstance.AddToCollection(DisplayedNumber, SerialNumber, HexColorConverter.ToSolidColor(givenModel.BackgroundColor), HexColorConverter.ToSolidColor(givenModel.BorderColor), HexColorConverter.ToSolidColor(givenModel.ForegroundColor),
+                Convert.ToInt32(givenModel.FontSize), Convert.ToInt32(givenModel.CornerRadius), Convert.ToInt32(givenModel.BorderSize),
+                GetCellDataTextType(PresenterDataParts.Text), GetCellDataColorType(PresenterDataParts.BackgroundColor), GetCellDataColorType(PresenterDataParts.ForegroundColor), GetCellDataColorType(PresenterDataParts.BorderColor),
+                GetCellDataValueType(PresenterDataParts.BorderSize), GetCellDataValueType(PresenterDataParts.CornerRadius), GetCellDataValueType(PresenterDataParts.FontSize));
+        }
+
+        private string[] GetCellDataTextType(PresenterDataParts type)
+        {
+            int cellCount = givenModel.CustomizationCells.Count;
+
+            string[] toReturn = new string[cellCount];
+
+            for (int i = 0; i < cellCount; i++)
+            {
+                switch (type)
+                {
+                    case PresenterDataParts.Text:
+                        toReturn[i] = Cell[i].GetText();
+                        break;
+                    default: throw new NotImplementedException();
+
+                }
+            }
+            return toReturn;
+        }
+
+        private SolidColorBrush[] GetCellDataColorType(PresenterDataParts type)
+        {
+            int cellCount = givenModel.CustomizationCells.Count;
+            var toReturn = new SolidColorBrush[cellCount];
+            for (int i = 0; i < cellCount; i++)
+            {
+                var correctCellId = givenModel.CustomizationCells[i].CellId;
+                switch (type)
+                {
+                case PresenterDataParts.BackgroundColor:
+                        toReturn[correctCellId] = HexColorConverter.ToSolidColor(givenModel.CustomizationCells[i].BackgroundColor);
+                    break;
+                case PresenterDataParts.ForegroundColor:
+                        toReturn[correctCellId] = HexColorConverter.ToSolidColor(givenModel.CustomizationCells[i].ForegroundColor);
+                        break;
+                case PresenterDataParts.BorderColor:
+                        toReturn[correctCellId] = HexColorConverter.ToSolidColor(givenModel.CustomizationCells[i].BorderColor);
+                        break;
+                default: throw new NotImplementedException();
+                }
+            }
+            return toReturn;
+        }
+
+        private int[] GetCellDataValueType(PresenterDataParts type)
+        {
+            int cellCount = givenModel.CustomizationCells.Count;
+            var toReturn = new int[cellCount];
+
+            for (int i = 0; i < cellCount; i++)
+            {
+                var correctCellId = givenModel.CustomizationCells[i].CellId;
+                switch (type)
+                {
+                    case PresenterDataParts.BorderSize:
+                        toReturn[correctCellId] = Convert.ToInt32(givenModel.CustomizationCells[i].BorderSize);
+                        break;
+                    case PresenterDataParts.CornerRadius:
+                        toReturn[correctCellId] = Convert.ToInt32(givenModel.CustomizationCells[i].CornerRadius);
+                        break;
+                    case PresenterDataParts.FontSize:
+                        toReturn[correctCellId] = Convert.ToInt32(givenModel.CustomizationCells[i].FontSize);
+                        break;
+                }
+            }
+            return toReturn;
+
+        }
+        #endregion
     }
 }

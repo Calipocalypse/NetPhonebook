@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Netphonebook.Modules.Records.ViewModels
 {
@@ -44,6 +45,7 @@ namespace Netphonebook.Modules.Records.ViewModels
             { 
                 SetProperty(ref selectedIndex, value);
                 SendSignalToCheckIfValid();
+                _cellStateMainWatcher.UpdatePresenter();
             }
         }
 
@@ -97,6 +99,12 @@ namespace Netphonebook.Modules.Records.ViewModels
         private void SendSignalToCheckIfValid()
         {
             _cellStateMainWatcher.CheckIfDataModelIsValid();
+        }
+
+        public string GetText()
+        {
+            if (SelectedIndex == null) return "";
+            else return ListOfCategory[(int)SelectedIndex].Name;
         }
     }
 }

@@ -8,5 +8,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetPhonebook.Core\NetPhonebook.Core.csproj" />
+    <ProjectReference Include="..\Netphonebook.Modules.Common\Netphonebook.Modules.Common.csproj" />
   </ItemGroup>
 </Project>

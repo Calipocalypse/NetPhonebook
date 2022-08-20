@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Netphonebook.Modules.Records
 {
@@ -15,6 +16,9 @@ namespace Netphonebook.Modules.Records
         void FillCellData(VirtualModelsCellData selectedItemCell);
         void ClearCellData();
         bool IsCellReadyToCompose();
+
+        /* For Presenter */
+        string GetText();
 
     }
 }

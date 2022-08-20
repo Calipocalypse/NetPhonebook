@@ -9,5 +9,6 @@ namespace Netphonebook.Modules.Records.Interfaces
     public interface ICellStateWatcher
     {
         public void CheckIfDataModelIsValid();
+        public void UpdatePresenter();
     }
 }

@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Netphonebook.Modules.Records.Views"
-             xmlns:prism="http://prismlibrary.com/"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:common="clr-namespace:Netphonebook.Modules.Common.Views;assembly=Netphonebook.Modules.Common"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" d:Background="White"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -14,7 +15,7 @@
                 <TextBlock>Current Model:</TextBlock>
                 <TextBlock>Poniżej lista wszystkich wpisów - klikasz, wybierasz, edytujesz</TextBlock>
                 <local:RecordEntriesClicker DataContext="{Binding EntriesClickerContext}" />
-                <TextBlock Text="Viewer here soon"/>
+                <common:RecordPresenter DataContext="{Binding PresenterInstance}"/>
             </StackPanel>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
