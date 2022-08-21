@@ -8,6 +8,9 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" d:Background="White"
              d:DesignHeight="450" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PinkButton}"/>
+    </UserControl.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
             <Button Command="{Binding NavigateCommand}" CommandParameter="SearchView" Content="Search"/>

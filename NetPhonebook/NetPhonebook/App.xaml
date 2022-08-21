@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:NetPhonebook"
              xmlns:prism="http://prismlibrary.com/" >
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- This solution prevents from getting exception https://github.com/PrismLibrary/Prism/issues/1575#issuecomment-428663556 -->
+                <ResourceDictionary>
+                    <Style x:Key="PinkButton" TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="LightPink"/>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

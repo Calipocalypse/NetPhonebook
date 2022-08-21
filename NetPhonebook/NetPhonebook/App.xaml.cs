@@ -8,6 +8,7 @@ using NetPhonebook.Modules.Search;
 using NetPhonebook.Services;
 using NetPhonebook.Services.Interfaces;
 using NetPhonebook.Views;
+using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Modularity;
 using SqLiteDataProvider;
