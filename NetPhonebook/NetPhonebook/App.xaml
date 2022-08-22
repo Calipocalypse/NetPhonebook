@@ -6,10 +6,44 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- This solution prevents from getting exception https://github.com/PrismLibrary/Prism/issues/1575#issuecomment-428663556 -->
                 <ResourceDictionary>
-                    <Style x:Key="PinkButton" TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="LightPink"/>
+
+                    <!-- Standard Button -->
+                    <Style x:Key="StandardButton" TargetType="Button">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="FontFamily" Value="Bahnschrift"/>
+
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="#e4001f" CornerRadius="3" Margin="5" Height="35">
+                                        <ContentPresenter x:Name="contentPresenter"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Content="{TemplateBinding Content}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <!-- Standard Button Inactive -->
+                    <Style x:Key="StandardButtonInactive" TargetType="Button" BasedOn="{StaticResource StandardButton}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="#0d0d0d" CornerRadius="3" Margin="5" Height="35">
+                                    <ContentPresenter     x:Name="Meh"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          Content="{TemplateBinding Content}"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

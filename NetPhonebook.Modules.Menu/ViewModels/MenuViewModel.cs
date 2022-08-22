@@ -18,7 +18,14 @@ namespace NetPhonebook.Modules.Menu.ViewModels
     internal class MenuViewModel : BindableBase
     {
         private readonly IRegionManager _regionManager;
-        private readonly IDataProvider _dataProvider; 
+        private readonly IDataProvider _dataProvider;
+
+        private Style[] buttonStyles;
+        public Style[] ButtonStyles
+        {
+            get { return buttonStyles; }
+            set { SetProperty(ref buttonStyles, value); }
+        }
 
         public DelegateCommand<string> NavigateCommand { get; set; }
         public MenuViewModel(IRegionManager regionManager, IDataProvider dataProvider)
@@ -27,9 +34,15 @@ namespace NetPhonebook.Modules.Menu.ViewModels
             _dataProvider = dataProvider;
             DataProviderType = _dataProvider.ToString();
             NavigateCommand = new DelegateCommand<string>(Navigate);
+            ComposeStyles();
             //MessageBox.Show("Hello from MenuViewModel");
         }
-
+        #region Styles
+        private void ComposeStyles()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
         private string dataProviderType;
         public string DataProviderType
         {

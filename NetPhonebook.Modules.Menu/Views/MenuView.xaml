@@ -9,16 +9,21 @@
              mc:Ignorable="d" d:Background="White"
              d:DesignHeight="450" d:DesignWidth="300">
     <UserControl.Resources>
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource PinkButton}"/>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StandardButton}"/>
     </UserControl.Resources>
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <Button Command="{Binding NavigateCommand}" CommandParameter="SearchView" Content="Search"/>
-            <Button Command="{Binding NavigateCommand}" CommandParameter="RecordsView" Content="Records"/>
-            <Button Command="{Binding NavigateCommand}" CommandParameter="ModulesView" Content="Models"/>
-            <Button Command="{Binding NavigateCommand}" CommandParameter="ListsView" Content="Lists"/>
-            <Button Content="Print"/>
-            <Button Content="Manage"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+            <Button Style="{Binding ButtonStyle[0]}" d:Style="{StaticResource StandardButtonInactive}" Command="{Binding NavigateCommand}" CommandParameter="SearchView" Content="Search"/>
+            <Button Style="{Binding ButtonStyle[1]}" d:Style="{StaticResource StandardButtonInactive}" Command="{Binding NavigateCommand}" CommandParameter="RecordsView" Content="Records"/>
+            <Button Style="{Binding ButtonStyle[2]}" d:Style="{StaticResource StandardButton}" Command="{Binding NavigateCommand}" CommandParameter="ModulesView" Content="Models"/>
+            <Button Style="{Binding ButtonStyle[3]}" d:Style="{StaticResource StandardButtonInactive}" Command="{Binding NavigateCommand}" CommandParameter="ListsView" Content="Lists"/>
+            <Button Style="{Binding ButtonStyle[4]}" d:Style="{StaticResource StandardButtonInactive}" Command="{Binding NavigateCommand}" CommandParameter="xxx" Content="Print"/>
+            <Button Style="{Binding ButtonStyle[5]}" d:Style="{StaticResource StandardButtonInactive}" Command="{Binding NavigateCommand}" CommandParameter="yyyy" Content="Manage"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Data provider: "/>
                 <TextBlock d:Text="SQLite" Text="{Binding DataProviderType}"/>
